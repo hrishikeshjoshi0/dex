@@ -1,0 +1,83 @@
+<div class="modal-header">
+	<h3 class="modal-title">Add new customer</h3>
+</div>
+<div class="modal-body">
+
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="well bs-component">
+				<form>
+					<fieldset>
+						<legend>Basic Information</legend>
+
+						<div class="row">
+							<div class="col-md-6 form-group">
+								<label for="firstName" class="control-label">First Name</label>
+								<input type="text" class="form-control" ng-required
+									ng-model="customer.currentFirstName" id="firstName"
+									placeholder="First Name">
+							</div>
+
+							<div class="col-md-6 form-group">
+								<label for="lastName" class="control-label">Last Name</label> <input
+									type="text" class="form-control"
+									ng-model="customer.currentLastName" id="lastName"
+									placeholder="Last Name">
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-6 form-group">
+								<label class="control-label">Gender</label>
+								<div class="radio">
+									<label> <input type="radio" ng-model="customer.gender"
+										ng-value="male" id="genderMale" name="gender"> Male
+									</label>
+								</div>
+								<div class="radio">
+									<label> <input type="radio" ng-model="customer.gender"
+										ng-value="female" id="genderFemale" name="gender">
+										Female
+									</label>
+								</div>
+							</div>
+
+							<div class="col-md-6 form-group">
+								<label for="birthDate" class="control-label">Birthdate</label>
+								<div class="">
+									<input ui-date class="form-control" id="birthDate"
+										ng-model="customer.birthDate">
+								</div>
+							</div>
+						</div>
+
+						<legend>Contact Information</legend>
+
+						<div class="row">
+							<div class="col-md-6 form-group">
+								<label for="mobileNumber" class="control-label">Mobile Number</label>
+								<input type="text" class="form-control" id="mobileNumber"
+									ng-model="customer.mobileNumber" placeholder="Mobile">
+							</div>
+
+							<div class="col-md-6 form-group">
+								<label for="email" class="control-label">Email</label> <input
+									type="email" class="form-control" id="email"
+									ng-model="customer.email" placeholder="Email">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<div class="">
+								<button type="submit" class="btn btn-primary" ng-click="save()">Submit</button>
+								<button class="btn btn-default" ng-click="cancel()">Cancel</button>
+							</div>
+						</div>
+					</fieldset>
+				</form>
+			</div>
+		</div>
+	</div>
+
+</div>
+

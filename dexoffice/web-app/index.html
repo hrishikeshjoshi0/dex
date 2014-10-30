@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Dexoffice</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.css" media="screen">
+    <link rel="stylesheet" href="css/bootswatch.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/jquery-ui.css"/>
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="../bower_components/html5shiv/dist/html5shiv.js"></script>
+      <script src="../bower_components/respond/dest/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body ng-app="main" >
+    <div class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" ui-sref="#">DexOffice</a>	
+          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="navbar-collapse collapse" id="navbar-main">
+          <ul class="nav navbar-nav">
+            <li><a ui-sref="home">Home</a></li>
+        	<li><a ui-sref="about">About</a></li>
+        	<li><a ui-sref="customers.list">Customers</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      
+      <div id="spinner">Loading...</div>
+      
+      <div class="messageCenter" mc-messages></div>
+      	
+      <div ui-view></div>
+      	
+      <footer>
+        <div class="row">
+          <div class="col-lg-12">
+            <hr/>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootswatch.js"></script>
+    <script src="js/angular/1.2.13/angular.js"></script>
+    <script src="js/angular/angular-ui-router.min.js"></script>
+    <script src="js/angular/angular-resource.js"></script>
+    
+	<script type="text/javascript" src="js/jquery-ui.js"></script>
+	<script type="text/javascript" src="js/date.js"></script>
+    
+    <script src="js/angular/ui-bootstrap-tpls-0.11.2.min.js"></script>
+    <script src="app/customer/js/customer.js"></script>
+    <script src="js/message-center.js"></script>
+    <script src="js/framework.js"></script>
+    <script src="js/app.js"></script>
+    
+  </body>
+</html>

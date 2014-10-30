@@ -1,0 +1,64 @@
+@CHARSET "UTF-8";	
+.panel-list-actions > * {
+	padding-top:0px;
+	padding-left:0px;
+	padding-right:0px;
+	padding-bottom: 15px;
+}
+
+table thead > tr {
+	background-color: #A9D9ED;
+	border-bottom: none;
+}
+
+#spinner {
+    position: absolute;
+    left: 50%;
+    top: 5%;
+    display: block;
+    border-color: #F0C36D;
+	background-color: #F9EDBE;
+	font-size-adjust:inherit;
+    padding-left:10px;
+    padding-right:10px;
+    padding-top:10px;
+	padding-bottom :5px;
+	
+    margin-left:10px;
+    margin-right:10px;
+    margin-bottom:10px;
+    border-radius: 5px;
+    display : none;
+}
+
+.mc {
+	background-color: #F9EDBE;
+	border-color: #F0C36D;
+	color: #333;
+	font-size-adjust:inherit;
+}
+
+.messageCenter {
+	position: absolute;
+    display: block;
+	font-size-adjust:inherit;
+    padding-left:10px;
+    padding-right:10px;
+    padding-top:10px;
+	padding-bottom :5px;
+	
+	left: 80%;
+    top: 5%;
+	
+    margin-left:10px;
+    margin-right:10px;
+    margin-bottom:10px;
+    border-radius: 5px;
+}
+
+.left-navigation {
+	font-size:12px;
+
+.container {
+	width:98%;
+}

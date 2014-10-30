@@ -1,0 +1,86 @@
+<div class="page-header">
+	<h2>{{customer | customerName}}</h2>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-body">
+		<a ng-click="edit()" class="btn btn-sm btn-primary"> 
+			Action#1
+		</a>
+	</div>	
+</div>
+
+<div class="row">
+	<div class="col-md-6">
+		<div class="panel panel-default" ng-mouseover="hover=true" ng-mouseout="hover=false">
+			<div class="panel-heading">
+				Address
+				<p class="pull-right" ng-show="hover">
+					<a ng-if="addressData" ng-click="edit()"> 
+						Edit 
+					</a>
+					<a ng-if="addressData == null" ng-click="addAddress()"> 
+						Add
+					</a>
+				</p>
+			</div>
+			<div class="panel-body">
+				<p>
+					{{addressData.address1}} <br/>
+					{{addressData.address2}} <br/>
+					{{addressData.city}}<br/>
+					{{addressData.directions}}
+				</p>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-md-6">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Contact Numbers
+			</div>
+			<div class="panel-body">
+				<dl>
+				  <dt ng-if="mobilePhoneData">Mobile</dt>
+				  
+				  <dd ng-if="mobilePhoneData" ng-mouseover="mobileEdit=true" ng-mouseout="mobileEdit=false">
+				  		{{mobilePhoneData.value}}
+						<span ng-show="mobileEdit">
+							<a ng-click="edit()">(Edit) </a>
+						</span>
+				  </dd>
+				  
+				  <dt>Email</dt>
+				  <dd ng-mouseover="emailEdit=true" ng-mouseout="emailEdit=false">
+				  	{{emailData.value}}
+				  	<span ng-show="emailEdit">
+						<a ng-click="edit()">(Edit) </a>
+					</span>
+				  </dd>
+				</dl> 
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-default" ng-mouseover="commentsLink=true" ng-mouseout="commentsLink=false">
+			<div class="panel-heading">
+				Comments
+				<p class="pull-right" ng-show="commentsLink">
+					<a ng-if="customer.description" ng-click="edit()"> 
+						Edit 
+					</a>
+					<a ng-if="customer.description == null" ng-click="addAddress()"> 
+						Add
+					</a>
+				</p>
+			</div>
+			<div class="panel-body">
+				{{customer.description}} 
+			</div>
+		</div>
+	</div>
+</div>
