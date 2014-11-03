@@ -3,10 +3,14 @@ import org.springframework.web.context.support.WebApplicationContextUtils
 import party.PartyRelationshipType
 import party.PartyType
 import party.Person
+import product.ProductPriceType;
+import product.ProductType;
 import core.ContactMechType
 import core.Enumeration
 import core.EnumerationType
 import core.RoleType
+import core.Uom
+import core.UomType
 
 class BootStrap {
 	
@@ -110,6 +114,88 @@ class BootStrap {
 			p.currentLastName = "User"
 			p.description = "Admin User"
 			partyService.createPersonAndRole(p,"OWNER",null)
+		}
+		
+		//UOM Type
+		if(!UomType.findByName("CURRENCY")) {
+			def uomType = new UomType(name : "CURRENCY",description:"Currency UOM Type")
+			uomType.save(flush:true)
+		}
+		
+		if(!UomType.findByName("PRODUCT_QUANTITY")) {
+			def uomType = new UomType(name : "PRODUCT_QUANTITY",description:"Product Quantity UOM Type")
+			uomType.save(flush:true)
+		}
+		
+		if(!UomType.findByName("PRODUCT_HEIGHT")) {
+			def uomType = new UomType(name : "PRODUCT_HEIGHT",description:"Product Height UOM Type")
+			uomType.save(flush:true)
+		}
+		
+		if(!UomType.findByName("PRODUCT_WIDTH")) {
+			def uomType = new UomType(name : "PRODUCT_WIDTH",description:"Product Width UOM Type")
+			uomType.save(flush:true)
+		}
+		
+		if(!UomType.findByName("PRODUCT_DEPTH")) {
+			def uomType = new UomType(name : "PRODUCT_DEPTH",description:"Product Depth UOM Type")
+			uomType.save(flush:true)
+		}
+		
+		//UOM
+		def currencyUomType = UomType.findByName("CURRENCY")
+		def productQuantityUomType = UomType.findByName("PRODUCT_QUANTITY")
+		
+		if(!Uom.findByAbbreviationAndUomType("INR",currencyUomType)) {
+			def uom = new Uom(abbreviation: "INR", description: "Rupees", uomType: currencyUomType)
+			uom.save(flush:true)
+		}
+		
+		if(!Uom.findByAbbreviationAndUomType("EACH",productQuantityUomType)) {
+			def uom = new Uom(abbreviation: "EACH", description: "Each", uomType: productQuantityUomType)
+			uom.save(flush:true)
+		}
+		
+		//ProductType
+		if(!ProductType.findByName("SERVICE")) {
+			def pt = new ProductType(name:"SERVICE", description : "SERVICE")
+			pt.save(flush:true)
+		}
+		
+		if(!ProductType.findByName("GOOD")) {
+			def pt = new ProductType(name:"GOOD",description:"GOOD")
+			pt.save(flush:true)
+		}
+		
+		if(!ProductType.findByName("DIGITAL_GOOD")) {
+			def pt = new ProductType(name:"DIGITAL_GOOD",description:"DIGITAL_GOOD")
+			pt.save(flush:true)
+		}
+		
+		if(!ProductType.findByName("FINISHED_GOOD")) {
+			def pt = new ProductType(name:"FINISHED_GOOD",description:"FINISHED_GOOD")
+			pt.save(flush:true)
+		}
+		
+		//Product Price Type
+		if(!ProductPriceType.findByValue("DEFAULT_PRICE")) {
+			def ppt = new ProductPriceType(value:"DEFAULT_PRICE",description:"Default price")
+			ppt.save(flush:true)
+		}
+		
+		if(!ProductPriceType.findByValue("LIST_PRICE")) {
+			def ppt = new ProductPriceType(value: "LIST_PRICE",description:"List price")
+			ppt.save(flush:true)
+		}
+		
+		if(!ProductPriceType.findByValue("MAXIMUM_PRICE")) {
+			def ppt = new ProductPriceType(value: "MAXIMUM_PRICE",description:"Maximum price")
+			ppt.save(flush:true)
+		}
+		
+		if(!ProductPriceType.findByValue("MINIMUM_PRICE")) {
+			def ppt = new ProductPriceType(value : "MINIMUM_PRICE",description:"Minimum price")
+			ppt.save(flush:true)
 		}
 		
 		//Marshalling

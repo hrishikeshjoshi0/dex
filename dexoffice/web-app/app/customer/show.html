@@ -1,79 +1,85 @@
 <div class="page-header">
-	<h2>{{customer | customerName}}</h2>
-</div>
-
-<div class="panel panel-default">
-	<div class="panel-body">
-		<a ng-click="edit()" class="btn btn-sm btn-primary"> 
-			Action#1
-		</a>
-	</div>	
+	<h2>
+		<span class="glyphicon glyphicon-user"></span> 
+		{{customer | customerName}}
+	</h2>
 </div>
 
 <div class="row">
 	<div class="col-md-6">
-		<div class="panel panel-default" ng-mouseover="hover=true" ng-mouseout="hover=false">
+		<div class="panel panel-info" ng-mouseover="hover=true" ng-mouseout="hover=false">
 			<div class="panel-heading">
-				Address
-				<p class="pull-right" ng-show="hover">
-					<a ng-if="addressData" ng-click="edit()"> 
+				<span class="glyphicon glyphicon-envelope"></span>
+				Postal Address
+				<small class="pull-right" ng-show="hover">
+					<a href ng-if="addressData" ng-click="createOrUpdatePostalAddress(customer)"> 
+						<span class="glyphicon glyphicon-edit"></span>
 						Edit 
 					</a>
-					<a ng-if="addressData == null" ng-click="addAddress()"> 
+					<a href ng-if="addressData == null" ng-click="createOrUpdatePostalAddress(customer)"> 
+						<span class="glyphicon glyphicon-plus-sign"></span>
 						Add
 					</a>
-				</p>
+				</small>
 			</div>
-			<div class="panel-body">
-				<p>
-					{{addressData.address1}} <br/>
-					{{addressData.address2}} <br/>
-					{{addressData.city}}<br/>
-					{{addressData.directions}}
-				</p>
-			</div>
+			<ul class="list-group">
+			  <li class="list-group-item" ng-show="addressData.address1">{{addressData.address1}}</li>
+			  <li class="list-group-item" ng-show="addressData.address2">{{addressData.address2}}</li>
+			  <li class="list-group-item" ng-show="addressData.city">{{addressData.city}}</li>
+			  <li class="list-group-item" ng-show="addressData.directions">{{addressData.directions}}</li>
+			</ul>
 		</div>
 	</div>
 	
 	<div class="col-md-6">
-		<div class="panel panel-default">
+		<div class="panel panel-info">
 			<div class="panel-heading">
+				<span class="glyphicon glyphicon-phone-alt"></span>
 				Contact Numbers
+				<small class="pull-right">
+					<a href ng-click="saveMobileNumber(customer,null)">
+						<span class="glyphicon glyphicon-plus-sign"></span> 
+						 Mobile
+					</a> 
+					|
+					<a href ng-click="saveEmail(customer,null)"> 
+						<span class="glyphicon glyphicon-plus-sign"></span>
+						 Email
+					</a>
+				</small>
 			</div>
-			<div class="panel-body">
-				<dl>
-				  <dt ng-if="mobilePhoneData">Mobile</dt>
-				  
-				  <dd ng-if="mobilePhoneData" ng-mouseover="mobileEdit=true" ng-mouseout="mobileEdit=false">
-				  		{{mobilePhoneData.value}}
-						<span ng-show="mobileEdit">
-							<a ng-click="edit()">(Edit) </a>
-						</span>
-				  </dd>
-				  
-				  <dt>Email</dt>
-				  <dd ng-mouseover="emailEdit=true" ng-mouseout="emailEdit=false">
-				  	{{emailData.value}}
-				  	<span ng-show="emailEdit">
-						<a ng-click="edit()">(Edit) </a>
+			<ul class="list-group" ng-if="mobilePhoneData">
+				<li class="list-group-item" ng-repeat="mobile in mobilePhoneData">
+					<span class="glyphicon glyphicon-earphone"> </span>
+					{{mobile.value}} 
+					<span>
+						<a ng-click="saveMobileNumber(customer,mobile)">(Edit)</a>
 					</span>
-				  </dd>
-				</dl> 
-			</div>
+				</li>
+				<li class="list-group-item" ng-repeat="email in emailData">
+					<span class="glyphicon glyphicon-globe"> </span>
+					{{email.value}}
+					<span>
+						<a ng-click="saveEmail(customer,email)">(Edit)</a>
+					</span>
+				</li>
+			</ul>
 		</div>
 	</div>
 </div>
 
 <div class="row">
 	<div class="col-md-12">
-		<div class="panel panel-default" ng-mouseover="commentsLink=true" ng-mouseout="commentsLink=false">
+		<div class="panel panel-info" ng-mouseover="commentsLink=true" ng-mouseout="commentsLink=false">
 			<div class="panel-heading">
 				Comments
 				<p class="pull-right" ng-show="commentsLink">
-					<a ng-if="customer.description" ng-click="edit()"> 
+					<a href ng-if="customer.description" ng-click="edit()"> 
+						<span class="glyphicon glyphicon-edit"></span>
 						Edit 
 					</a>
-					<a ng-if="customer.description == null" ng-click="addAddress()"> 
+					<a href ng-if="customer.description == null" ng-click="addAddress()">
+						<span class="glyphicon glyphicon-plus-sign"></span> 
 						Add
 					</a>
 				</p>

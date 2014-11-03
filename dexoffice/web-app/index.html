@@ -5,8 +5,8 @@
     <title>Dexoffice</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/bootstrap.css" media="screen">
-    <link rel="stylesheet" href="css/bootswatch.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/bootswatch.min.css">
     <link rel="stylesheet" href="css/jquery-ui.css"/>
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -16,7 +16,7 @@
   </head>
   <body ng-app="main" >
     <div class="navbar navbar-default navbar-fixed-top">
-      <div class="container">
+      <div class="container max-width">
         <div class="navbar-header">
           <a class="navbar-brand" ui-sref="#">DexOffice</a>	
           <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
@@ -27,9 +27,25 @@
         </div>
         <div class="navbar-collapse collapse" id="navbar-main">
           <ul class="nav navbar-nav">
-            <li><a ui-sref="home">Home</a></li>
-        	<li><a ui-sref="about">About</a></li>
-        	<li><a ui-sref="customers.list">Customers</a></li>
+            <!-- <li><a ui-sref="home">Home</a></li>
+        	<li><a ui-sref="about">About</a></li> -->
+        	<li>
+        		<a ui-sref="customers.list">
+        			<span class="glyphicon glyphicon-user"></span> Customers
+        		</a>
+        	</li>
+        	<li>
+        		<a ui-sref="products.list">
+        			<span class="glyphicon glyphicon-barcode"></span> 
+        			Products
+        		</a>
+        	</li>
+        	<li>
+        		<a ui-sref="customers.list">
+        			<span class="glyphicon glyphicon-euro"></span> 
+        			Invoices
+        		</a>
+        	</li>
           </ul>
         </div>
       </div>
@@ -64,6 +80,8 @@
     
     <script src="js/angular/ui-bootstrap-tpls-0.11.2.min.js"></script>
     <script src="app/customer/js/customer.js"></script>
+    <script src="app/product/js/product.js"></script>
+    
     <script src="js/message-center.js"></script>
     <script src="js/framework.js"></script>
     <script src="js/app.js"></script>

@@ -1,0 +1,52 @@
+<div>
+	<div class="page-header">
+		<h3>
+			<span class="glyphicon glyphicon-list"></span>
+			Products
+		</h3>
+	</div>
+
+	<div class="panel-list-actions">
+		<div class="pull-left">
+		</div>
+		<div class="pull-right">
+			<input type="text" placeholder="Search" ng-model="query">
+		</div>
+	</div>
+
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>Product name</th>
+				<th>Introduction date</th>
+				<th>Type</th>
+				<th>Price</th>
+				<th>Price type</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="product in products | filter:query" ng-mouseover="hover=true" ng-mouseout="hover=false">
+				<td>
+					<a ui-sref="products.show({ id: product.id})">
+						{{product.productName}}
+					</a>
+				</td>
+				<td>{{product.introductionDate}}</td>
+				<td>{{product.productType}}</td>
+				<td>{{product.prices.defaultPrice.amount}}</td>
+				<td>{{product.prices.defaultPrice.priceType.description}}</td>
+				<td>
+					<span>
+						<a href ng-click="edit(product)">
+						  <span class="glyphicon glyphicon-edit"></span>
+						  Edit
+						</a>
+					</span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+

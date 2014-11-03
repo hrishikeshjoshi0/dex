@@ -1,9 +1,10 @@
 package application.marshaller
 
+import grails.converters.JSON
+import party.PartyContactMech
+import party.Person
+import core.PostalAddress
 import core.TelecomNumber;
-import party.PartyContactMech;
-import party.Person;
-import grails.converters.JSON;
 
 class PersonMarshaller {
 	
@@ -16,28 +17,35 @@ class PersonMarshaller {
 			res.currentLastName = p.currentLastName
 			res.gender = p.gender
 			res.birthDate = p.birthDate
+			res.description = p.description
+			
 			res.partyContactMechs = []
 			
 			p?.partyContactMechs?.each { PartyContactMech pcm ->
 				def cm = pcm.contactMech
 				def cmtype = cm?.contactMechType?.description
 
+				def cmp = []
+				pcm?.partyContactMechPurpose?.each {  
+					cmp << it?.contactMechPurposeType?.description
+				}
+				
 				if(cmtype == 'EMAIL') {
-					res.partyContactMechs << [id:pcm.id,	value : cm?.value,type:"EMAIL"]
-				} else if(cmtype == 'MOBILE_NUMBER') {
-					res.partyContactMechs << [id:pcm.id, value:cm?.contactNumber,type:"MOBILE_NUMBER"]
-				} else if(cmtype == 'POSTAL_ADDRESS') {
+					res.partyContactMechs << [id:cm.id,	value : cm?.value,type:"EMAIL",purpose:cmp]
+				} else if(cm instanceof TelecomNumber && cmtype == 'MOBILE_NUMBER') {
+					res.partyContactMechs << [id:cm.id, value:cm?.contactNumber,type:"MOBILE_NUMBER",purpose:cmp]
+				} else if(cm instanceof PostalAddress && cmtype == 'POSTAL_ADDRESS') {
 					res.partyContactMechs << [
-							id:pcm.id, 
+							id:cm.id, 
 							type:"POSTAL_ADDRESS",
 							address1 : cm?.address1,
 							address2 : cm?.address2,
 							directions : cm?.directions,
 							city : cm?.city,
-							postalCode : cm?.postalCode
+							postalCode : cm?.postalCode,
+							purpose:cmp
 						]
 				} 			
-				
 			}
 			return res
 		}

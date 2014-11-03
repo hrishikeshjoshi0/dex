@@ -1,0 +1,45 @@
+<div class="modal-header">
+	<h3 class="modal-title">
+		{{customer | customerName}}
+		<small>Mobile Number</small>
+	</h3>
+</div>
+<div class="modal-body">
+
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="well bs-component">
+				<form>
+					<fieldset>
+						<legend>Contact Information</legend>
+
+						<div class="row">
+							<!-- <div class="col-md-6 form-group">
+								<label for="contactmechpurpose" class="control-label">type</label> 
+								<select id="contactmechpurpose" class="form-control" 
+									ng-model="mobile.contactmechpurpose" 
+									ng-options="contactmechpurpose.label for contactmechpurpose in contactmechpurposes">
+  								</select>
+							</div> -->
+							
+							<div class="col-md-6 form-group">
+								<label for="mobileNumber" class="control-label">Mobile Number</label> <input
+									type="text" class="form-control" id="mobileNumber"
+									ng-model="mobile.value" placeholder="Mobile">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<div class="">
+								<button type="submit" class="btn btn-primary" ng-click="save()">Submit</button>
+								<button class="btn btn-default" ng-click="cancel()">Cancel</button>
+							</div>
+						</div>
+					</fieldset>
+				</form>
+			</div>
+		</div>
+	</div>
+
+</div>
+

@@ -1,0 +1,37 @@
+<div class="modal-header">
+	<h3 class="modal-title">
+		{{customer | customerName}}
+		<small>Email address</small>
+	</h3>
+</div>
+<div class="modal-body">
+
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="well bs-component">
+				<form>
+					<fieldset>
+						<legend>Email</legend>
+
+						<div class="row">
+							<div class="col-md-6 form-group">
+								<label for="email" class="control-label">Email</label> <input
+									type="email" class="form-control" id="email"
+									ng-model="email.value" placeholder="Email">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<div class="">
+								<button type="submit" class="btn btn-primary" ng-click="save()">Submit</button>
+								<button class="btn btn-default" ng-click="cancel()">Cancel</button>
+							</div>
+						</div>
+					</fieldset>
+				</form>
+			</div>
+		</div>
+	</div>
+
+</div>
+

@@ -1,5 +1,8 @@
 <div class="page-header">
-	<h3>Add new customer</h3>
+	<h3>
+		<span class="glyphicon glyphicon-plus-sign"></span>
+		Create new customer
+	</h3>
 </div>
 
 <div class="row">
@@ -44,7 +47,7 @@
 						<div class="col-md-6 form-group">
 							<label for="birthDate" class="control-label">Birthdate</label>
 							<div class="">
-								<input ui-date class="form-control" id="birthDate"
+								<input ui-date ui-date-format="dd-mm-yy" class="form-control" id="birthDate"
 									ng-model="customer.birthDate">
 							</div>
 						</div>

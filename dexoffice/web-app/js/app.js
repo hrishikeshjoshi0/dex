@@ -1,5 +1,5 @@
 // app.js
-var mainApp = angular.module('main', ['ui.router','ui.date','ui.bootstrap','customer','framework','ngResource']);
+var mainApp = angular.module('main', ['ui.router','ui.date','ui.bootstrap','customer','product','framework','ngResource']);
 
 mainApp.config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/home');
@@ -40,7 +40,6 @@ mainApp.config(function($stateProvider, $urlRouterProvider) {
 	            }
 	        }
 	    })
-	    
 	    .state('customers', {
 	        url: '/customers',
 	        views: {
@@ -66,6 +65,33 @@ mainApp.config(function($stateProvider, $urlRouterProvider) {
 	        url: '/show/:id',
 	        templateUrl: 'app/customer/show.html',
 	        controller : 'CustomerShowController'	        	
+	    })
+	    // PRODUCTS PAGE AND MULTIPLE NAMED VIEWS =================================
+	    .state('products', {
+	        url: '/products',
+	        views: {
+	            '': { templateUrl: 'app/product/layout/main.html' },
+	            'left-navigation@products': { templateUrl: 'app/product/layout/left-navigation.html' },
+	            'right-navigation@products': { templateUrl: 'app/product/layout/right-navigation.html' },
+	            'main-content@products': { 
+	                templateUrl: 'app/product/layout/main-content.html'
+	            }
+	        }
+	    })
+	     .state('products.list', {
+	        url: '/list',
+	        templateUrl: 'app/product/views/list.html',
+	        controller : 'ProductListController'	        	
+	    })
+	    .state('products.show', {
+	        url: '/show/:id',
+	        templateUrl: 'app/product/views/show.html',
+	        controller : 'ProductShowController'	        	
+	    })
+	    .state('products.create', {
+	        url: '/create',
+	        templateUrl: 'app/product/views/create.html',
+	        controller : 'ProductCreateController'	        	
 	    });
 });
 

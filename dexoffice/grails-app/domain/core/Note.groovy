@@ -13,6 +13,6 @@ class Note {
     static constraints = {
 		name nullable:false,blank:false
 		dateTime nullable:false
-		noteInfo nullable:false,blank:false
+		noteInfo nullable:false,blank:false,maxLength:1000
     }
 }

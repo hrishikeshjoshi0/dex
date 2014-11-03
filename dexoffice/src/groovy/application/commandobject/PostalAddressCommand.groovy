@@ -8,6 +8,7 @@ import core.PostalAddress
 class PostalAddressCommand {
 	
 	Long id
+	Long partyId
 	String toName
 	String address1
 	String address2

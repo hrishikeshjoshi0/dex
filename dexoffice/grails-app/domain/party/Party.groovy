@@ -10,7 +10,7 @@ class Party {
 	static mappedBy = [partyRelationshipsFrom: 'partyFrom', partyRelationshipsTo: 'partyTo']
 	
     static constraints = {
-		description nullable:true,blank:true
+		description nullable:true,blank:true,maxLength:1000
 		partyType nullable:true
 		currentPartyStatus nullable:true
     }

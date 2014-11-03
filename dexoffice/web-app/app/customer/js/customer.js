@@ -1,4 +1,4 @@
-var app = angular.module('customer', ['ngResource','MessageCenterModule']);
+var app = angular.module('customer', ['ngResource','MessageCenterModule','ui.bootstrap']);
 
 app.filter('customerName', function() {
 	return function(customer) {
@@ -37,8 +37,112 @@ app.filter('postalAddress', function() {
 	};
 });
 
-app.service('Customer', ['$resource',function($resource){
-    return $resource("/dexoffice/customer/:id");
+app.factory('Customer', ['$resource',function($resource){
+	var baseUrl = "/dexoffice/customer/:id";
+    return $resource(
+    		baseUrl,
+    		{},
+    		{
+        		savePostalAddress : {
+        			url : baseUrl + '/savePostalAddress', 	
+        			method: 'POST'
+        		},
+        		saveEmail : {
+        			url : baseUrl + '/saveEmail', 	
+        			method: 'POST'
+        		},
+        		saveTelecomNumber : {
+        			url : baseUrl +  '/saveTelecomNumber', 	
+        			method: 'POST'
+        		}
+    		}
+    );
+}]);
+
+app.controller('CustomerCreateTelecomNumberController', ['$scope','$modalInstance','customer','mobile','Customer','messageCenterService', function($scope,$modalInstance,customer,mobile,Customer,messageCenterService) {
+	$scope.customer = customer;
+
+	if(mobile) {
+		$scope.mobile = mobile;
+	} else {
+		$scope.mobile = {};
+	}
+
+	//$scope.contactMechPurposes = [{label:"Default",value:"COMMUNICATION"}]
+	
+	$scope.save = function () {
+		var mobileData = {}
+		
+		var mobile = $scope.mobile;
+		mobileData.contactNumber = mobile.value;
+		mobileData.id = mobile.id;
+		mobileData.partyId = $scope.customer.id;
+		//mobileData.contactMechPurpose = mobile.contactMechPurpose.value;
+		
+		Customer.saveTelecomNumber(mobileData,function(data) {
+			messageCenterService.add('success', 'Mobile number saved.', { status: messageCenterService.status.unseen,timeout: 5000});
+		   	$modalInstance.close("save.success");
+	    }, function(error) {
+	        messageCenterService.add('warning', 'There was some problem while saving the customer.', { status: messageCenterService.status.unseen,timeout: 5000});
+	        $modalInstance.close("save.error");
+	   });
+	};
+
+	$scope.cancel = function () {
+	   $modalInstance.dismiss('cancel');
+	};
+}]);
+
+app.controller('CustomerCreateEmailController', ['$scope','$modalInstance','customer','email','Customer','messageCenterService', function($scope,$modalInstance,customer,email,Customer,messageCenterService) {
+	$scope.customer = customer;
+	
+	if(email) {
+		$scope.email = email;
+	} else {
+		$scope.email = {};
+	}
+	
+	$scope.save = function () {
+		var emailData = {}
+		var email = $scope.email
+
+		emailData.email = email.value;
+		emailData.id = email.id;
+		emailData.partyId = $scope.customer.id;
+		
+		Customer.saveEmail(emailData,function(data) {
+			messageCenterService.add('success', 'Email address saved.', { status: messageCenterService.status.unseen,timeout: 5000});
+		   	$modalInstance.close("save.success");
+	    }, function(error) {
+	        messageCenterService.add('warning', 'There was some problem while saving the customer.', { status: messageCenterService.status.unseen,timeout: 5000});
+	        $modalInstance.close("save.error");
+	   });
+	};
+
+	$scope.cancel = function () {
+	   $modalInstance.dismiss('cancel');
+	};
+}]);
+
+app.controller('CustomerCreatePostalAddressController', ['$scope','$modalInstance','customer','Customer','messageCenterService', function($scope,$modalInstance,customer,Customer,messageCenterService) {
+	$scope.customer = customer;
+	
+	$scope.save = function () {
+		var postalAddress = $scope.customer.postalAddress
+		postalAddress.partyId = $scope.customer.id
+		console.log("Postal address " + postalAddress.id);
+		Customer.savePostalAddress(postalAddress,function(data) {
+			messageCenterService.add('success', 'Postal address saved.', { status: messageCenterService.status.unseen,timeout: 5000});
+		   	$modalInstance.close("save.success");
+	    }, function(error) {
+	        messageCenterService.add('warning', 'There was some problem while saving the customer.', { status: messageCenterService.status.unseen,timeout: 5000});
+	        $modalInstance.close("save.error");
+	   });
+	};
+
+	$scope.cancel = function () {
+	   $modalInstance.dismiss('cancel');
+	};
 }]);
 
 app.controller('CustomerQuickCreateEditController', ['$scope','$modalInstance','customer','Customer','messageCenterService', function($scope,$modalInstance,customer,Customer,messageCenterService) {
@@ -64,7 +168,6 @@ app.controller('CustomerQuickCreateEditController', ['$scope','$modalInstance','
 }]);
 
 app.controller('CustomerDeleteController', ['$scope','$modalInstance','Customer','customer','messageCenterService',function($scope,$modalInstance,Customer,customer,messageCenterService) {
-	//Customer.delete({id: 1}) //DELETE /realmen/1
 	$scope.customer = customer;
 	
 	$scope.delete = function () {
@@ -95,16 +198,137 @@ app.controller('CustomerCreateController', ['$scope','Customer',function($scope,
 	};
 }]);
 
-app.controller('CustomerShowController', ['$scope','$stateParams','Customer',function($scope,$stateParams,Customer) {
+app.controller('CustomerShowController', ['$scope','$stateParams','$modal','messageCenterService','Customer',function($scope,$stateParams,$modal,messageCenterService,Customer) {
 	$scope.id = $stateParams.id;
 	
-	$scope.customer = Customer.get({id : $scope.id},function(data) {
-		$scope.addressData = $scope.address($scope.customer);
-		$scope.mobilePhoneData = $scope.mobilePhone($scope.customer);
-		$scope.emailData = $scope.email($scope.customer);
-	});
+	$scope.init = function() {
+		$scope.customer = Customer.get({id : $scope.id},function(data) {
+			$scope.addressData = $scope.fetchAddresses($scope.customer);
+			$scope.mobilePhoneData = $scope.fetchMobileNumbers($scope.customer);
+			$scope.emailData = $scope.fetchEmails($scope.customer);
+		});
+	}
 	
-	$scope.email = function(customer) {
+	$scope.init();
+	
+	//Edit methods for Address, Contact Mechs
+	$scope.createOrUpdatePostalAddress = function(customer) {
+		//Opens a modal
+		$scope.customer = customer;
+		$scope.customer.postalAddress = $scope.fetchAddresses(customer);
+		
+		var modalInstance = $modal.open({
+			templateUrl : 'app/customer/modalCreatePostalAddress.html',
+			controller : 'CustomerCreatePostalAddressController',
+			size : 'lg',
+			resolve : {
+				customer : function () {
+			      return $scope.customer;
+			    }
+			}
+		});
+
+		modalInstance.result.then(function(data) {
+		   if(data == 'save.success') {
+			   $scope.init();
+		   }
+		}, function() {
+			//$log.info('Modal dismissed at: ');
+		});
+	}
+	
+	$scope.saveEmail = function(customer,email) {
+		//Opens a modal
+		$scope.customer = customer;
+		$scope.email = email;
+		
+		var modalInstance = $modal.open({
+			templateUrl : 'app/customer/modalCreateEmail.html',
+			controller : 'CustomerCreateEmailController',
+			size : 'lg',
+			resolve : {
+				customer : function () {
+			      return $scope.customer;
+			    },
+			    email : function () {
+				  return $scope.email;
+				}
+			}
+		});
+
+		modalInstance.result.then(function(data) {
+		   if(data == 'save.success') {
+			   $scope.init();
+		   }
+		}, function() {
+			//$log.info('Modal dismissed at: ');
+		});
+	}
+	
+	$scope.saveMobileNumber = function(customer,mobile) {
+		$scope.customer = customer;
+		
+		var modalInstance = $modal.open({
+			templateUrl : 'app/customer/modalCreateTelecomNumber.html',
+			controller : 'CustomerCreateTelecomNumberController',
+			size : 'lg',
+			resolve : {
+				customer : function () {
+			      return $scope.customer;
+			    },				
+				mobile : function () {
+				  return mobile;
+			    }
+			}
+		});
+
+		modalInstance.result.then(function(data) {
+		   if(data == 'save.success') {
+			   $scope.init();
+		   }
+		}, function() {
+			//$log.info('Modal dismissed at: ');
+		});
+	}
+	
+	$scope.fetchEmails = function(customer) {
+		if(customer != null) {
+			var found = [];
+			
+			if(customer.partyContactMechs != null) {
+				var data = customer.partyContactMechs;
+				
+				for (var i = 0; i < data.length; i++) {
+					var element = data[i];
+					if (element.type == "EMAIL") {
+						found.push(element);
+					} 
+				}
+			}
+			return found;
+		}
+	}
+	
+	$scope.fetchMobileNumbers = function(customer) {
+		if(customer != null) {
+			var found = [];
+			
+			if(customer.partyContactMechs != null) {
+				var data = customer.partyContactMechs;
+				
+				for (var i = 0; i < data.length; i++) {
+					var element = data[i];
+					if (element.type == "MOBILE_NUMBER") {
+						found.push(element);
+					} 
+				}
+			}
+			
+			return found;
+		}
+	}
+	
+	$scope.fetchAddresses = function(customer) {
 		if(customer != null) {
 			var found = null;
 			
@@ -113,14 +337,19 @@ app.controller('CustomerShowController', ['$scope','$stateParams','Customer',fun
 				
 				for (var i = 0; i < data.length; i++) {
 					var element = data[i];
-					if (element.type == "EMAIL") {
+					if (element.type == "POSTAL_ADDRESS") {
 						found = element;
+						break;
 					} 
 				}
 			}
 			return found;
 		}
 	}
+}]);
+
+app.controller('CustomerListController', ['$scope','$modal','$log','Customer','messageCenterService',function($scope,$modal,$log,Customer,messageCenterService) {
+	$scope.customers = [];
 	
 	$scope.mobilePhone = function(customer) {
 		if(customer != null) {
@@ -140,7 +369,8 @@ app.controller('CustomerShowController', ['$scope','$stateParams','Customer',fun
 		}
 	}
 	
-	$scope.address = function(customer) {
+	$scope.email = function(customer) {
+		
 		if(customer != null) {
 			var found = null;
 			
@@ -149,7 +379,7 @@ app.controller('CustomerShowController', ['$scope','$stateParams','Customer',fun
 				
 				for (var i = 0; i < data.length; i++) {
 					var element = data[i];
-					if (element.type == "POSTAL_ADDRESS") {
+					if (element.type == "EMAIL") {
 						found = element;
 					} 
 				}
@@ -157,11 +387,6 @@ app.controller('CustomerShowController', ['$scope','$stateParams','Customer',fun
 			return found;
 		}
 	}
-	
-}]);
-
-app.controller('CustomerListController', ['$scope','$modal','$log','Customer','messageCenterService',function($scope,$modal,$log,Customer,messageCenterService) {
-	$scope.customers = [];
 	
 	$scope.listAllCustomers = function() {
 		Customer.query(function(data) {
@@ -185,6 +410,7 @@ app.controller('CustomerListController', ['$scope','$modal','$log','Customer','m
 			}
 		});
 
+		
 		modalInstance.result.then(function(data) {
 			$scope.listAllCustomers();
 		}, function() {
