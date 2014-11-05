@@ -51,6 +51,9 @@ class ProductMarshaller {
 			def defaultPrice = getActiveDefaultPrice(p)
 			if(defaultPrice) {
 				res.defaultPrice = [:]
+				res.defaultPrice.currencyUom = [:]
+				res.defaultPrice.currencyUom.abbreviation = p.heightUom?.abbreviation
+				res.defaultPrice.currencyUom.description = p.heightUom?.description
 				res.defaultPrice.amount = defaultPrice.amount
 				res.defaultPrice.priceType = [:]
 				res.defaultPrice.priceType?.value = defaultPrice.priceType?.value
@@ -58,10 +61,35 @@ class ProductMarshaller {
 			}
 			
 			res.prices = []
-			
+			def prices = getProductPrices(p)
+			prices?.each {price ->
+				res.prices << [
+					fromDate : price.fromDate,
+					thruDate : price.thruDate,
+					amount : price.amount,
+					priceType : [value:price?.priceType?.value,
+								description:price.priceType?.description]
+				] 	
+			}
 			
 			return res
 		}
+	}
+	
+	def getProductPrices(Product product) {
+		def c = ProductPrice.createCriteria()
+		def now = new Date()
+		def priceList = c.list {
+			or {
+				isNull("thruDate")
+				ge("thruDate",now)
+			}
+			le("fromDate",now)
+			eq("product",product)
+			order("fromDate", "desc")
+		}
+		
+		priceList
 	}
 	
 	def getActiveDefaultPrice(Product product) {

@@ -58,7 +58,12 @@ table thead > tr {
 
 .left-navigation {
 	font-size:12px;
+	float: none;
+}
 
-.max-width {
-	width:98%;
+/* Custom container */
+.container-full {
+  padding-left:10px;
+  padding-right:10px;
+  width:100%;
 }

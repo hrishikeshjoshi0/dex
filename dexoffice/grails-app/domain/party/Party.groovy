@@ -1,12 +1,17 @@
 package party
 
+import tax.PartyTaxAuthInfo
+
 class Party {
 	
 	String description
 	PartyType partyType
 	PartyStatus currentPartyStatus
 	
-	static hasMany = [partyRoles:PartyRole, partyRelationshipsFrom:PartyRelationship,partyRelationshipsTo:PartyRelationship,partyClassifications:PartyClassification,partyContactMechs:PartyContactMech,partyStatuses:PartyStatus,partyNotes:PartyNote]
+	static hasMany = [partyRoles:PartyRole, partyRelationshipsFrom:PartyRelationship,
+		partyRelationshipsTo:PartyRelationship,partyClassifications:PartyClassification,partyContactMechs:PartyContactMech,
+		partyStatuses:PartyStatus,partyNotes:PartyNote, partyTaxAuthInfo : PartyTaxAuthInfo]
+	
 	static mappedBy = [partyRelationshipsFrom: 'partyFrom', partyRelationshipsTo: 'partyTo']
 	
     static constraints = {

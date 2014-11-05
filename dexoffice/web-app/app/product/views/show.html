@@ -70,10 +70,10 @@
 							</thead>
 							<tbody>
 								<tr ng-repeat="price in product.prices">
-									<td>{{price.fromDate}}</td>
-									<td>{{price.thruDate}}</td>
+									<td>{{price.fromDate | date:"dd-MM-yy"}}</td>
+									<td>{{price.thruDate?price.thruDate:"-"}}</td>
 									<td>{{price.amount}}</td>
-									<td></td>
+									<td>{{price.priceType.description}}</td>
 								</tr>
 							</tbody>
 						</table>
