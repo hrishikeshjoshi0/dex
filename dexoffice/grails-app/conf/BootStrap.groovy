@@ -1,13 +1,18 @@
 import org.springframework.web.context.support.WebApplicationContextUtils
 
+import party.Organization
 import party.PartyRelationshipType
 import party.PartyType
 import party.Person
-import product.ProductPriceType;
-import product.ProductType;
+import product.ProductPriceType
+import product.ProductType
+import tax.TaxAuthority
+import tax.TaxType
 import core.ContactMechType
 import core.Enumeration
 import core.EnumerationType
+import core.Geo
+import core.GeoType
 import core.RoleType
 import core.Uom
 import core.UomType
@@ -196,6 +201,50 @@ class BootStrap {
 		if(!ProductPriceType.findByValue("MINIMUM_PRICE")) {
 			def ppt = new ProductPriceType(value : "MINIMUM_PRICE",description:"Minimum price")
 			ppt.save(flush:true)
+		}
+		
+		//Geo Types
+		if(!GeoType.findByName("COUNTRY")) {
+			def geoType = new GeoType(name:"COUNTRY")
+			geoType.save(flush:true)
+		}
+		
+		if(!GeoType.findByName("STATE")) {
+			def geoType = new GeoType(name:"STATE")
+			geoType.save(flush:true)
+		}
+		
+		if(!GeoType.findByName("CITY")) {
+			def geoType = new GeoType(name:"CITY")
+			geoType.save(flush:true)
+		}
+		
+		if(!Geo.findByGeoNameAndGeoType("INDIA",GeoType.findByName("COUNTRY"))) {
+			def geo = new Geo(geoName:"INDIA",geoCode:"IN")
+			
+			def countryGeoType = GeoType.findByName("COUNTRY")
+			geo.geoType = countryGeoType
+			geo.save(flush:true)
+		}
+		
+		//Tax
+		if(!TaxType.findByName("SERVICE_TAX")) {
+			def taxType= new TaxType(name:"SERVICE_TAX")
+			taxType.save(flush:true)
+		}
+		
+		//Create organization 
+		if(!Organization.findByName("Ministry of Finance")) {
+			def organization = new Organization(name:"Ministry of Finance")
+			organization.save(flush:true)
+		}
+		
+		//Create tax authority
+		if(!TaxAuthority.findByGeoAndParty(Geo.findByGeoName("INDIA"),
+			Organization.findByName("Ministry of Finance"))) {
+			def taxAuthority = new TaxAuthority(geo:Geo.findByGeoName("INDIA"),party:
+				Organization.findByName("Ministry of Finance"))
+			taxAuthority.save(flush:true)
 		}
 		
 		//Marshalling

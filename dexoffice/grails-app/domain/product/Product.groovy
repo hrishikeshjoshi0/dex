@@ -1,5 +1,6 @@
 package product
 
+import tax.TaxAuthorityRateProduct
 import core.Uom
 
 class Product {
@@ -23,7 +24,7 @@ class Product {
 	Uom weightUom
 	BigDecimal weight
 	
-	static hasMany = [productPrices : ProductPrice]
+	static hasMany = [productPrices : ProductPrice,taxRates:TaxAuthorityRateProduct]
 	
     static constraints = {
 		productType nullable:false

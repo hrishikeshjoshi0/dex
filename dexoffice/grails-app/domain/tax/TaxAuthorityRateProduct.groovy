@@ -1,5 +1,7 @@
 package tax
 
+import product.Product
+
 class TaxAuthorityRateProduct {
 	
 	BigDecimal taxPercentage
@@ -7,8 +9,8 @@ class TaxAuthorityRateProduct {
 	Date fromDate
 	Date toDate
 	TaxType taxType
-	
-	static belongsTo = [taxAuthority : TaxAuthority]
+	Product product
+	TaxAuthority taxAuthority
 
     static constraints = {
 		taxPercentage nullable:true,blank:true
@@ -16,5 +18,6 @@ class TaxAuthorityRateProduct {
 		fromDate nullable:false,blank:false
 		toDate nullable:true,blank:true
 		taxType nullable:false,blank:false
+		taxAuthority nullable:false,blank:false
     }
 }

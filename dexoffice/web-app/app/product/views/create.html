@@ -65,6 +65,50 @@
 	                          <input type="checkbox" ng-model="product.taxable"> Is taxable ?
 	                        </label>
 	                    </div>
+	                    
+					</div>
+					
+					<div class="row">
+						<div class="col-md-6 form-group">
+							<label for="taxType" class="control-label">Tax type</label>
+							<div class="">
+								<select id="taxType" class="form-control" 
+									ng-model="product.taxType">
+									<option ng-repeat="taxType in taxTypes" value="{{taxType.name}}">
+										{{taxType.description}}
+									</option>	
+								</select>
+								<span class="help-block">
+								</span>
+							</div>
+						</div>
+						
+						<div class="col-md-6 form-group">
+							<label for="taxPercentage" class="control-label">Tax type</label>
+							<div class="">
+								<input type="number" ng-model="product.taxPercentage" name="taxPercentage">
+								<span class="help-block">
+								</span>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-md-6 form-group">
+							<label for="fromDate" class="control-label">From date</label>
+							<div class="">
+								<input ui-date ui-date-format="dd-mm-yy" class="form-control" 
+									id="fromDate" ng-model="product.tax.fromDate">
+							</div>
+						</div>
+						
+						<div class="col-md-6 form-group">
+							<label for="thruDate" class="control-label">Thru date</label>
+							<div class="">
+								<input ui-date ui-date-format="dd-mm-yy" class="form-control" 
+									id="thruDate" ng-model="product.tax.thruDate">
+							</div>
+						</div>						
 					</div>
 
 					<legend>Price information</legend>

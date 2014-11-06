@@ -38,6 +38,8 @@ app.controller('ProductCreateController',
 	
 	$scope.productTypes = ProductTypes.query();
 	$scope.productPriceTypes = ProductPriceTypes.query();
+	
+	$scope.taxTypes = [{name:"SERVICE_TAX",description:"Service Tax"}];
 			
 	$scope.save = function () {
 		$scope.product.$save();
