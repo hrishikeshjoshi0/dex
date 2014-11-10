@@ -8,7 +8,8 @@ import core.Uom
 
 @Validateable(nullable=true)
 class ProductCommand {
-	
+
+	Long id	
 	String productType
 	String primaryProductCategoryType
 	Date introductionDate
@@ -18,6 +19,7 @@ class ProductCommand {
 	BigDecimal quantityIncluded
 	BigDecimal piecesIncluded
 	Boolean taxable
+	String taxCategory
 	
 	ProductPriceCommand productPrice
 

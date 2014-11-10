@@ -1,5 +1,5 @@
 // app.js
-var mainApp = angular.module('main', ['ui.router','ui.date','ui.bootstrap','customer','product','framework','ngResource']);
+var mainApp = angular.module('main', ['ui.router','ui.date','ui.bootstrap','customer','product','invoice','framework','ngResource']);
 
 mainApp.config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/home');
@@ -75,6 +75,9 @@ mainApp.config(function($stateProvider, $urlRouterProvider) {
 	            'right-navigation@products': { templateUrl: 'app/product/layout/right-navigation.html' },
 	            'main-content@products': { 
 	                templateUrl: 'app/product/layout/main-content.html'
+	            },
+	            'actions@products.show': { 
+	                templateUrl: 'app/product/views/actions.html'
 	            }
 	        }
 	    })
@@ -92,6 +95,36 @@ mainApp.config(function($stateProvider, $urlRouterProvider) {
 	        url: '/create',
 	        templateUrl: 'app/product/views/create.html',
 	        controller : 'ProductCreateController'	        	
+	    })
+	    .state('products.edit', {
+	        url: '/edit/:id',
+	        templateUrl: 'app/product/views/edit.html',
+	        controller : 'ProductEditController'	        	
+	    })
+	    // INVOICE PAGE AND MULTIPLE NAMED VIEWS =================================
+	    .state('invoice', {
+	        url: '/invoice',
+	        views: {
+	            '': { templateUrl: 'app/invoice/layout/main.html' },
+	            'left-navigation@invoice': { templateUrl: 'app/invoice/layout/left-navigation.html' },
+	            'right-navigation@invoice': { templateUrl: 'app/invoice/layout/right-navigation.html' },
+	            'main-content@invoice': { 
+	                templateUrl: 'app/invoice/layout/main-content.html'
+	            },
+	            'actions@invoice.show': { 
+	                templateUrl: 'app/invoice/views/actions.html'
+	            }
+	        }
+	    })
+	    .state('invoice.create', {
+	        url: '/create',
+	        templateUrl: 'app/invoice/views/create.html',
+	        controller : 'InvoiceCreateController'	        	
+	    })	
+	     .state('invoice.list', {
+	        url: '/list',
+	        templateUrl: 'app/invoice/views/list.html',
+	        controller : 'InvoiceListController'	        	
 	    });
 });
 

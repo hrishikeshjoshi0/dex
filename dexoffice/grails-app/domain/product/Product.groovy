@@ -1,6 +1,7 @@
 package product
 
-import tax.TaxAuthorityRateProduct
+import tax.TaxRate
+import tax.TaxCategory;
 import core.Uom
 
 class Product {
@@ -23,13 +24,15 @@ class Product {
 	BigDecimal depth
 	Uom weightUom
 	BigDecimal weight
+	TaxCategory taxCategory
 	
-	static hasMany = [productPrices : ProductPrice,taxRates:TaxAuthorityRateProduct]
+	static hasMany = [productPrices : ProductPrice]
 	
     static constraints = {
 		productType nullable:false
 		primaryProductCategoryType nullable:true
 		introductionDate nullable:false
+		salesTerminationDate nullable:true
 		productName nullable:false,blank:false
 		description nullable:true,blank:true,maxLength:1000
 		quantityIncluded nullable:true,blank:true
@@ -44,6 +47,7 @@ class Product {
 		depth nullable:true,blank:true
 		weightUom nullable:true,blank:true
 		weight nullable:true,blank:true
+		taxCategory nullable:true,blank:true
     }
 	
 	

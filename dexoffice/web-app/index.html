@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/bootswatch.min.css">
     <link rel="stylesheet" href="css/jquery-ui.css"/>
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="../bower_components/html5shiv/dist/html5shiv.js"></script>
@@ -31,18 +32,19 @@
 	        	<li><a ui-sref="about">About</a></li> -->
 	        	<li>
 	        		<a ui-sref="customers.list">
-	        			<span class="glyphicon glyphicon-user"></span> Customers
+	        			<i class="fa fa-users"></i> 
+	        			Customers
 	        		</a>
 	        	</li>
 	        	<li>
 	        		<a ui-sref="products.list">
-	        			<span class="glyphicon glyphicon-barcode"></span> 
+	        			<i class="fa fa-barcode"></i> 
 	        			Products
 	        		</a>
 	        	</li>
 	        	<li>
-	        		<a ui-sref="customers.list">
-	        			<span class="glyphicon glyphicon-euro"></span> 
+	        		<a ui-sref="invoice.list">
+	        			<i class="fa fa-inr"></i> 
 	        			Invoices
 	        		</a>
 	        	</li>
@@ -82,6 +84,7 @@
 	    <script src="js/angular/ui-bootstrap-tpls-0.11.2.min.js"></script>
 	    <script src="app/customer/js/customer.js"></script>
     	<script src="app/product/js/product.js"></script>
+    	<script src="app/invoice/js/invoice.js"></script>
     
     	<script src="js/message-center.js"></script>
 	    <script src="js/framework.js"></script>

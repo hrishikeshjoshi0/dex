@@ -7,8 +7,8 @@
 }
 
 table thead > tr {
-	background-color: #A9D9ED;
-	border-bottom: none;
+	_background-color: #A9D9ED;
+	_border-bottom: none;
 }
 
 #spinner {

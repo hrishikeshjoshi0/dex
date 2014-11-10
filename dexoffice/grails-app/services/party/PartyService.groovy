@@ -11,7 +11,7 @@ class PartyService extends BaseService {
 
 	def repositoryService
 	
-	def getAllPersonCustomers() {
+	def getAllPersonCustomers(String name) {
 		def results = Person.createCriteria().list {
 			and {
 				createAlias "partyRelationshipsTo", "partyRelationshipsTo"
@@ -20,6 +20,12 @@ class PartyService extends BaseService {
 				or {
 					isNull("partyRelationshipsTo.thruDate")
 					ge("partyRelationshipsTo.thruDate", new Date())
+				}
+				if(name) {
+					or {
+						like("currentFirstName","%" + name+"%")
+						like("currentLastName","%" + name+"%")
+					}
 				}
 			}
 		}

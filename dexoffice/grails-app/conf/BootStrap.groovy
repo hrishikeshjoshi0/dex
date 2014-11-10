@@ -1,12 +1,14 @@
+import invoice.InvoiceItemType;
+
 import org.springframework.web.context.support.WebApplicationContextUtils
 
 import party.Organization
 import party.PartyRelationshipType
 import party.PartyType
-import party.Person
 import product.ProductPriceType
 import product.ProductType
 import tax.TaxAuthority
+import tax.TaxCategory
 import tax.TaxType
 import core.ContactMechType
 import core.Enumeration
@@ -14,6 +16,8 @@ import core.EnumerationType
 import core.Geo
 import core.GeoType
 import core.RoleType
+import core.Status
+import core.StatusType
 import core.Uom
 import core.UomType
 
@@ -87,8 +91,9 @@ class BootStrap {
 		}
 		
 		//Role Type
-		if(!RoleType.findByDescription("OWNER")) {
-			def rt = new RoleType(description:"OWNER")
+		//Company
+		if(!RoleType.findByDescription("PARENT_ORGANIZATION")) {
+			def rt = new RoleType(description:"PARENT_ORGANIZATION")
 			rt.save(flush:true)
 		}
 		
@@ -103,22 +108,20 @@ class BootStrap {
 		}
 		
 		//Party Relationship Type
-		if(!PartyRelationshipType.findByNameAndValidRoleTypeFromAndValidRoleTypeTo("CUSTOMER",RoleType.findByDescription("OWNER"),RoleType.findByDescription("CUSTOMER"))) {
+		if(!PartyRelationshipType.findByNameAndValidRoleTypeFromAndValidRoleTypeTo("CUSTOMER",RoleType.findByDescription("PARENT_ORGANIZATION"),RoleType.findByDescription("CUSTOMER"))) {
 			def prType = new PartyRelationshipType()
 			prType.description = "Customer Relationship"
 			prType.name = "CUSTOMER"
-			prType.validRoleTypeFrom = RoleType.findByDescription("OWNER")
+			prType.validRoleTypeFrom = RoleType.findByDescription("PARENT_ORGANIZATION")
 			prType.validRoleTypeTo = RoleType.findByDescription("CUSTOMER")
 			prType.save(flush:true)
 		}
 		
 		//Dummy Owner
-		if(!Person.findByCurrentFirstNameAndCurrentLastName("Admin","User")) {
-			def p = new Person()
-			p.currentFirstName = "Admin"
-			p.currentLastName = "User"
-			p.description = "Admin User"
-			partyService.createPersonAndRole(p,"OWNER",null)
+		if(!Organization.findByName("-COMPANY-")) {
+			def o = new Organization()
+			o.name = "-COMPANY-"
+			partyService.createOrganizationAndRole(o,"PARENT_ORGANIZATION",null)
 		}
 		
 		//UOM Type
@@ -246,7 +249,164 @@ class BootStrap {
 				Organization.findByName("Ministry of Finance"))
 			taxAuthority.save(flush:true)
 		}
+			
+		//Create Tax Category
+		if(!TaxCategory.findByName("SERVICE_TAX")) {
+			def taxCategory = new TaxCategory(name:"SERVICE_TAX",description:"Service Tax")
+			taxCategory.save(flush:true)
+		}
 		
+		//StatusType=INVOICE_STATUS
+		if(!StatusType.findByDescription("INVOICE_STATUS")) {
+			def statusType = new StatusType()
+			statusType.description = "INVOICE_STATUS"
+			statusType.save(flush:true)
+		}
+		
+		//StatusItems for INVOICE_STATUS
+		def invoiceStatusType = StatusType.findByDescription("INVOICE_STATUS")
+		if(!Status.findByStatusCodeAndStatusType("DRAFT",
+			invoiceStatusType)) {
+			def status = 
+				new Status(statusCode:"DRAFT",
+					statusType:invoiceStatusType,description:"Draft")
+			status.save(flush:true)
+		}
+			
+		if(!Status.findByStatusCodeAndStatusType("DRAFT",invoiceStatusType)) {
+			def status =
+				new Status(statusCode:"DRAFT",
+					statusType:invoiceStatusType,description:"Draft")
+			status.save(flush:true)
+		}
+			
+		if(!Status.findByStatusCodeAndStatusType("CANCELLED",
+			invoiceStatusType)) {
+			def status =
+				new Status(statusCode:"CANCELLED",
+					statusType:invoiceStatusType,
+					description:"Cancelled")
+			status.save(flush:true)
+		}
+			
+		if(!Status.findByStatusCodeAndStatusType("APPROVED",
+			invoiceStatusType)) {
+			def status =
+			new Status(statusCode:"APPROVED",
+				statusType:invoiceStatusType,
+				description:"Approved")
+			status.save(flush:true)
+		}
+	
+		if(!Status.findByStatusCodeAndStatusType("SENT",
+			invoiceStatusType)) {
+			def status =
+			new Status(statusCode:"SENT",
+				statusType:invoiceStatusType,
+				description:"Sent")
+			status.save(flush:true)
+		}
+	
+		if(!Status.findByStatusCodeAndStatusType("READY",
+			invoiceStatusType)) {
+			def status =
+			new Status(statusCode:"READY",
+				statusType:invoiceStatusType,
+				description:"Ready for Posting")
+			status.save(flush:true)
+		}
+			
+		if(!Status.findByStatusCodeAndStatusType("WRITE_OFF",
+			invoiceStatusType)) {
+			def status =
+			new Status(statusCode:"WRITE_OFF",
+				statusType:invoiceStatusType,
+				description:"Write Off")
+			status.save(flush:true)
+		}
+			
+		if(!Status.findByStatusCodeAndStatusType("PAID",
+			invoiceStatusType)) {
+			def status =
+			new Status(statusCode:"PAID",
+				statusType:invoiceStatusType,
+				description:"Paid")
+			status.save(flush:true)
+		}
+			
+		//InvoiceItemType
+		if(!InvoiceItemType.findByName("INV_DISCOUNT_ADJ"))	 {
+			def invoiceItemType = new InvoiceItemType(
+				name:"INV_DISCOUNT_ADJ",description:"Invoice Discount")
+			invoiceItemType.save(flush:true)
+		}
+		
+		if(!InvoiceItemType.findByName("INV_DPROD_ITEM"))	 {
+			def invoiceItemType = new InvoiceItemType(
+				name:"INV_DPROD_ITEM",description:"Invoice Digital Good Item")
+			invoiceItemType.save(flush:true)
+		}
+		
+		if(!InvoiceItemType.findByName("INV_MISC_CHARGE"))	 {
+			def invoiceItemType = new InvoiceItemType(
+				name:"INV_MISC_CHARGE",description:"Invoice Miscellaneous Charges")
+			invoiceItemType.save(flush:true)
+		}
+		
+		if(!InvoiceItemType.findByName("INV_PROD_ITEM"))	 {
+			def invoiceItemType = new InvoiceItemType(
+				name:"INV_PROD_ITEM",description:"Invoice Product Item")
+			invoiceItemType.save(flush:true)
+		}
+		
+		if(!InvoiceItemType.findByName("INV_SALES_TAX"))	 {
+			def invoiceItemType = new InvoiceItemType(
+				name:"INV_SALES_TAX",description:"Invoice Sales Tax")
+			invoiceItemType.save(flush:true)
+		}
+		
+		if(!InvoiceItemType.findByName("INV_SHIPPING_CHARGES"))	 {
+			def invoiceItemType = new InvoiceItemType(
+				name:"INV_SHIPPING_CHARGES",description:"Invoice Shipping and Handling")
+			invoiceItemType.save(flush:true)
+		}
+		
+		if(!InvoiceItemType.findByName("INVOICE_ADJ"))	 {
+			def invoiceItemType = new InvoiceItemType(
+				name:"INVOICE_ADJ",description:"Invoice Adjustment")
+			invoiceItemType.save(flush:true)
+		}
+		
+		if(!InvoiceItemType.findByName("INVOICE_ITM_ADJ"))	 {
+			def invoiceItemType = new InvoiceItemType(
+				name:"INVOICE_ITM_ADJ",description:"Invoice Item Adjustment")
+			invoiceItemType.save(flush:true)
+		}
+		
+		if(!InvoiceItemType.findByName("ITM_DISCOUNT_ADJ"))	 {
+			def invoiceItemType = new InvoiceItemType(
+				name:"ITM_DISCOUNT_ADJ",description:"Invoice Item Discount")
+			invoiceItemType.save(flush:true)
+		}
+		
+		if(!InvoiceItemType.findByName("ITM_REPLACE_ADJ"))	 {
+			def invoiceItemType = new InvoiceItemType(
+				name:"ITM_REPLACE_ADJ",description:"Invoice Item Replacement")
+			invoiceItemType.save(flush:true)
+		}
+		
+		if(!InvoiceItemType.findByName("ITM_SHIPPING_CHARGES"))	 {
+			def invoiceItemType = new InvoiceItemType(
+				name:"ITM_SHIPPING_CHARGES",description:"Invoice Item Shipping and Handling")
+			invoiceItemType.save(flush:true)
+		}
+		
+		if(!InvoiceItemType.findByName("ITM_SERVICE_TAX"))	 {
+			def invoiceItemType = new InvoiceItemType(
+				name:"ITM_SERVICE_TAX",description:"Invoice Item Service Tax")
+			invoiceItemType.save(flush:true)
+		}
+				
 		//Marshalling
 		springContext.getBean("customObjectMarshallers").register()
     }

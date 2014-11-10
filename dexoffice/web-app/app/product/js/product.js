@@ -4,7 +4,13 @@ app.factory('Product', ['$resource',function($resource){
 	var baseUrl = "/dexoffice/api/product/:id";
     return $resource(
     		baseUrl,
-    		{}
+    		{},
+    		{
+    			update: {
+	    			url : baseUrl + "/update", 	
+	    			method: 'PUT'
+	    		}
+    		}
     );
 }]);
 
@@ -24,22 +30,50 @@ app.factory('ProductPriceTypes', ['$resource',function($resource){
     );
 }]);
 
+app.factory('TaxCategory', ['$resource',function($resource){
+	var baseUrl = "/dexoffice/api/taxCategory/:id";
+    return $resource(
+    		baseUrl,
+    		{}
+    );
+}]);
+
 app.controller('ProductListController', 
 		['$scope','$modal','$log','Product','messageCenterService',
 		 function($scope,$modal,$log,Product,messageCenterService) {
 	$scope.products = Product.query();		
 }]);
 
+app.controller('ProductEditController', 
+		['$scope','$modal','$log','$stateParams','Product','ProductTypes','ProductPriceTypes','TaxCategory','messageCenterService',
+	function($scope,$modal,$log,$stateParams,Product,ProductTypes,ProductPriceTypes,TaxCategory,messageCenterService) {
+	
+	$scope.productTypes = ProductTypes.query();
+	$scope.productPriceTypes = ProductPriceTypes.query();
+	$scope.taxCategories = TaxCategory.query();
+			
+	$scope.id = $stateParams.id;
+	$scope.product = Product.get({id:$scope.id});
+	
+	$scope.save = function () {
+		Product.update($scope.product);
+	};
+
+	$scope.cancel = function () {
+		console.log('Cancel : ' + $scope.product);
+	};
+}]);
+		
+
 app.controller('ProductCreateController', 
-		['$scope','$modal','$log','Product','ProductTypes','ProductPriceTypes','messageCenterService',
-	function($scope,$modal,$log,Product,ProductTypes,ProductPriceTypes,messageCenterService) {
+		['$scope','$modal','$log','Product','ProductTypes','ProductPriceTypes','TaxCategory','messageCenterService',
+	function($scope,$modal,$log,Product,ProductTypes,ProductPriceTypes,TaxCategory,messageCenterService) {
 
 	$scope.product = new Product();
 	
 	$scope.productTypes = ProductTypes.query();
 	$scope.productPriceTypes = ProductPriceTypes.query();
-	
-	$scope.taxTypes = [{name:"SERVICE_TAX",description:"Service Tax"}];
+	$scope.taxCategories = TaxCategory.query();
 			
 	$scope.save = function () {
 		$scope.product.$save();
@@ -47,7 +81,7 @@ app.controller('ProductCreateController',
 	};
 
 	$scope.cancel = function () {
-		console.log('Cancel : ' + $scope.product);CustomerShowController
+		console.log('Cancel : ' + $scope.product);
 	};
 }]);
 

@@ -1,8 +1,8 @@
 <div class="page-header">
-	<h2>
-		<span class="glyphicon glyphicon-user"></span> 
+	<h1>
+		<i class="fa fa-user"></i> 
 		{{customer | customerName}}
-	</h2>
+	</h1>
 </div>
 
 <div class="row">
@@ -38,26 +38,27 @@
 				Contact Numbers
 				<small class="pull-right">
 					<a href ng-click="saveMobileNumber(customer,null)">
-						<span class="glyphicon glyphicon-plus-sign"></span> 
+						<span class="glyphicon glyphicon-plus-sign"></span>
+						<i class="fa fa-mobile"></i> 
 						 Mobile
 					</a> 
 					|
 					<a href ng-click="saveEmail(customer,null)"> 
-						<span class="glyphicon glyphicon-plus-sign"></span>
+						<i class="fa fa-at"></i>
 						 Email
 					</a>
 				</small>
 			</div>
 			<ul class="list-group" ng-if="mobilePhoneData">
 				<li class="list-group-item" ng-repeat="mobile in mobilePhoneData">
-					<span class="glyphicon glyphicon-earphone"> </span>
+					<i class="fa fa-phone"></i>
 					{{mobile.value}} 
 					<span>
 						<a ng-click="saveMobileNumber(customer,mobile)">(Edit)</a>
 					</span>
 				</li>
 				<li class="list-group-item" ng-repeat="email in emailData">
-					<span class="glyphicon glyphicon-globe"> </span>
+					<i class="fa fa-envelope-o"></i>
 					{{email.value}}
 					<span>
 						<a ng-click="saveEmail(customer,email)">(Edit)</a>

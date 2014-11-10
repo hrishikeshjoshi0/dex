@@ -28,7 +28,8 @@ class CustomerController {
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-		def result = partyService.getAllPersonCustomers()
+		def q = params.q
+		def result = partyService.getAllPersonCustomers(q)
         respond result, [status: OK]
     }
 	
@@ -176,12 +177,13 @@ class CustomerController {
 		personInstance.save flush:true
 		
 		//Create Customer
-		def owner = Person.findByCurrentFirstName("Admin")
+		//TODO
+		def owner = Organization.findByName("-COMPANY-")
 		
 		def partyRelationshipParams = [:]
 		partyRelationshipParams.fromDate = new Date()
 		partyRelationshipParams.name = "CUSTOMER"
-		def result = partyService.createPartyRelationship owner,personInstance,"OWNER","CUSTOMER","CUSTOMER",partyRelationshipParams
+		def result = partyService.createPartyRelationship owner,personInstance,"PARENT_ORGANIZATION","CUSTOMER","CUSTOMER",partyRelationshipParams
 		
 		//Create Postal Address
 		if(cmd?.postalAddress) {

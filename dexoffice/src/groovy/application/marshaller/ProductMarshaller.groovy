@@ -47,6 +47,8 @@ class ProductMarshaller {
 			res.weightUom.description = p.heightUom?.description
 			res.weight = p.weight
 			
+			res.taxCategory = p.taxCategory?.name
+			
 			res.defaultPrice = [:]
 			def defaultPrice = getActiveDefaultPrice(p)
 			if(defaultPrice) {

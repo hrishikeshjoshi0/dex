@@ -1,23 +1,26 @@
 package tax
 
-import product.Product
+import party.Party
 
-class TaxAuthorityRateProduct {
+
+class TaxRate {
 	
-	BigDecimal taxPercentage
-	BigDecimal taxShipping
+	Party party
+	String name
 	Date fromDate
 	Date toDate
-	TaxType taxType
-	Product product
 	TaxAuthority taxAuthority
+	BigDecimal taxPercentage
+	BigDecimal taxShipping
+	
+	static belongsTo = [taxCategory : TaxCategory]
 
     static constraints = {
+		party nullable:true,blank:true
 		taxPercentage nullable:true,blank:true
 		taxShipping nullable:true,blank:true
 		fromDate nullable:false,blank:false
 		toDate nullable:true,blank:true
-		taxType nullable:false,blank:false
 		taxAuthority nullable:false,blank:false
     }
 }

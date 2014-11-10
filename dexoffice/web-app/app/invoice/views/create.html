@@ -1,0 +1,107 @@
+<div class="page-header">
+	<h3>
+		<span class="glyphicon glyphicon-barcode"></span>
+		Create new invoice
+	</h3>
+</div>
+
+<div class="row">
+	<div class="col-lg-12">
+		<div class="well bs-component">
+			<form>
+				<fieldset>
+					<legend>Basic information</legend>
+					
+					<div class="row">
+						<div class="col-md-6">
+							<div class="col-md-12 form-group">
+								<label for="partyTo" class="control-label">
+									Party To
+								</label>
+								<small class="pull-right" >
+									<a href ng-click="">
+										<span class="glyphicon glyphicon-plus-sign"></span>
+										New party
+									</a>
+								</small>
+								<span>
+									<script type="text/ng-template" id="customTemplate.html">
+										<a>
+   											{{match.model.currentFirstName}} {{match.model.currentLastName}}  
+										</a>
+									</script>
+									<input type="text" 
+										ng-model="partyId"
+									    id="partyId" 
+									    typeahead-input-formatter="formattedName($model)"
+										typeahead="party for party in getParty($viewValue) | filter:$viewValue""
+										typeahead-min-length="1"
+										typeahead-on-select="onSelect($item);partyId='';" 
+										typeahead-template-url="customTemplate.html"
+										typeahead-loading="loading" class="form-control">
+										
+									<i ng-show="loading" class="fa fa-refresh fa-spin"></i>
+								</span>
+							</div>
+							
+							<div class="col-md-12 form-group">
+								<div class="panel panel-info" ng-show="addressData">
+									<div class="panel-heading">
+										<i class="fa fa-user"></i> 
+										{{person.currentFirstName}} {{person.currentLastName}}
+									</div>
+									<ul class="list-group">
+										<li class="list-group-item" ng-show="addressData.address1">{{addressData.address1}}</li>
+										<li class="list-group-item" ng-show="addressData.address2">{{addressData.address2}}</li>
+										<li class="list-group-item" ng-show="addressData.city">{{addressData.city}}</li>
+										<li class="list-group-item" ng-show="addressData.directions">{{addressData.directions}}</li>
+									</ul>
+								</div>
+							</div>
+							</div>
+						</div>
+					</div>
+					
+					<!-- Invoice Items -->
+					<div class="row">
+						<div class="col-md-12">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Description</th>
+										<th>Quantity</th>
+										<th>Unit Cost</th>
+										<th>Tax</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="item in invoice.items">
+										<td>
+											<input type="text" ng-model="item.description"/>
+										</td>
+										
+										<td>
+											<input type="text" ng-model="item.quantity"/>
+										</td>
+										
+										<td>
+											<input type="text" ng-model="item.unitCost"/>
+										</td>
+										
+										<td>
+											<input type="text" ng-model="item.tax"/>
+										</td>	
+									</tr>
+								</tbody>
+							</table>
+							<div>
+								<button>Add new item</button>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+		</div>
+	</div>
+</div>
+

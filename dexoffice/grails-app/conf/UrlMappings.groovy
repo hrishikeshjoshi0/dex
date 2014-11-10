@@ -7,6 +7,7 @@ class UrlMappings {
 		"/customer"(resources:"customer")
 		"/api/product"(resources:"product")
 		"/api/productPriceTypes"(resources:"productPriceType")
+		"/api/taxCategory"(resources:"taxCategory")
 		
         "/$controller/$action?/$id?(.$format)?"{
             constraints {

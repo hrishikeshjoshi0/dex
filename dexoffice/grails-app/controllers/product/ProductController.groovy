@@ -5,6 +5,7 @@ import javax.transaction.Transactional
 import org.springframework.http.HttpStatus
 
 import party.Person;
+import tax.TaxCategory;
 import application.commandobject.ProductCommand
 import core.Uom
 import core.UomType
@@ -13,6 +14,7 @@ import core.UomType
 class ProductController {
 
 	static responseFormats = ['json', 'xml']
+	static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE",show:"GET"]
 	
 	def productService
 	
@@ -20,6 +22,32 @@ class ProductController {
 		params.max = Math.min(max ?: 10, 100)
 		def result = Product.list(params)
 		respond result, [status: HttpStatus.OK]
+	}
+	
+	@Transactional
+	def update(ProductCommand cmd) {
+		if (cmd == null || cmd.id == null) {
+			render status: HttpStatus.NOT_FOUND
+			return
+		}
+		
+		def product = Product.get(cmd.id)
+		if (product == null) {
+			render status: HttpStatus.NOT_FOUND
+			return
+		}
+
+		product.validate()
+		if (product.hasErrors()) {
+			render status: HttpStatus.NOT_ACCEPTABLE
+			return
+		}
+		
+		
+		mapCommandObject(product, cmd)
+
+		product.save flush:true
+		respond cmd, [status: HttpStatus.OK]
 	}
 	
 	@Transactional
@@ -32,14 +60,7 @@ class ProductController {
 		}
 		
 		def product = new Product()
-		product.productName = cmd.productName
-		product.introductionDate = cmd.introductionDate
-		product.productType = ProductType.findByName(cmd.productType)
-		product.description = cmd.description
-		product.quantityUom = Uom.findByAbbreviationAndUomType("EACH", UomType.findByName("PRODUCT_QUANTITY"))
-		product.quantityIncluded = cmd.quantityIncluded
-		product.piecesIncluded = cmd.piecesIncluded
-		product.taxable = cmd.taxable?true:false
+		mapCommandObject(product, cmd)
 		
 		product.validate()
 		
@@ -74,6 +95,18 @@ class ProductController {
 				respond errors,[status:HttpStatus.MULTI_STATUS]
 			}
 		}
+	}
+
+	private mapCommandObject(Product product, ProductCommand cmd) {
+		product.productName = cmd.productName
+		product.introductionDate = cmd.introductionDate
+		product.productType = ProductType.findByName(cmd.productType)
+		product.description = cmd.description
+		product.quantityUom = Uom.findByAbbreviationAndUomType("EACH", UomType.findByName("PRODUCT_QUANTITY"))
+		product.quantityIncluded = cmd.quantityIncluded
+		product.piecesIncluded = cmd.piecesIncluded
+		product.taxable = cmd.taxable?true:false
+		product.taxCategory = TaxCategory.findByName(cmd.taxCategory)
 	}
 	
 	@Transactional

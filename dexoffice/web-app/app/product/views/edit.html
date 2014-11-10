@@ -1,7 +1,7 @@
 <div class="page-header">
 	<h3>
 		<span class="glyphicon glyphicon-barcode"></span>
-		Create new product
+		Edit product
 	</h3>
 </div>
 
@@ -82,43 +82,6 @@
 								</span>
 							</div>
 						</div>
-					</div>
-					
-					<legend>Price information</legend>
-
-					<div class="row">
-						<div class="col-md-6 form-group">
-							<label for="fromDate" class="control-label">From date</label>
-							<div class="">
-								<input ui-date ui-date-format="dd-mm-yy" class="form-control" 
-									id="fromDate" ng-model="product.productPrice.fromDate">
-							</div>
-						</div>
-						
-						<div class="col-md-6 form-group">
-							<label for="thruDate" class="control-label">Thru date</label>
-							<div class="">
-								<input ui-date ui-date-format="dd-mm-yy" class="form-control" 
-									id="thruDate" ng-model="product.productPrice.thruDate">
-							</div>
-						</div>						
-					</div>
-					
-					<div class="row">
-						<div class="col-md-6 form-group">
-							<label for="productPriceType" class="control-label">Price type</label>
-							<select id="productPriceType" class="form-control" 
-									ng-model="product.productPrice.productPriceType">
-								<option ng-repeat="productPriceType in productPriceTypes" value="{{productPriceType.value}}">
-									{{productPriceType.description}}
-								</option>	
-							</select>
-						</div>
-						
-						<div class="col-md-6 form-group">
-							<label for="amount" class="control-label">Amount</label>
-							<input class="form-control" id="amount" ng-model="product.productPrice.amount">
-						</div>						
 					</div>
 											
 					<div class="form-group">

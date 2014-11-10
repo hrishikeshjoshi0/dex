@@ -59,6 +59,7 @@ app.factory('Customer', ['$resource',function($resource){
     );
 }]);
 
+
 app.controller('CustomerCreateTelecomNumberController', ['$scope','$modalInstance','customer','mobile','Customer','messageCenterService', function($scope,$modalInstance,customer,mobile,Customer,messageCenterService) {
 	$scope.customer = customer;
 
