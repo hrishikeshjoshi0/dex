@@ -20,7 +20,7 @@ class ProductController {
 	
 	def index(Integer max) {
 		params.max = Math.min(max ?: 10, 100)
-		def result = Product.list(params)
+		def result = productService.getProductList(params.q)
 		respond result, [status: HttpStatus.OK]
 	}
 	

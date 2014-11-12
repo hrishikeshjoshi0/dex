@@ -1,18 +1,23 @@
+<script type="text/ng-template" id="productTemplate.html">
+	<a>
+		{{match.model.productName}} <br> 
+        {{match.model.description}}  
+	</a>
+</script>
+
 <div class="page-header">
 	<h3>
-		<span class="glyphicon glyphicon-barcode"></span>
+		<i class="fa fa-inr"></i>
 		Create new invoice
 	</h3>
 </div>
 
 <div class="row">
 	<div class="col-lg-12">
-		<div class="well bs-component">
+		<div class="bs-component">
 			<form>
 				<fieldset>
-					<legend>Basic information</legend>
-					
-					<div class="row">
+					<div class="well row">
 						<div class="col-md-6">
 							<div class="col-md-12 form-group">
 								<label for="partyTo" class="control-label">
@@ -30,7 +35,7 @@
    											{{match.model.currentFirstName}} {{match.model.currentLastName}}  
 										</a>
 									</script>
-									<input type="text" 
+									<input type="text" placeholder="Select customer" 
 										ng-model="partyId"
 									    id="partyId" 
 									    typeahead-input-formatter="formattedName($model)"
@@ -44,7 +49,7 @@
 								</span>
 							</div>
 							
-							<div class="col-md-12 form-group">
+							<div class="col-md-12">
 								<div class="panel panel-info" ng-show="addressData">
 									<div class="panel-heading">
 										<i class="fa fa-user"></i> 
@@ -59,7 +64,6 @@
 								</div>
 							</div>
 							</div>
-						</div>
 					</div>
 					
 					<!-- Invoice Items -->
@@ -77,27 +81,43 @@
 								<tbody>
 									<tr ng-repeat="item in invoice.items">
 										<td>
-											<input type="text" ng-model="item.description"/>
+											<input type="text" class="form-control"  
+												placeholder="Select product" 
+												ng-model="item.description"
+											    id="partyId" 
+											    typeahead-input-formatter="formattedProduct($model)"
+											    typeahead-template-url="productTemplate.html"
+												typeahead="product for product in suggestProduct($viewValue) | filter:$viewValue""
+												typeahead-min-length="2"
+												typeahead-on-select="productSelected($item,item);" 
+												typeahead-template-url="customTemplate.html"
+												typeahead-loading="loading" class="form-control">
+												
+											<i ng-show="loading" class="fa fa-refresh fa-spin"></i>
 										</td>
 										
 										<td>
-											<input type="text" ng-model="item.quantity"/>
+											<input type="text" class="form-control" ng-model="item.quantity"/>
 										</td>
 										
 										<td>
-											<input type="text" ng-model="item.unitCost"/>
+											<input type="text" class="form-control" ng-model="item.unitCost"/>
 										</td>
 										
 										<td>
-											<input type="text" ng-model="item.tax"/>
+											<input type="text" class="form-control" ng-model="item.tax"/>
 										</td>	
 									</tr>
 								</tbody>
 							</table>
+							
 							<div>
-								<button>Add new item</button>
+								<a class="btn btn-default" ng-click="addNewItem()">
+									Add new item
+								</a>
 							</div>
 						</div>
+					</div>
 					</div>
 				</fieldset>
 			</form>

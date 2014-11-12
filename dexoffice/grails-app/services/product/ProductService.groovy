@@ -16,6 +16,28 @@ class ProductService {
 		product.save(flush:true)
     }
 	
+	def getProductList(String q) {
+		def c = Product.createCriteria()
+		def now = new Date()
+		
+		def res = c. list {
+			or {
+				like("productName","%" + q + "%")
+				like("description","%" + q + "%")
+			}
+			productPrices {
+				le("fromDate",now)
+				or {
+					isNull("thruDate")
+					ge("thruDate",now)
+				}
+			}
+			
+		}
+		
+		return res
+	}
+	
 	def getActiveListPrice(Product product) {
 		def c = ProductPrice.createCriteria()
 		def now = new Date()

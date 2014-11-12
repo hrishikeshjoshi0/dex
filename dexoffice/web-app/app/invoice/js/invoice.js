@@ -41,7 +41,28 @@ app.controller('InvoiceCreateController',
 		        });
 		    });
 	 };
-	
+	 
+	 $scope.suggestProduct = function(val) {
+		 return $http.get('/dexoffice/product', {
+		      params: {
+		        q: val
+		      }
+		    }).then(function(response){
+		    	return response.data.map(function(item){
+		    		return item;
+		        });
+		    });
+	 };
+	 
+	 $scope.productSelected = function(product,item) {
+		 item.description = product.description;
+	 }
+	 
+	 $scope.formattedProduct = function(product) {
+		 return product.productName;
+	 }
+	 
+	 //	
 	 $scope.fetchAddresses = function(customer) {
 			if(customer != null) {
 				var found = null;
@@ -77,6 +98,15 @@ app.controller('InvoiceCreateController',
 		$scope.addressData = $scope.fetchAddresses(data);
 		$scope.person = data;
   	};
+  	
+  	$scope.addNewItem = function () {
+		$scope.invoice.items.push({
+			description:"",
+			unitCost:"",
+			quantity:"",
+			tax:""
+		});
+	};
 	
 	$scope.save = function () {
 		$scope.invoice.$save();
