@@ -105,7 +105,7 @@ class ProductMarshaller {
 			createAlias("priceType", "priceType")
 			le("fromDate",now)
 			eq("product",product)
-			eq("priceType.value","DEFAULT_PRICE")
+			eq("priceType.value","LIST_PRICE")
 			order("fromDate", "desc")
 		}
 		

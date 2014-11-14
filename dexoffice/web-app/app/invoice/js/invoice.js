@@ -54,12 +54,47 @@ app.controller('InvoiceCreateController',
 		    });
 	 };
 	 
-	 $scope.productSelected = function(product,item) {
-		 item.description = product.description;
+	 $scope.newItem = {};
+	 
+	 $scope.getLineTotalAmount = function(item) {
+		 if(item) {
+			 item.lineTotalAmount = item.unitPrice * item.quantity;
+			 return item.lineTotalAmount;
+		 }
 	 }
 	 
+	 $scope.getInvoiceSubTotalAmount = function() {
+		 $scope.invoiceSubTotalAmount = 0.0;
+		 $scope.invoiceTotalTaxAmount = 0.0; 
+		 $scope.invoiceTotalAmount = 0.0;
+		 
+		 for (var i = 0; i < $scope.invoice.items.length; i++) {
+			var item = $scope.invoice.items[i];
+			$scope.invoiceSubTotalAmount += item.lineTotalAmount;
+			$scope.invoiceTotalTaxAmount += item.tax?item.tax:0.0;
+			$scope.invoiceTotalAmount += $scope.invoiceSubTotalAmount + $scope.invoiceTotalTaxAmount; 
+		 }
+		 
+		 return $scope.invoiceSubTotalAmount;
+	 }
+	 
+	 $scope.addInvoiceItem = function(item) {
+		 $scope.newItem.productName = item.productName;
+		 $scope.newItem.description = item.description;
+		 $scope.newItem.quantity = 1.0;
+		 $scope.newItem.tax = item.tax?item.tax:0.0;
+		 $scope.newItem.unitPrice = item.defaultPrice.amount;		 
+	 }
+	 
+	 $scope.addNewItem = function () {
+		 $scope.invoice.items.push($scope.newItem);
+		 $scope.newItem = {};
+	 };
+	 
 	 $scope.formattedProduct = function(product) {
-		 return product.productName;
+		 if(product) {
+			 return product.productName;
+		 }
 	 }
 	 
 	 //	
@@ -98,15 +133,6 @@ app.controller('InvoiceCreateController',
 		$scope.addressData = $scope.fetchAddresses(data);
 		$scope.person = data;
   	};
-  	
-  	$scope.addNewItem = function () {
-		$scope.invoice.items.push({
-			description:"",
-			unitCost:"",
-			quantity:"",
-			tax:""
-		});
-	};
 	
 	$scope.save = function () {
 		$scope.invoice.$save();

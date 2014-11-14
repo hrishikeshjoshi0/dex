@@ -69,53 +69,112 @@
 					<!-- Invoice Items -->
 					<div class="row">
 						<div class="col-md-12">
-							<table class="table">
+							<table class="table table-hover">
 								<thead>
 									<tr>
-										<th>Description</th>
-										<th>Quantity</th>
-										<th>Unit Cost</th>
-										<th>Tax</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr ng-repeat="item in invoice.items">
-										<td>
+										<th>
 											<input type="text" class="form-control"  
 												placeholder="Select product" 
-												ng-model="item.description"
+												ng-model="newItem"
 											    id="partyId" 
 											    typeahead-input-formatter="formattedProduct($model)"
 											    typeahead-template-url="productTemplate.html"
 												typeahead="product for product in suggestProduct($viewValue) | filter:$viewValue""
 												typeahead-min-length="2"
-												typeahead-on-select="productSelected($item,item);" 
+												typeahead-on-select="addInvoiceItem($item);" 
 												typeahead-template-url="customTemplate.html"
 												typeahead-loading="loading" class="form-control">
 												
 											<i ng-show="loading" class="fa fa-refresh fa-spin"></i>
+										</th>
+										
+										<th>
+											<input type="text" class="form-control" ng-model="newItem.quantity"/>
+										</th>
+										
+										<th>
+											<input type="text" class="form-control" ng-model="newItem.unitPrice"/>
+										</th>
+										
+										<th>
+											<input type="text" class="form-control" ng-model="newItem.tax"/>
+										</th>
+										
+										<th></th>
+										
+										<th>
+											<a class="btn btn-sm btn-default" ng-click="addNewItem()">
+												<span class="glyphicon glyphicon-plus-sign"></span>
+											</a>	
+										</th>
+									</tr>
+									<tr>
+										<th>Description</th>
+										<th>Quantity</th>
+										<th>Unit Cost</th>
+										<th>Tax</th>
+										<th>Line Total Amount</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="item in invoice.items">
+										<td>
+											{{item.productName}}
+											<br>
+											{{item.description}}
 										</td>
 										
 										<td>
-											<input type="text" class="form-control" ng-model="item.quantity"/>
+											{{item.quantity}}
 										</td>
 										
 										<td>
-											<input type="text" class="form-control" ng-model="item.unitCost"/>
+											{{item.unitPrice}}
 										</td>
 										
 										<td>
-											<input type="text" class="form-control" ng-model="item.tax"/>
-										</td>	
+											{{item.tax}}
+										</td>
+										
+										<td>
+											{{getLineTotalAmount(item)}}
+										</td>
 									</tr>
 								</tbody>
+								<tfoot>
+									<tr>
+										<td colspan="3">
+										</td>
+										<th>
+											Subtotal
+										</th>
+										<th>
+											{{getInvoiceSubTotalAmount()}}
+										</th>
+									</tr>
+									<tr>
+										<td colspan="3">
+										</td>
+										<th>
+											Total Tax
+										</th>
+										<th>
+											{{invoiceTotalTaxAmount}}
+										</th>
+									</tr>
+									<tr>
+										<td colspan="3">
+										</td>
+										<th>
+											Grand Total
+										</th>
+										<th>
+											{{invoiceTotalAmount}}
+										</th>
+									</tr>
+								</tfoot>
 							</table>
-							
-							<div>
-								<a class="btn btn-default" ng-click="addNewItem()">
-									Add new item
-								</a>
-							</div>
 						</div>
 					</div>
 					</div>

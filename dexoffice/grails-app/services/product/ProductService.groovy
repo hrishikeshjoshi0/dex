@@ -21,9 +21,11 @@ class ProductService {
 		def now = new Date()
 		
 		def res = c. list {
-			or {
-				like("productName","%" + q + "%")
-				like("description","%" + q + "%")
+			if(q) {
+				or {
+					like("productName","%" + q + "%")
+					like("description","%" + q + "%")
+				}
 			}
 			productPrices {
 				le("fromDate",now)
