@@ -1,13 +1,17 @@
 <div>
 	<div class="page-header">
-		<h2>
-			<span class="glyphicon glyphicon-list"></span>
+		<h3>
+			<i class="fa fa-inr"></i>
 			Invoices
-		</h2>
+		</h3>
 	</div>
 
 	<div class="panel-list-actions">
 		<div class="pull-left">
+			<a ng-click="addCustomer()" class="btn btn-sm btn-primary">
+				<span class="glyphicon glyphicon-flash">
+				</span>
+			</a>
 		</div>
 		<div class="pull-right">
 			<input type="text" placeholder="Search" ng-model="query">
@@ -17,23 +21,28 @@
 	<table class="table table-hover">
 		<thead>
 			<tr>
-				<th>Invoice number</th>
-				<th>Invoice date</th>
-				<th>Customer</th>
+				<th>Invoice#</th>
 				<th>Status</th>
+				<th>Date</th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr ng-repeat="invoice in invoices | filter:query" ng-mouseover="hover=true" ng-mouseout="hover=false">
 				<td>
 					<a ui-sref="invoice.show({ id: invoice.id})">
-						{{invoice.invoiceNumber}}
 					</a>
 				</td>
-				<td>{{invoice.invoiceDate | date:"dd-MM-yy"}}</td>
-				<td>{{invoice.party.displayName}}</td>
-				<td>{{invoice.currentInvoiceStatus.description}}</td>
+				<td>
+				</td>
+				<td>
+				</td>
+				<td>
+				</td>
 			</tr>
 		</tbody>
 	</table>
+
 </div>
+
+

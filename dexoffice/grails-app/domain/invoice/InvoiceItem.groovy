@@ -8,21 +8,24 @@ class InvoiceItem {
 	InvoiceItemType invoiceItemType
 	BigDecimal quantity
 	Product product
-	InvoiceItem parentInvoiceItem
 	Boolean taxable
+	BigDecimal unitPrice
 	BigDecimal amount
 	String description
 	
-	static belongsTo = [invoice:Invoice]
+	static belongsTo = [invoice:Invoice,parent:InvoiceItem]
+	static hasMany = [children:InvoiceItem]
+	static mappedBy = [ parent: "none"]
 
     static constraints = {
-		sequenceId nullable:false
+		sequenceId nullable:true
 		invoiceItemType nullable:false
-		quantity nullable:false
-		product nullable:false
-		parentInvoiceItem nullable:true
+		quantity nullable:true
+		product nullable:true
 		taxable nullable:true
+		unitPrice nullable:true
 		amount nullable:false
-		description nullable:false
+		description nullable:true
+		parent nullable:true
     }
 }

@@ -1,4 +1,4 @@
-import invoice.InvoiceItemType;
+import invoice.InvoiceItemType
 
 import org.springframework.web.context.support.WebApplicationContextUtils
 
@@ -9,6 +9,7 @@ import product.ProductPriceType
 import product.ProductType
 import tax.TaxAuthority
 import tax.TaxCategory
+import tax.TaxRate
 import tax.TaxType
 import core.ContactMechType
 import core.Enumeration
@@ -405,6 +406,18 @@ class BootStrap {
 			def invoiceItemType = new InvoiceItemType(
 				name:"ITM_SERVICE_TAX",description:"Invoice Item Service Tax")
 			invoiceItemType.save(flush:true)
+		}
+		
+		//Tax Rate
+		if(!TaxRate.findByNameAndTaxCategory("Service Tax",TaxCategory.findByName("SERVICE_TAX"))) {
+			def tr = new TaxRate()
+			tr.name = "Service Tax"
+			tr.taxCategory = TaxCategory.findByName("SERVICE_TAX")
+			tr.taxAuthority = TaxAuthority.findByGeoAndParty(Geo.findByGeoName("INDIA"),
+						Organization.findByName("Ministry of Finance"))
+			tr.taxPercentage = 12.36
+			tr.fromDate = Date.parse("yyyy-MM-dd", "2014-01-01")
+			tr.save(flush:true)
 		}
 				
 		//Marshalling

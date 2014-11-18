@@ -5,6 +5,8 @@ class UrlMappings {
 		//"/customer/savePostalAddress" (controller:"customer",action:"savePostalAddress",method:"POST")
 		
 		"/customer"(resources:"customer")
+		"/api/invoice"(resources:"invoice")
+		"/api/invoice/invoiceStatusTypes"(controller:"invoice",action:"invoiceStatusTypes")
 		"/api/product"(resources:"product")
 		"/api/productPriceTypes"(resources:"productPriceType")
 		"/api/taxCategory"(resources:"taxCategory")

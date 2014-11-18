@@ -9,27 +9,9 @@ app.factory('Invoice', ['$resource',function($resource){
     			update: {
 	    			url : baseUrl + "/update", 	
 	    			method: 'PUT'
-	    		},
-	    		invoiceStatusTypes: {
-	    			url : baseUrl + "/invoiceStatusTypes", 	
-	    			method: 'GET',
-	    			isArray:true
 	    		}
     		}
     );
-}]);
-
-//Modal
-app.controller('ChangeInvoiceStatusController', ['$scope','$modalInstance','invoice','Invoice','messageCenterService', function($scope,$modalInstance,invoice,Invoice,messageCenterService) {
-	$scope.invoice = invoice;
-
-	$scope.save = function () {
-		
-	};
-
-	$scope.cancel = function () {
-	   $modalInstance.dismiss('cancel');
-	};
 }]);
 
 app.controller('InvoiceListController', 
@@ -44,15 +26,8 @@ app.controller('InvoiceCreateController',
 
 	$scope.invoice = new Invoice();
 	$scope.invoice.items = [];
-
+	
 	$scope.invoice.invoiceDate = new Date();
-	
-	$scope.invoiceStatusTypes = Invoice.invoiceStatusTypes();
-	
-	$scope.recalculate = function(item) {
-		item.tax = (item.quantity * item.unitPrice) * (item.taxPercentage * 0.01);
-		item.amount = item.tax + (item.quantity * item.unitPrice);
-	}
 	
 	$scope.changePartyTo = function() {
 		$scope.changeParty = true;
@@ -100,8 +75,7 @@ app.controller('InvoiceCreateController',
 		 
 		 for (var i = 0; i < $scope.invoice.items.length; i++) {
 			var item = $scope.invoice.items[i];
-			
-			$scope.invoiceSubTotalAmount += (item.unitPrice * item.quantity);
+			$scope.invoiceSubTotalAmount += item.lineTotalAmount;
 			$scope.invoiceTotalTaxAmount += item.tax?item.tax:0.0;
 			
 			$scope.invoiceTotalAmount += (+$scope.invoiceSubTotalAmount) + (+$scope.invoiceTotalTaxAmount); 
@@ -115,15 +89,8 @@ app.controller('InvoiceCreateController',
 		 $scope.newItem.productName = item.productName;
 		 $scope.newItem.description = item.description;
 		 $scope.newItem.quantity = 1.0;
+		 $scope.newItem.tax = item.tax?item.tax:0.0;
 		 $scope.newItem.unitPrice = item.defaultPrice.amount;
-		 $scope.newItem.taxPercentage = item.taxPercentage;
-		 
-		 if(item.taxPercentage) {
-			 $scope.newItem.tax = ($scope.newItem.quantity * $scope.newItem.unitPrice) * (item.taxPercentage * 0.01);//item.taxPercentage?item.taxPercentage:0.0 * ($scope.newItem.unitPrice);
-		 } else {
-			 $scope.newItem.tax = 0.0
-		 }
-		 $scope.newItem.amount = $scope.newItem.tax + ($scope.newItem.quantity * $scope.newItem.unitPrice);		 
 	 }
 	 
 	 $scope.addNewItem = function () {
@@ -187,35 +154,10 @@ app.controller('InvoiceCreateController',
 
 app.controller('InvoiceShowController', ['$scope','$stateParams','$modal','messageCenterService','Invoice',function($scope,$stateParams,$modal,messageCenterService,Invoice) {
 	$scope.id = $stateParams.id;
-	$scope.invoice = {};
-	$scope.invoice.items = [];
 	
 	$scope.init = function() {
 		$scope.invoice = Invoice.get({id : $scope.id},function(data) {
 			$scope.addressData = $scope.fetchAddresses($scope.invoice.party);
-		});
-	}
-	
-	$scope.invoiceStatusTypes = Invoice.invoiceStatusTypes();
-	
-	$scope.changeStatusOpen = function() {
-		var modalInstance = $modal.open({
-			templateUrl : 'app/invoice/views/modalChangeInvoiceStatus.html',
-			controller : 'ChangeInvoiceStatusController',
-			size : 'lg',
-			resolve : {
-				invoice : function () {
-			      return $scope.invoice;
-			    }
-			}
-		});
-
-		modalInstance.result.then(function(data) {
-		   if(data == 'save.success') {
-			   $scope.init();
-		   }
-		}, function() {
-			//$log.info('Modal dismissed at: ');
 		});
 	}
 	
@@ -224,16 +166,12 @@ app.controller('InvoiceShowController', ['$scope','$stateParams','$modal','messa
 		 $scope.invoiceTotalTaxAmount = 0.0; 
 		 $scope.invoiceTotalAmount = 0.0;
 		 
-		 if($scope.invoice.items) {
-			 for (var i = 0; i < $scope.invoice.items.length; i++) {
-				 var item = $scope.invoice.items[i];
-				 
-				 $scope.invoiceSubTotalAmount += item.unitPrice * item.quantity;
-				 $scope.invoiceTotalTaxAmount += item.tax?item.tax:0.0;
-				 
-				 
-				 $scope.invoiceTotalAmount += (+$scope.invoiceSubTotalAmount) + (+$scope.invoiceTotalTaxAmount);
-			 }
+		 for (var i = 0; i < $scope.invoice.items.length; i++) {
+			var item = $scope.invoice.items[i];
+			$scope.invoiceSubTotalAmount += item.amount;
+			$scope.invoiceTotalTaxAmount += item.tax?item.tax:0.0;
+			
+			$scope.invoiceTotalAmount += (+$scope.invoiceSubTotalAmount) + (+$scope.invoiceTotalTaxAmount); 
 		 }
 		 
 		 return $scope.invoiceSubTotalAmount;

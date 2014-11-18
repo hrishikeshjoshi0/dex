@@ -49,6 +49,15 @@ class ProductMarshaller {
 			
 			res.taxCategory = p.taxCategory?.name
 			
+			def list = []
+			p.taxCategory?.taxRates?.each {
+				list << it
+			}
+			
+			if(!list.isEmpty()) {
+				res.taxPercentage = list[0].taxPercentage
+			}
+			
 			res.defaultPrice = [:]
 			def defaultPrice = getActiveDefaultPrice(p)
 			if(defaultPrice) {

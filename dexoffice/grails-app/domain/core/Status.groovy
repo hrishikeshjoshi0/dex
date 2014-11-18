@@ -11,7 +11,7 @@ class Status {
 		description nullable:true,blank:true
 		statusType nullable:false
 		statusCode nullable:false,blank:false 
-		sequenceId nullable:false,blank:false
+		sequenceId nullable:true,blank:true
     }
 	
 }

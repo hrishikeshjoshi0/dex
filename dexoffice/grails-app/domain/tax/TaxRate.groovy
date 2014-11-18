@@ -8,7 +8,7 @@ class TaxRate {
 	Party party
 	String name
 	Date fromDate
-	Date toDate
+	Date thruDate
 	TaxAuthority taxAuthority
 	BigDecimal taxPercentage
 	BigDecimal taxShipping
@@ -20,7 +20,7 @@ class TaxRate {
 		taxPercentage nullable:true,blank:true
 		taxShipping nullable:true,blank:true
 		fromDate nullable:false,blank:false
-		toDate nullable:true,blank:true
+		thruDate nullable:true,blank:true
 		taxAuthority nullable:false,blank:false
     }
 }

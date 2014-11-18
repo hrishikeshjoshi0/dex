@@ -3,18 +3,19 @@ package party
 
 
 import static org.springframework.http.HttpStatus.*
-
-import org.springframework.http.HttpStatus;
-
 import grails.transaction.Transactional
+
+import org.springframework.http.HttpStatus
+
 import application.commandobject.CreateCustomerCommand
-import application.commandobject.EmailAddressCommand;
+import application.commandobject.EmailAddressCommand
 import application.commandobject.PostalAddressCommand
-import application.commandobject.TelecomNumberCommand;
-import core.ContactMech;
+import application.commandobject.TelecomNumberCommand
+import core.ContactMech
 import core.Enumeration
 import core.EnumerationType
 import core.PostalAddress
+import core.Status
 import core.TelecomNumber
 
 @Transactional(readOnly = true)
@@ -25,6 +26,15 @@ class CustomerController {
 	
 	def contactMechService
 	def partyService
+	
+	def invoiceStatusTypes() {
+		def c = Status.createCriteria()
+		def invoiceStatusTypes = c.list {
+			createAlias("statusType","statusType")
+			eq("statusType.description","INVOICE_STATUS")
+		}
+		respond invoiceStatusTypes,[status:HttpStatus.OK]
+	}
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)

@@ -1,15 +1,8 @@
-<script type="text/ng-template" id="productTemplate.html">
-	<a>
-		{{match.model.productName}} <br> 
-        {{match.model.description}}  
-	</a>
-</script>
-
 <div class="page-header">
 	<h3>
-		<i class="fa fa-inr"></i>
-		Create new invoice<span ui-view="actions"></span>
+		Create tax rate
 		
+		<span ui-view="actions"></span>
 		<!-- <small class="pull-right">
 			<button class="btn btn-sm btn-success" type="submit">Save</button>
 			<button class="btn btn-sm btn-default" type="reset">Cancel</button>
@@ -59,7 +52,7 @@
 										
 									<i ng-show="loading" class="fa fa-refresh fa-spin"></i>
 								</span>
-								</div>
+							</div>
 							
 							<div class="col-md-12">
 								<div class="panel panel-default" ng-show="person || addressData">
@@ -68,9 +61,8 @@
 										{{person.currentFirstName}} {{person.currentLastName}}
 									</div> -->
 									<ul class="list-group">
-										<li class="list-group-item">
-											{{person.currentFirstName}} {{person.currentLastName}}
-										</li>
+										<li class="list-group-item" ng-show="addressData.address1">
+										{{person.currentFirstName}} {{person.currentLastName}}</li>
 										<li class="list-group-item" ng-show="addressData.address1">
 											{{addressData.address1}} <br/>
 											{{addressData.address2}} <br/>
@@ -103,12 +95,11 @@
 							</div>
 							
 							<div class="col-md-12 form-group">
-								<label for="invoiceStatus" class="control-label">Invoice status</label>
-								<select class="form-control input-sm" ng-required
-									ng-model="invoice.currentInvoiceStatus" 
-									ng-options="invoiceStatusType.statusCode as invoiceStatusType.description for invoiceStatusType in invoiceStatusTypes"
-									id="invoiceStatus">
-								</select> 
+								<label for="invoiceStatus" class="control-label">Invoice status</label> 
+								<input
+									type="text" class="form-control input-sm" ng-required
+									ng-model="invoice.currentInvoiceStatus" id="invoiceStatus"
+									placeholder="Invoice status">
 							</div>
 						</div>
 					</div>
@@ -118,8 +109,8 @@
 								<table class="table table-condensed">
 									<thead>
 										<tr>
-											<td>
-												<input type="text" class="form-control input-sm col-md-6"  
+											<th>
+												<input type="text" class="form-control input-sm"  
 													placeholder="Select product" 
 													ng-model="newItem.product"
 												    id="partyId" 
@@ -132,41 +123,35 @@
 													typeahead-loading="loading" class="form-control">
 													
 												<i ng-show="loading" class="fa fa-refresh fa-spin"></i>
-											</td>
+											</th>
 											
-											<td>
-												<input type="text" placeholder="Quantity" class="form-control input-sm"
-													ng-change="recalculate(newItem)" ng-model="newItem.quantity"/>
-											</td>
+											<th>
+												<input type="text" placeholder="Quantity" class="form-control input-sm" ng-model="newItem.quantity"/>
+											</th>
 											
-											<td>
-												<input type="text" placeholder="Unit price" class="form-control col-md-2 input-sm" 
-													ng-change="recalculate(newItem)"  ng-model="newItem.unitPrice"/>
-											</td>
+											<th>
+												<input type="text" placeholder="Unit price" class="form-control input-sm" ng-model="newItem.unitPrice"/>
+											</th>
 											
-											<td>
-												<input type="text" placeholder="Tax" class="form-control col-md-2 input-sm" 
-													ng-change="recalculate(newItem)" ng-model="newItem.tax"/>
-											</td>
+											<th>
+												<input type="text" placeholder="Tax" class="form-control input-sm" ng-model="newItem.tax"/>
+											</th>
 											
-											<td>
-												<input type="text" placeholder="Tax" class="form-control col-md-2 input-sm" 
-													ng-model="newItem.amount"/>
-											</td>
+											<th></th>
 											
-											<td>
+											<th>
 												<a class="btn btn-sm btn-default" ng-click="addNewItem()">
 													<span class="glyphicon glyphicon-plus-sign"></span>
 												</a>	
-											</td>
+											</th>
 										</tr>
 										<tr>
-											<td>Description</td>
-											<td>Quantity</td>
-											<td>Unit price</td>
-											<td>Tax</td>
-											<td>Total</td>
-											<td></td>
+											<th>Description</th>
+											<th>Quantity</th>
+											<th>Unit price</th>
+											<th>Tax</th>
+											<th>Total</th>
+											<th></th>
 										</tr>
 									</thead>
 									<tbody>
@@ -190,7 +175,7 @@
 											</td>
 											
 											<td>
-												{{item.amount}}
+												{{getLineTotalAmount(item)}}
 											</td>
 											
 											<td></td>
@@ -239,10 +224,8 @@
 						<div class="row">
 							<div class="col-md-12 form-group">
 								<label for="message" class="control-label">Private message</label>
-								<textarea 
-									class="form-control" 
-									rows="3" 
-									ng-model="invoice.message" 
+								<textarea class="form-control" 
+									rows="3" ng-model="invoice.message" 
 									id="message"></textarea>
 								<span class="help-block">
 									This is a private message, this is not printed on invoice or displayed to the client.

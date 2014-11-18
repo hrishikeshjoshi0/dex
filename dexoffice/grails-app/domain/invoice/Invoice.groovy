@@ -14,18 +14,20 @@ class Invoice {
 	Date paidDate
 	String message
 	String referenceNumber
+	String invoiceNumber
 	
 	static hasMany = [statuses : InvoiceStatus,items:InvoiceItem]
 
     static constraints = {
-		partyFrom nullable:false
+		partyFrom nullable:true
 		party nullable:false
-		currentInvoiceStatus nullable:false
-		contactMech nullable:false
+		currentInvoiceStatus nullable:true
+		contactMech nullable:true
 		invoiceDate nullable:false
 		dueDate nullable:true
 		paidDate nullable:true
 		message nullable:true
 		referenceNumber nullable:true
+		invoiceNumber nullable:true
     }
 }

@@ -11,4 +11,5 @@ class TaxCategory {
 		name nullable:false
 		description nullable:false
     }
+	
 }

@@ -125,6 +125,11 @@ mainApp.config(function($stateProvider, $urlRouterProvider) {
 	        url: '/list',
 	        templateUrl: 'app/invoice/views/list.html',
 	        controller : 'InvoiceListController'	        	
+	    })
+	    .state('invoice.show', {
+	        url: '/show/:id',
+	        templateUrl: 'app/invoice/views/show.html',
+	        controller : 'InvoiceShowController'	        	
 	    });
 });
 
