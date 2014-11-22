@@ -22,7 +22,8 @@ app.factory('Invoice', ['$resource',function($resource){
 //Modal
 app.controller('ChangeInvoiceStatusController', ['$scope','$modalInstance','invoice','Invoice','messageCenterService', function($scope,$modalInstance,invoice,Invoice,messageCenterService) {
 	$scope.invoice = invoice;
-
+	$scope.invoiceStatusTypes = Invoice.invoiceStatusTypes();
+	
 	$scope.save = function () {
 		
 	};

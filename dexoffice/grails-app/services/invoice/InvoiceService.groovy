@@ -4,6 +4,7 @@ import grails.transaction.Transactional
 import party.Party
 import product.Product
 import tax.TaxRate
+import application.commandobject.ChangeInvoiceStatusCommand;
 import application.commandobject.InvoiceCommand
 import application.commandobject.InvoiceItemCommand
 import core.Status
@@ -117,4 +118,8 @@ class InvoiceService {
 			addInvoiceItem(invoice,it)			
 		}
     }
+	
+	def changeInvoiceStatus(ChangeInvoiceStatusCommand status) {
+		
+	}
 }
