@@ -1,5 +1,13 @@
 var app = angular.module('invoice', ['ngResource','ui.bootstrap','MessageCenterModule','customer']);
 
+app.factory('PaymentMethodType', ['$resource',function($resource){
+	var baseUrl = "/dexoffice/api/paymentMethodTypes/:id";
+    return $resource(
+    		baseUrl,
+    		{}
+    );
+}]);
+
 app.factory('Invoice', ['$resource',function($resource){
 	var baseUrl = "/dexoffice/api/invoice/:id";
     return $resource(
@@ -17,20 +25,6 @@ app.factory('Invoice', ['$resource',function($resource){
 	    		}
     		}
     );
-}]);
-
-//Modal
-app.controller('ChangeInvoiceStatusController', ['$scope','$modalInstance','invoice','Invoice','messageCenterService', function($scope,$modalInstance,invoice,Invoice,messageCenterService) {
-	$scope.invoice = invoice;
-	$scope.invoiceStatusTypes = Invoice.invoiceStatusTypes();
-	
-	$scope.save = function () {
-		
-	};
-
-	$scope.cancel = function () {
-	   $modalInstance.dismiss('cancel');
-	};
 }]);
 
 app.controller('InvoiceListController', 
@@ -190,55 +184,45 @@ app.controller('InvoiceShowController', ['$scope','$stateParams','$modal','messa
 	$scope.id = $stateParams.id;
 	$scope.invoice = {};
 	$scope.invoice.items = [];
+	$scope.taxMode = "GROUP" //Or "INDIVIDUAL"
 	
 	$scope.init = function() {
 		$scope.invoice = Invoice.get({id : $scope.id},function(data) {
 			$scope.addressData = $scope.fetchAddresses($scope.invoice.party);
+			$scope.calculateInvoiceTotalTaxAmount();
 		});
 	}
 	
 	$scope.invoiceStatusTypes = Invoice.invoiceStatusTypes();
 	
-	$scope.changeStatusOpen = function() {
-		var modalInstance = $modal.open({
-			templateUrl : 'app/invoice/views/modalChangeInvoiceStatus.html',
-			controller : 'ChangeInvoiceStatusController',
-			size : 'lg',
-			resolve : {
-				invoice : function () {
-			      return $scope.invoice;
-			    }
-			}
-		});
-
-		modalInstance.result.then(function(data) {
-		   if(data == 'save.success') {
-			   $scope.init();
-		   }
-		}, function() {
-			//$log.info('Modal dismissed at: ');
-		});
+	$scope.calculateInvoiceTotalTaxAmount = function() {
+		$scope.invoiceTotalTaxAmount = 0.0;
+		$scope.invoiceSubTotalAmount = 0.0;
+		$scope.invoiceTotalAmount = 0.0;
+		
+		var tax = $scope.invoice.tax
+		 
+		 //Tax
+		if(tax) {
+			 for (var m in tax){
+				//alert(m + " "+ tax[m].amount);
+				//alert(tax[m].amount);	
+			    var t = tax[m];
+			    var amount = tax[m].amount;
+			    $scope.invoiceTotalTaxAmount += amount?amount:0.0;
+			 } 
+		}
+		
+		//Invoice items.
+		if($scope.invoice.items) {
+		 for (var i = 0; i < $scope.invoice.items.length; i++) {
+			 var item = $scope.invoice.items[i];
+			 $scope.invoiceSubTotalAmount += item.unitPrice * item.quantity;
+		  }
+		}
+		
+		$scope.invoiceTotalAmount += (+$scope.invoiceSubTotalAmount) + (+$scope.invoiceTotalTaxAmount);
 	}
-	
-	$scope.getInvoiceSubTotalAmount = function() {
-		 $scope.invoiceSubTotalAmount = 0.0;
-		 $scope.invoiceTotalTaxAmount = 0.0; 
-		 $scope.invoiceTotalAmount = 0.0;
-		 
-		 if($scope.invoice.items) {
-			 for (var i = 0; i < $scope.invoice.items.length; i++) {
-				 var item = $scope.invoice.items[i];
-				 
-				 $scope.invoiceSubTotalAmount += item.unitPrice * item.quantity;
-				 $scope.invoiceTotalTaxAmount += item.tax?item.tax:0.0;
-				 
-				 
-				 $scope.invoiceTotalAmount += (+$scope.invoiceSubTotalAmount) + (+$scope.invoiceTotalTaxAmount);
-			 }
-		 }
-		 
-		 return $scope.invoiceSubTotalAmount;
-	 }
 	
 	$scope.fetchAddresses = function(customer) {
 		if(customer != null) {

@@ -3,10 +3,10 @@ package payment
 class PaymentMethod {
 	
 	Payment payment
-	PaymentMethodType paymentMethodTpe
+	PaymentMethodType paymentMethodType
 
     static constraints = {
 		payment nullable:false
-		paymentMethodTpe nullable:false
+		paymentMethodType nullable:false
     }
 }

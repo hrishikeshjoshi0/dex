@@ -1,5 +1,5 @@
 // app.js
-var mainApp = angular.module('main', ['ui.router','ui.date','ui.bootstrap','customer','product','invoice','framework','ngResource']);
+var mainApp = angular.module('main', ['ui.router','ui.date','ui.bootstrap','customer','product','invoice','payment','framework','ngResource']);
 
 mainApp.config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/home');
@@ -48,6 +48,9 @@ mainApp.config(function($stateProvider, $urlRouterProvider) {
 	            'right-navigation@customers': { templateUrl: 'app/customer/right-navigation.html' },
 	            'main-content@customers': { 
 	                templateUrl: 'app/customer/main-content.html'
+	            },
+	            'actions@customers.show': { 
+	                templateUrl: 'app/customer/actions.html'
 	            }
 	        }
 	    })
@@ -130,6 +133,26 @@ mainApp.config(function($stateProvider, $urlRouterProvider) {
 	        url: '/show/:id',
 	        templateUrl: 'app/invoice/views/show.html',
 	        controller : 'InvoiceShowController'	        	
+	    })
+	    // INVOICE PAGE AND MULTIPLE NAMED VIEWS =================================
+	    .state('payment', {
+	        url: '/payment',
+	        views: {
+	            '': { templateUrl: 'app/payment/layout/main.html' },
+	            'left-navigation@payment': { templateUrl: 'app/payment/layout/left-navigation.html' },
+	            'right-navigation@payment': { templateUrl: 'app/payment/layout/right-navigation.html' },
+	            'main-content@payment': { 
+	                templateUrl: 'app/payment/layout/main-content.html'
+	            },
+	            'actions@payment.show': { 
+	                templateUrl: 'app/payment/views/actions.html'
+	            }
+	        }
+	    })
+	    .state('payment.recordPaymentForInvoice', {
+	        url: '/recordPaymentForInvoice/:invoiceId',
+	        templateUrl: 'app/payment/views/recordPaymentForInvoice.html',
+	        controller : 'RecordPaymentController'	        	
 	    });
 });
 

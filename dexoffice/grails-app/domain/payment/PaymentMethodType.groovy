@@ -1,5 +1,8 @@
 package payment
 
+import grails.rest.Resource
+
+@Resource(uri='/api/paymentMethodTypes',formats=['json', 'xml'])
 class PaymentMethodType {
 
 	String code

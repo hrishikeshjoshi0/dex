@@ -38,6 +38,8 @@ class InvoiceMarshaller {
 				res.party.displayName = i.party.description
 			}
 			
+			res.tax = [:]
+			
 			res.items = []
 			i?.items?.each {
 				 if(it.parent) {
@@ -55,16 +57,24 @@ class InvoiceMarshaller {
 					invoiceItemType : [name:it.invoiceItemType?.name,description:it.invoiceItemType?.description]
 				]
 				
-				def serviceTax = 0.0
-				
+				 ii.tax = []
+				 
 				it.children?.each {InvoiceItem child ->
 					if(child.invoiceItemType?.name == "ITM_SERVICE_TAX") {
-						serviceTax += child.amount
+						
+						if(!res.tax["ITM_SERVICE_TAX"]) {
+							res.tax["ITM_SERVICE_TAX"] = [:]
+							res.tax["ITM_SERVICE_TAX"].name = child.invoiceItemType?.name
+							res.tax["ITM_SERVICE_TAX"].description = child.description
+							res.tax["ITM_SERVICE_TAX"].amount = 0.0
+						}
+						
+						def taxItem = res.tax["ITM_SERVICE_TAX"]
+						res.tax["ITM_SERVICE_TAX"].amount += child.amount
+						
+						ii.tax << [name:child.invoiceItemType?.name,description:child.description,amount:child.amount]
 					}
 				}
-				
-				ii.tax = serviceTax
-				
 				res.items << ii 
 			}
 			

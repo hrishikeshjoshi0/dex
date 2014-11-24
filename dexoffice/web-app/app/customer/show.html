@@ -1,8 +1,11 @@
 <div class="page-header">
-	<h1>
+	<h3>
 		<i class="fa fa-user"></i> 
 		{{customer | customerName}}
-	</h1>
+		<small class="pull-right">
+			<span ui-view="actions"></span>		
+		</small>
+	</h3>
 </div>
 
 <div class="row">

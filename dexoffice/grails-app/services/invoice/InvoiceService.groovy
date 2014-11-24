@@ -68,7 +68,7 @@ class InvoiceService {
 		if(cmd.tax) {
 			def taxItem = new InvoiceItem()
 			taxItem.invoice = invoice
-			taxItem.description = "Tax field"
+			taxItem.description = "Tax for " + item.description
 			
 			def taxPercentage = calculateTaxOnProduct(product)
 			if(taxPercentage) {

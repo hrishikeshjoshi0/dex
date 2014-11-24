@@ -12,5 +12,8 @@ class PaymentApplication {
 	static belongsTo = [payment : Payment]
 
     static constraints = {
+		invoice nullable:true
+		invoiceItem nullable:true
+		amountApplied nullable:false
     }
 }

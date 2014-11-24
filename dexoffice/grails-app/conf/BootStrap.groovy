@@ -5,6 +5,8 @@ import org.springframework.web.context.support.WebApplicationContextUtils
 import party.Organization
 import party.PartyRelationshipType
 import party.PartyType
+import payment.PaymentMethodType
+import payment.PaymentType
 import product.ProductPriceType
 import product.ProductType
 import tax.TaxAuthority
@@ -419,7 +421,39 @@ class BootStrap {
 			tr.fromDate = Date.parse("yyyy-MM-dd", "2014-01-01")
 			tr.save(flush:true)
 		}
-				
+		
+		//Payment Method Type
+		if(!PaymentMethodType.findByCodeAndDescription("CASH", "Cash")) {
+			def pmt = new PaymentMethodType(code:"CASH",description:"Cash")
+			pmt.save(flush:true)
+		}
+		
+		if(!PaymentMethodType.findByCodeAndDescription("PERSONAL_CHECK", "Personal Check")) {
+			def pmt = new PaymentMethodType(code:"PERSONAL_CHECK",description:"Personal Check")
+			pmt.save(flush:true)
+		}
+		
+		//PaymentType
+		if(!PaymentType.findByCodeAndDescription("RECEIPT","Receipt")) {
+			def pt = new PaymentType(code:"RECEIPT",description:"Receipt")
+			pt.save(flush:true)
+		}
+		
+		if(!PaymentType.findByCodeAndDescription("TAX_PAYMENT","Tax payment")) {
+			def pt = new PaymentType(code:"TAX_PAYMENT",description:"Tax payment")
+			pt.save(flush:true)
+		}
+		
+		if(!PaymentType.findByCodeAndDescription("CUSTOMER_PAYMENT","Customer payment")) {
+			def pt = new PaymentType(code:"CUSTOMER_PAYMENT",description:"Customer payment")
+			pt.save(flush:true)
+		}
+		
+		if(!PaymentType.findByCodeAndDescription("CUSTOMER_REFUND","Customer refund")) {
+			def pt = new PaymentType(code:"CUSTOMER_REFUND",description:"Customer refund")
+			pt.save(flush:true)
+		}
+		
 		//Marshalling
 		springContext.getBean("customObjectMarshallers").register()
     }
