@@ -9,8 +9,9 @@ class UrlMappings {
 		"/api/invoice"(resources:"invoice")
 		"/api/invoice/invoiceStatusTypes"(controller:"invoice",action:"invoiceStatusTypes")
 		
-		"/api/payment"(resources:"payment")
 		"/api/paymentMethodType"(resources:"paymentMethodType")
+		
+		"/api/payment"(resources:"payment")
 		"/api/payment/recordPaymentForInvoice"(controller:"payment",action:"recordPaymentForInvoice")
 		
 		"/api/product"(resources:"product")

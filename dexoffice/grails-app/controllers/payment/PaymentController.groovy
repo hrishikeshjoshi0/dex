@@ -5,6 +5,7 @@ import invoice.Invoice
 
 import org.springframework.http.HttpStatus
 
+import party.Organization
 import party.Party
 import application.commandobject.RecordPaymentCommand
 
@@ -18,7 +19,7 @@ class PaymentController {
         params.max = Math.min(max ?: 10, 100)
 		def q = params.q
 		def result = Payment.list(params)
-        respond result, [status: OK]
+        respond result, [status: HttpStatus.OK]
     }
 	
 	@Transactional
@@ -37,7 +38,7 @@ class PaymentController {
 		paymentMethod.paymentMethodType = PaymentMethodType.findByCode(cmd.paymentMethodType)
 		
 		paymentInstance.partyFrom = Party.get(cmd.partyFromId)
-		//payment.partyTo = Party.get(cmd.partyToId)
+		paymentInstance.partyTo = Organization.findByName("-COMPANY-")
 		paymentInstance.effectiveDate = cmd.effectiveDate
 		paymentInstance.comments = cmd.comments
 		paymentInstance.amount = cmd.amount
@@ -46,6 +47,8 @@ class PaymentController {
 		def paymentApplication = new PaymentApplication()
 		paymentApplication.invoice = Invoice.get(cmd.invoiceId)
 		paymentApplication.amountApplied = cmd.amount
+		paymentApplication.payment = paymentInstance
+		paymentApplication.save(flush:true)
 		
 		paymentInstance.addToPaymentApplications(paymentApplication)
 		paymentInstance.save(flush:true)

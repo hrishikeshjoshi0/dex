@@ -337,6 +337,15 @@ class BootStrap {
 			status.save(flush:true)
 		}
 			
+		if(!Status.findByStatusCodeAndStatusType("PARTIALLY_PAID",
+			invoiceStatusType)) {
+			def status =
+			new Status(statusCode:"PARTIALLY_PAID",
+				statusType:invoiceStatusType,
+				description:"Partially Paid")
+			status.save(flush:true)
+		}
+			
 		//InvoiceItemType
 		if(!InvoiceItemType.findByName("INV_DISCOUNT_ADJ"))	 {
 			def invoiceItemType = new InvoiceItemType(
