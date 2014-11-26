@@ -13,6 +13,8 @@ class InvoiceMarshaller {
 	
 	def productService
 	
+	def invoiceService
+	
 	void register() {
 		JSON.registerObjectMarshaller(Invoice) { Invoice i ->
 			def res = [:]
@@ -26,6 +28,9 @@ class InvoiceMarshaller {
 			res.currentInvoiceStatus = [:]
 			res.currentInvoiceStatus.statusCode = i.currentInvoiceStatus?.status?.statusCode
 			res.currentInvoiceStatus.description = i.currentInvoiceStatus?.status?.description
+			
+			//def unpaidAmount = invoiceService.getUnpaidAmountForInvoice(i)
+			//res.unpaidAmount = unpaidAmount
 			
 			res.party = [:]
 			

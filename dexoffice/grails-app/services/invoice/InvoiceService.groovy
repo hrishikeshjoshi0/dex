@@ -2,6 +2,7 @@ package invoice
 
 import grails.transaction.Transactional
 import party.Party
+import payment.PaymentApplication;
 import product.Product
 import tax.TaxRate
 import application.commandobject.ChangeInvoiceStatusCommand;
@@ -12,6 +13,38 @@ import core.StatusType
 
 @Transactional
 class InvoiceService {
+	
+	def getUnpaidAmountForInvoice(Invoice invoice) {
+		if(!invoice) {
+			return null
+		}
+		
+		def c = PaymentApplication.createCriteria()
+		def sumOfPayments = c.list {
+			projections {
+				sum('amountApplied')
+			}
+			eq("invoice",invoice)
+		}
+		
+		if(!sumOfPayments) {
+			sumOfPayments = 0.0
+		}
+		
+		def c1 = InvoiceItem.createCriteria()
+		def invoiceAmount = c1.list {
+			projections {
+				sum('amount')
+			}
+			eq("invoice",invoice)
+		}
+		
+		if(!invoiceAmount) {
+			invoiceAmount = 0.0
+		}
+		
+		return invoiceAmount - sumOfPayments
+	}
 	
 	def calculateTaxOnProduct(Product product) {
 		if(!product) {

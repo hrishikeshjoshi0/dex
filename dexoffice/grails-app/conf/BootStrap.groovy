@@ -266,8 +266,16 @@ class BootStrap {
 			statusType.save(flush:true)
 		}
 		
+		//StatusType=PAYMENT_STATUS
+		if(!StatusType.findByDescription("PAYMENT_STATUS")) {
+			def statusType = new StatusType()
+			statusType.description = "PAYMENT_STATUS"
+			statusType.save(flush:true)
+		}
+		
 		//StatusItems for INVOICE_STATUS
 		def invoiceStatusType = StatusType.findByDescription("INVOICE_STATUS")
+		
 		if(!Status.findByStatusCodeAndStatusType("DRAFT",
 			invoiceStatusType)) {
 			def status = 
@@ -343,6 +351,27 @@ class BootStrap {
 			new Status(statusCode:"PARTIALLY_PAID",
 				statusType:invoiceStatusType,
 				description:"Partially Paid")
+			status.save(flush:true)
+		}
+			
+		//Payment status
+		def paymentStatusType = StatusType.findByDescription("PAYMENT_STATUS")
+		
+		if(!Status.findByStatusCodeAndStatusType("RECEIVED",
+			paymentStatusType)) {
+			def status =
+			new Status(statusCode:"RECEIVED",
+				statusType:paymentStatusType,
+				description:"Received")
+			status.save(flush:true)
+		}
+			
+		if(!Status.findByStatusCodeAndStatusType("CONFIRMED",
+			paymentStatusType)) {
+			def status =
+			new Status(statusCode:"CONFIRMED",
+				statusType:paymentStatusType,
+				description:"Confirmed")
 			status.save(flush:true)
 		}
 			

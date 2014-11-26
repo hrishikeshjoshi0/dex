@@ -29,6 +29,16 @@ class InvoiceController {
 		respond invoiceStatusTypes,[status:HttpStatus.OK]
 	}
 	
+	def unpaidAmount(InvoiceCommand cmd) {
+		if (cmd == null) {
+			render status: HttpStatus.NOT_FOUND
+			return
+		}
+		
+		def result = invoiceService.getUnpaidAmountForInvoice(Invoice.get(cmd.id))
+		respond result, [status: HttpStatus.OK]
+	}
+	
 	@Transactional
 	def save(InvoiceCommand cmd) {
 		if (cmd == null) {

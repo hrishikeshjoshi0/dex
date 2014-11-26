@@ -32,6 +32,7 @@
 				</td>
 				<td>{{invoice.invoiceDate | date:"dd-MM-yy"}}</td>
 				<td>{{invoice.party.displayName}}</td>
+				<td>{{getUnpaidAmount(invoice)}}</td>
 				<td>{{invoice.currentInvoiceStatus.description}}</td>
 			</tr>
 		</tbody>

@@ -1,6 +1,7 @@
 package payment
 
 import party.Party
+import core.Status
 
 class Payment {
 	
@@ -12,8 +13,10 @@ class Payment {
 	String paymentRefNumber
 	BigDecimal amount
 	String comments
+	Status status
+	PaymentStatus currentStatus
 	
-	static hasMany = [paymentApplications : PaymentApplication]
+	static hasMany = [paymentApplications : PaymentApplication,statuses:PaymentStatus]
 
     static constraints = {
 		paymentType nullable:true
@@ -24,5 +27,6 @@ class Payment {
 		paymentRefNumber nullable:true
 		amount nullable:false
 		comments nullable:true
+		status nullable:true
     }
 }

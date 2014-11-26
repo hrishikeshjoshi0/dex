@@ -22,6 +22,10 @@ app.factory('Invoice', ['$resource',function($resource){
 	    			url : baseUrl + "/invoiceStatusTypes", 	
 	    			method: 'GET',
 	    			isArray:true
+	    		},
+	    		unpaidAmount : {
+	    			url : baseUrl + "/unpaidAmount", 	
+	    			method: 'GET'
 	    		}
     		}
     );
@@ -30,7 +34,12 @@ app.factory('Invoice', ['$resource',function($resource){
 app.controller('InvoiceListController', 
 		['$scope','$modal','$http','$log','Invoice','Customer','messageCenterService',
 	 function($scope, $modal, $http,$log, Invoice, Customer,messageCenterService) {
-	 $scope.invoices = Invoice.query();		
+			
+	 $scope.invoices = Invoice.query();
+	 
+	 $scope.getUnpaidAmount = function(invoice) {
+		 return Invoice.unpaidAmount({id : invoice.id});
+	 }
 }]);
 
 app.controller('InvoiceCreateController', 
@@ -38,7 +47,7 @@ app.controller('InvoiceCreateController',
 	function($scope,$modal,$log,$http,Invoice,messageCenterService) {
 
 	$scope.invoice = new Invoice();
-	$scope.invoice.items = [];
+	$scope.invoice.items = [];																																					
 
 	$scope.invoice.invoiceDate = new Date();
 	
