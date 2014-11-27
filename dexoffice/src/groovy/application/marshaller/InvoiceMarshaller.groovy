@@ -9,11 +9,7 @@ import party.Person
 import core.PostalAddress
 import core.TelecomNumber
 
-class InvoiceMarshaller {
-	
-	def productService
-	
-	def invoiceService
+class InvoiceMarshaller extends BaseJsonMarshaller {
 	
 	void register() {
 		JSON.registerObjectMarshaller(Invoice) { Invoice i ->
@@ -29,8 +25,13 @@ class InvoiceMarshaller {
 			res.currentInvoiceStatus.statusCode = i.currentInvoiceStatus?.status?.statusCode
 			res.currentInvoiceStatus.description = i.currentInvoiceStatus?.status?.description
 			
-			//def unpaidAmount = invoiceService.getUnpaidAmountForInvoice(i)
-			//res.unpaidAmount = unpaidAmount
+			def unpaidAmount = invoiceService.getUnpaidAmountForInvoice(i)
+			def paidAmount = invoiceService.getPaidAmountForInvoice(i)
+			def invoiceTotal = invoiceService.getInvoiceTotalAmount(i)
+			 
+			res.unpaidAmount = unpaidAmount
+			res.paidAmount = paidAmount
+			res.invoiceTotal = invoiceTotal
 			
 			res.party = [:]
 			

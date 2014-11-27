@@ -1,6 +1,7 @@
 package invoice
 
 import grails.transaction.Transactional
+import groovy.json.JsonBuilder
 
 import org.springframework.http.HttpStatus
 
@@ -36,7 +37,10 @@ class InvoiceController {
 		}
 		
 		def result = invoiceService.getUnpaidAmountForInvoice(Invoice.get(cmd.id))
-		respond result, [status: HttpStatus.OK]
+		
+		def exp = new Expando(unpaidAmount : result)
+		
+		respond exp, [status: HttpStatus.OK]
 	}
 	
 	@Transactional

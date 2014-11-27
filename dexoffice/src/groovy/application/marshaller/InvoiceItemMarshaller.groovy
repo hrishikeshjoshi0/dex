@@ -1,6 +1,7 @@
 package application.marshaller
 
 import grails.converters.JSON
+
 import invoice.InvoiceItem
 import party.Party
 import party.PartyContactMech
@@ -8,7 +9,7 @@ import party.Person
 import core.PostalAddress
 import core.TelecomNumber
 
-class InvoiceItemMarshaller {
+class InvoiceItemMarshaller extends BaseJsonMarshaller {
 	
 	void register() {
 		JSON.registerObjectMarshaller(InvoiceItem) { InvoiceItem i ->

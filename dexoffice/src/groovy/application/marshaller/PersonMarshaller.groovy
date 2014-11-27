@@ -6,7 +6,7 @@ import party.Person
 import core.PostalAddress
 import core.TelecomNumber;
 
-class PersonMarshaller {
+class PersonMarshaller extends BaseJsonMarshaller {
 	
 	void register() {
 		JSON.registerObjectMarshaller(Person) { Person p ->

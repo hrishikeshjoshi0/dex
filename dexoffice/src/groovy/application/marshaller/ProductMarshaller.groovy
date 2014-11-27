@@ -4,9 +4,7 @@ import grails.converters.JSON
 import product.Product
 import product.ProductPrice
 
-class ProductMarshaller {
-	
-	def productService
+class ProductMarshaller extends BaseJsonMarshaller {
 	
 	void register() {
 		JSON.registerObjectMarshaller(Product) { Product p ->
@@ -122,5 +120,4 @@ class ProductMarshaller {
 			return priceList.get(0)
 		}
 	}
-
 }

@@ -33,7 +33,7 @@ app.controller('RecordPaymentController', ['$scope','$stateParams','messageCente
 		$scope.payment = {};
 		$scope.payment.partyFromId = $scope.invoice.party.id 
 		$scope.payment.invoiceId = $scope.invoice.id
-		$scope.payment.amount = Invoice.unpaidAmount({id : $scope.invoice.id});		
+		$scope.payment.amount = $scope.invoice.unpaidAmount;		
 	});
 	
 	$scope.save = function () {

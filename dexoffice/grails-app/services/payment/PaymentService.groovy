@@ -40,9 +40,18 @@ class PaymentService {
 		paymentApplication.invoice = invoice
 		paymentApplication.amountApplied = cmd.amount
 		paymentApplication.payment = paymentInstance
-		paymentApplication.save(flush:true)
 		
 		paymentInstance.addToPaymentApplications(paymentApplication)
+		
+		//Payment Status
+		def paymentStatusType = StatusType.findByDescription("PAYMENT_STATUS")
+		
+		def paymentStatus = new PaymentStatus()
+		paymentStatus.payment = paymentInstance
+		paymentStatus.status = Status.findByStatusCodeAndStatusType("RECEIVED",paymentStatusType)
+		paymentInstance.addToStatuses(paymentStatus)
+		paymentInstance.currentStatus = paymentStatus
+		
 		paymentInstance.save(flush:true)
 		
 		//Invoice Status.
@@ -74,17 +83,6 @@ class PaymentService {
 			//If -ve unpaid balance adjust the credit.
 		}
 		
-		//Payment Status
-		def paymentStatusType = StatusType.findByDescription("PAYMENT_STATUS")
-		
-		def paymentStatus = new PaymentStatus()
-		paymentStatus.payment = paymentInstance
-		paymentStatus.status = Status.findByStatusCodeAndStatusType("RECEIVED",paymentStatusType)
-		paymentStatus.save(flush:true)
-		
-		paymentInstance.addToPaymentStatus(paymentStatus)
-		paymentInstance.currentStatus = paymentStatus
-		paymentInstance.save(flush:true)
 		return paymentInstance
 	}
 }

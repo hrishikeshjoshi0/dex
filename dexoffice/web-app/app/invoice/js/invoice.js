@@ -22,10 +22,6 @@ app.factory('Invoice', ['$resource',function($resource){
 	    			url : baseUrl + "/invoiceStatusTypes", 	
 	    			method: 'GET',
 	    			isArray:true
-	    		},
-	    		unpaidAmount : {
-	    			url : baseUrl + "/unpaidAmount", 	
-	    			method: 'GET'
 	    		}
     		}
     );
@@ -36,11 +32,7 @@ app.controller('InvoiceListController',
 	 function($scope, $modal, $http,$log, Invoice, Customer,messageCenterService) {
 			
 	 $scope.invoices = Invoice.query();
-	 
-	 $scope.getUnpaidAmount = function(invoice) {
-		 return Invoice.unpaidAmount({id : invoice.id});
-	 }
-}]);
+																																																																															}]);
 
 app.controller('InvoiceCreateController', 
 		['$scope','$modal','$log','$http','Invoice','messageCenterService',
@@ -58,7 +50,7 @@ app.controller('InvoiceCreateController',
 		item.amount = item.tax + (item.quantity * item.unitPrice);
 	}
 	
-	$scope.changePartyTo = function() {
+	$scope.changePartyTo = function() {																																																																																																																																																																																																																																																																																																																																																
 		$scope.changeParty = true;
 	}
 	

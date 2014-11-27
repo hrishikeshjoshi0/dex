@@ -14,13 +14,53 @@ import core.StatusType
 @Transactional
 class InvoiceService {
 	
+	def getInvoiceTotalAmount(Invoice invoice) {
+		if(!invoice) {
+			return null
+		}
+		
+		def c1 = InvoiceItem.createCriteria()
+		def invoiceAmount = c1.get {
+			projections {
+				sum('amount')
+			}
+			eq("invoice",invoice)
+		}
+		
+		if(!invoiceAmount) {
+			invoiceAmount = 0.0
+		}
+		
+		invoiceAmount
+	}
+	
+	def getPaidAmountForInvoice(Invoice invoice) {
+		if(!invoice) {
+			return null
+		}
+		
+		def c = PaymentApplication.createCriteria()
+		def sumOfPayments = c.get {
+			projections {
+				sum('amountApplied')
+			}
+			eq("invoice",invoice)
+		}
+		
+		if(!sumOfPayments) {
+			sumOfPayments = 0.0
+		}
+		
+		return sumOfPayments
+	}
+	
 	def getUnpaidAmountForInvoice(Invoice invoice) {
 		if(!invoice) {
 			return null
 		}
 		
 		def c = PaymentApplication.createCriteria()
-		def sumOfPayments = c.list {
+		def sumOfPayments = c.get {
 			projections {
 				sum('amountApplied')
 			}
@@ -32,16 +72,7 @@ class InvoiceService {
 		}
 		
 		def c1 = InvoiceItem.createCriteria()
-		def invoiceAmount = c1.list {
-			projections {
-				sum('amount')
-			}
-			eq("invoice",invoice)
-		}
-		
-		if(!invoiceAmount) {
-			invoiceAmount = 0.0
-		}
+		def invoiceAmount = getInvoiceTotalAmount(invoice)
 		
 		return invoiceAmount - sumOfPayments
 	}
