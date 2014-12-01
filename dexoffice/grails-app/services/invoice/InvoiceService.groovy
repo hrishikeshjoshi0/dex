@@ -2,10 +2,10 @@ package invoice
 
 import grails.transaction.Transactional
 import party.Party
-import payment.PaymentApplication;
+import payment.PaymentApplication
 import product.Product
 import tax.TaxRate
-import application.commandobject.ChangeInvoiceStatusCommand;
+import application.commandobject.ChangeInvoiceStatusCommand
 import application.commandobject.InvoiceCommand
 import application.commandobject.InvoiceItemCommand
 import core.Status
@@ -13,6 +13,16 @@ import core.StatusType
 
 @Transactional
 class InvoiceService {
+	
+	def getInvoicesForParty(Party party) {
+		def c = Invoice.createCriteria()
+		
+		def invoices = c.list {
+			eq("party",party)
+		}
+		
+		return invoices
+	}
 	
 	def getInvoiceTotalAmount(Invoice invoice) {
 		if(!invoice) {
@@ -181,6 +191,8 @@ class InvoiceService {
 		items?.each {
 			addInvoiceItem(invoice,it)			
 		}
+		
+		invoiceCommand.id = invoice.id
     }
 	
 	def changeInvoiceStatus(ChangeInvoiceStatusCommand status) {

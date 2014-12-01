@@ -11,6 +11,7 @@ import core.TelecomNumber
 
 class InvoiceMarshaller extends BaseJsonMarshaller {
 	
+	
 	void register() {
 		JSON.registerObjectMarshaller(Invoice) { Invoice i ->
 			def res = [:]
@@ -32,6 +33,25 @@ class InvoiceMarshaller extends BaseJsonMarshaller {
 			res.unpaidAmount = unpaidAmount
 			res.paidAmount = paidAmount
 			res.invoiceTotal = invoiceTotal
+			
+			//Payments
+			def payments = paymentService.getPaymentsForInvoice(i)
+			//println payments
+			res.payments = []
+			
+			payments?.each { pmt ->
+				res.payments << 
+				[id:pmt.id,
+				 paymentType:[code:pmt.paymentType?.code,description:pmt.paymentType?.description],
+				 paymentMethod :[code:pmt.paymentMethod?.paymentMethodType?.code,description:pmt.paymentMethod?.paymentMethodType?.description],
+				 effectiveDate : pmt.effectiveDate,
+				 paymentRefNumber : pmt.paymentRefNumber,
+				 amount : pmt.amount,
+				 comments : pmt.comments,
+				 currentStatus : [statusCode:pmt.currentStatus?.status?.statusCode,description:pmt.currentStatus?.status?.description]
+				]	
+			}
+			//res.payments = payments as JSON
 			
 			res.party = [:]
 			

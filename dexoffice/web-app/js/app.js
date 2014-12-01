@@ -66,8 +66,28 @@ mainApp.config(function($stateProvider, $urlRouterProvider) {
 	    })
 	    .state('customers.show', {
 	        url: '/show/:id',
-	        templateUrl: 'app/customer/show.html',
-	        controller : 'CustomerShowController'	        	
+	        views: {
+	        	'': { 
+	        		templateUrl: 'app/customer/show.html',
+	    	        controller : 'CustomerShowController' 
+	        	 },
+	        	'left-navigation@customers': { 
+	        		templateUrl: 'app/customer/left-navigation.html',
+	        		controller : 'CustomerShowController'
+	        	}
+	        }
+	    })
+	    .state('customers.invoices', {
+	        url: '/show/:id/invoices',
+	        templateUrl: 'app/customer/invoices.html',
+	        controller : 'CustomerInvoiceListController'
+	        	
+	    })
+	    .state('customers.payments', {
+	        url: '/show/:id/payments',
+	        templateUrl: 'app/customer/payments.html',
+	        controller : 'CustomerPaymentListController'
+	        	
 	    })
 	    // PRODUCTS PAGE AND MULTIPLE NAMED VIEWS =================================
 	    .state('products', {
@@ -120,7 +140,7 @@ mainApp.config(function($stateProvider, $urlRouterProvider) {
 	        }
 	    })
 	    .state('invoice.create', {
-	        url: '/create',
+	        url: '/create/:partyId',
 	        templateUrl: 'app/invoice/views/create.html',
 	        controller : 'InvoiceCreateController'	        	
 	    })	

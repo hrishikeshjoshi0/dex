@@ -31,11 +31,11 @@ class PaymentController {
 		//Record payment for an invoice
 		def paymentInstance = paymentService.recordPaymentForInvoice(cmd)
 		
-		if(paymentInstance.errors) {
+		if(paymentInstance.hasErrors()) {
 			respond cmd, [status: HttpStatus.BAD_REQUEST]
 		} 
 		
-		if(paymentInstance && !paymentInstance.errors) {
+		if(paymentInstance && !paymentInstance.hasErrors()) {
 			respond cmd, [status: HttpStatus.CREATED]
 		}
 		

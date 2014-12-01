@@ -1,6 +1,6 @@
 <div class="page-header">
-	<h2>
-		<i class="fa fa-inr"></i> 
+	<h3>
+		Invoice /
 		{{invoice.invoiceNumber}}
 		
 		<small>
@@ -10,164 +10,180 @@
 		<small class="pull-right">
 			<span ui-view="actions"></span>		
 		</small>
-	</h2>
+	</h3>
 </div>
 
 <div class="row">
-	<div class="col-lg-12">
-		<div class="bs-component">
-			<form>
-				<fieldset>
-					<div class="row">
-						<div class="col-md-6">
-							<div class="col-md-12">
-								<div class="panel panel-default">
+	<form>
+		<div class="col-lg-8 col-md-8">
+			<div class="bs-component">
+					<fieldset>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="col-md-12">
+									<div class="panel panel-default">
+										<ul class="list-group">
+											<li class="list-group-item">
+												Invoice# :
+												{{invoice.invoiceNumber}}
+											</li>
+											<li class="list-group-item">
+												Invoice date :
+												{{invoice.invoiceDate|date:"dd-MM-yy"}}
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-md-6">
+								<div class="col-md-12 form-group">
 									<ul class="list-group">
 										<li class="list-group-item">
-											Invoice# :
-											{{invoice.invoiceNumber}}
+											<a ui-sref="customers.show({ id: invoice.party.id})">
+												{{invoice.party.displayName}}
+											</a>
 										</li>
-										<li class="list-group-item">
-											Invoice date :
-											{{invoice.invoiceDate|date:"dd-MM-yy"}}
+										<li class="list-group-item" ng-show="addressData.address1">
+											{{addressData.address1}} <br/>
+											{{addressData.address2}} <br/>
+											{{addressData.city}} <br/>
+											{{addressData.directions}}
 										</li>
 									</ul>
 								</div>
 							</div>
 						</div>
 						
-						<div class="col-md-6">
-							<div class="col-md-12 form-group">
-								<ul class="list-group">
-									<li class="list-group-item">
-										{{invoice.party.displayName}}
-									</li>
-									<li class="list-group-item" ng-show="addressData.address1">
-										{{addressData.address1}} <br/>
-										{{addressData.address2}} <br/>
-										{{addressData.city}} <br/>
-										{{addressData.directions}}
-									</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-					
-					<!-- Invoice Items -->
-					<div class="row">
-							<div class="col-md-12">
-								<table class="table table-condensed">
-									<thead>
-										<tr>
-											<th>Description</th>
-											<th>Quantity</th>
-											<th>Unit price</th>
-											<th>Total</th>
-											<th></th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr ng-repeat="item in invoice.items">
-											<td>
-												{{item.product}}
-												<br>
-												{{item.description}}
-											</td>
-											
-											<td>
-												{{item.quantity}}
-											</td>
-											
-											<td>
-												{{item.unitPrice}}
-											</td>
-											
-											<td>
-												{{item.amount}}
-												 
-												<p class="bg-info" ng-show="taxMode == 'INDIVIDUAL'" ng-repeat="tax in item.tax">
-												  	+
-													{{tax.amount}}	
-												</p>
-											</td>
-											
-											<td></td>
-										</tr>
-										
-										<!-- Tax -->
-										<tr ng-show="taxMode == 'GROUP'" ng-repeat="(taxType,tax) in invoice.tax">
-											<td>
-												{{tax.description}}
-											</td>
-											
-											<td>
-											
-											</td>
-											
-											<td>
-											</td>
-											
-											<td>
-												{{tax.amount}}
-											</td>
-											
-											<td></td>
-										</tr>
-									</tbody>
-									<tfoot>
-										<tr ng-show="taxMode == 'GROUP'">
-											<td colspan="2">
-											</td>
-											<td>
-												Subtotal
-											</td>
-											<td>
-												{{invoiceSubTotalAmount}}
-											</td>
-											<td>
-											</td>
-										</tr>
-										<tr ng-show="taxMode == 'GROUP'">
-											<td colspan="2">
-											</td>
-											<td>
-												Total Tax
-											</td>
-											<td>
-												{{invoiceTotalTaxAmount}}
-											</td>
-											<td></td>
-										</tr>
-										<tr>
-											<td colspan="2">
-											</td>
-											<td>
-												Grand Total
-											</td>
-											<td>
-												{{invoiceTotalAmount}}
-											</td>
-											<td></td>
-										</tr>
-									</tfoot>
-								</table>
-							</div>
-						</div>
-						
+						<!-- Invoice Items -->
 						<div class="row">
-							<div class="col-md-12 form-group">
-								<label for="message" class="control-label">Private message</label>
-								<textarea
-									readonly 
-									class="form-control" 
-									rows="3" 
-									ng-model="invoice.message" 
-									id="message"></textarea>
+								<div class="col-md-12">
+									<table class="table table-condensed">
+										<thead>
+											<tr>
+												<th>Description</th>
+												<th>Quantity</th>
+												<th>Unit price</th>
+												<th>Total</th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="item in invoice.items">
+												<td>
+													{{item.product}}
+													<br>
+													{{item.description}}
+												</td>
+												
+												<td>
+													{{item.quantity}}
+												</td>
+												
+												<td>
+													{{item.unitPrice}}
+												</td>
+												
+												<td>
+													{{item.amount}}
+													 
+													<p class="bg-info" ng-show="taxMode == 'INDIVIDUAL'" ng-repeat="tax in item.tax">
+													  	+
+														{{tax.amount}}	
+													</p>
+												</td>
+												
+												<td></td>
+											</tr>
+											
+											<!-- Tax -->
+											<tr ng-show="taxMode == 'GROUP'" ng-repeat="(taxType,tax) in invoice.tax">
+												<td>
+													{{tax.description}}
+												</td>
+												
+												<td>
+												
+												</td>
+												
+												<td>
+												</td>
+												
+												<td>
+													{{tax.amount}}
+												</td>
+												
+												<td></td>
+											</tr>
+										</tbody>
+										<tfoot>
+											<tr ng-show="taxMode == 'GROUP'">
+												<td colspan="2">
+												</td>
+												<td>
+													Subtotal
+												</td>
+												<td>
+													{{invoiceSubTotalAmount}}
+												</td>
+												<td>
+												</td>
+											</tr>
+											<tr ng-show="taxMode == 'GROUP'">
+												<td colspan="2">
+												</td>
+												<td>
+													Total Tax
+												</td>
+												<td>
+													{{invoiceTotalTaxAmount}}
+												</td>
+												<td></td>
+											</tr>
+											<tr>
+												<td colspan="2">
+												</td>
+												<td>
+													Grand Total
+												</td>
+												<td>
+													{{invoiceTotalAmount}}
+												</td>
+												<td></td>
+											</tr>
+										</tfoot>
+									</table>
+								</div>
 							</div>
-						</div>
-				</fieldset>
-			</form>
+					</fieldset>
+			</div>
+		</div>
+	<div class="col-lg-4 col-md-4">
+		<div class="col-md-12">
+			<div class="bg-success center-block">
+				<small>Paid amount:</small>
+				<h3>Rs. {{invoice.paidAmount}}</h3>
+			</div>	
+		</div>
+		
+		<div class="col-md-12">
+			<div class="bg-danger">
+				<small>Outstanding balance:</small>
+				<h2>Rs. {{invoice.unpaidAmount}}</h2>
+			</div>	
+		</div>
+				
+		<div class="col-md-12">
+			<div class="form-group">
+				<label for="message" class="control-label">Private message</label>
+				<textarea
+					readonly 
+					class="form-control" 
+					rows="3" 
+					ng-model="invoice.message" 
+					id="message"></textarea>
+			</div>
 		</div>
 	</div>
-</div>		
-
+	</form>
+</div>

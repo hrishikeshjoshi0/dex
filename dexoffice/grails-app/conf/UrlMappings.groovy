@@ -28,6 +28,12 @@ class UrlMappings {
 			}
 		}
 		
+		"/$controller/$id?/$action?(.$format)?"{
+			constraints {
+				// apply constraints here
+			}
+		}
+		
         "/$controller/$action?/$id?(.$format)?"{
             constraints {
                 // apply constraints here

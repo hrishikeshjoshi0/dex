@@ -66,10 +66,40 @@
 									ng-model="customer.email" placeholder="Email">
 							</div>
 						</div>
+						
+						<legend>Address Information</legend>
+
+						<div class="row">
+							<div class="col-md-6 form-group">
+								<label for="address1" class="control-label">Address Line 1</label> <input
+									type="text" class="form-control" id="address1"
+									ng-model="customer.postalAddress.address1" placeholder="Address line 1">
+							</div>
+	
+							<div class="col-md-6 form-group">
+								<label for="address2" class="control-label">Address Line 2</label> <input
+									type="text" class="form-control" id="address2"
+									ng-model="customer.postalAddress.address2" placeholder="Address line 2">
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col-md-6 form-group">
+								<label for="city" class="control-label">City</label> <input
+									type="text" class="form-control" id="city"
+									ng-model="customer.postalAddress.city" placeholder="City">
+							</div>
+	
+							<div class="col-md-6 form-group">
+								<label for="postalCode" class="control-label">Postal Code</label> <input
+									type="text" class="form-control" id="postalCode"
+									ng-model="customer.postalAddress.postalCode" placeholder="Postal code">
+							</div>
+						</div>
 
 						<div class="form-group">
 							<div class="">
-								<button type="submit" class="btn btn-primary" ng-click="save()">Submit</button>
+								<button type="submit" class="btn btn-sm btn-success" ng-click="save()">Submit</button>
 								<button class="btn btn-default" ng-click="cancel()">Cancel</button>
 							</div>
 						</div>

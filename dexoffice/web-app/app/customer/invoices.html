@@ -1,0 +1,60 @@
+<div>
+	<div class="page-header">
+		<h2>
+			<span class="glyphicon glyphicon-list"></span>
+			Invoices for {{customer | customerName}}
+		</h2>
+		<small>
+			<a ui-sref="customers.show({ id: customer.id})">
+				<i class="fa fa-arrow-left"></i>
+				Back
+			</a>		
+		</small>
+	</div>
+
+	<div class="panel-list-actions">
+		<div class="pull-left">
+		</div>
+		<div class="pull-right">
+			<input type="text" placeholder="Search" ng-model="query">
+		</div>
+	</div>
+
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>Invoice number</th>
+				<th>Invoice date</th>
+				<th>Customer</th>
+				<th>Balance</th>
+				<th>Total</th>
+				<th>Status</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="invoice in invoices | filter:query" ng-mouseover="hover=true" ng-mouseout="hover=false">
+				<td>
+					<a ui-sref="invoice.show({ id: invoice.id})">
+						{{invoice.invoiceNumber}}
+					</a>
+				</td>
+				<td>{{invoice.invoiceDate | date:"dd-MM-yy"}}</td>
+				<td>{{invoice.party.displayName}}</td>
+				<td>{{invoice.unpaidAmount}}</td>
+				<td>{{invoice.invoiceTotal}}</td>
+				<td>{{invoice.currentInvoiceStatus.description}}</td>
+			</tr>
+			<tr ng-show="!invoices || invoices.length == 0">
+				<td colspan="6" class="text-center">
+					No records found.
+					<br/>
+					(
+					<a ui-sref="invoice.create({ partyId:customer.id})"> 
+						Create new invoice
+					</a>
+					)
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

@@ -35,6 +35,6 @@ beans = {
 	}
 	
 	customObjectMarshallers( CustomObjectMarshallers ) {
-		marshallers = [ref('personMarshaller'),ref('personMarshaller'),ref('invoiceMarshaller'),ref('invoiceItemMarshaller')]
+		marshallers = [ref('personMarshaller'),ref('productMarshaller'),ref('invoiceMarshaller'),ref('invoiceItemMarshaller')]
 	}
 }

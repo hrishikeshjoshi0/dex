@@ -2,12 +2,24 @@
 	Customer
 </h4>
 <div class="list-group">
-  <a ui-sref-active="active" href ui-sref=".create" class="list-group-item">
+  <a ui-sref-active="active" href ui-sref="customers.create" class="list-group-item">
   	 <span class="glyphicon glyphicon-plus-sign"></span>
   	 Create new customer
   	</a>
-  <a href ui-sref=".list" ui-sref-active="active" class="list-group-item">
+  <a href ui-sref="customers.list" ui-sref-active="active" class="list-group-item">
   	<span class="glyphicon glyphicon-list"></span>
   	Customer List
+  </a>
+  <a ng-show="customer.id" href ui-sref="customers.invoices({ id:customer.id})" ui-sref-active="active" class="list-group-item">
+  	<i class="fa fa-file"></i>
+  	Invoices
+  </a>
+  <a ui-sref="invoice.create({ partyId:customer.id})" ng-show="customer.id" ui-sref-active="active" class="list-group-item"> 
+	<span class="glyphicon glyphicon-plus-sign"></span>
+	Create new invoice
+  </a>
+  <a ng-show="customer.id" href ui-sref="customers.payments({ id:customer.id})" ui-sref-active="active" class="list-group-item">
+  	<i class="fa fa-inr"></i>
+  	Payments
   </a>
 </div>

@@ -70,9 +70,9 @@
 					</div>
 
 					<div class="form-group col-md-12">
-						<button type="submit" class="btn btn-sm btn-success"
+						<button type="submit" class="btn btn-sm btn-success" ng-show="payment.id == null"
 							ng-click="save()">Save</button>
-						<button class="btn btn-sm btn-default" ng-click="cancel()">Cancel</button>
+						<button class="btn btn-sm btn-default" ng-show="payment.id == null" ng-click="cancel()">Cancel</button>
 					</div>
 				</fieldset>
 			</form>

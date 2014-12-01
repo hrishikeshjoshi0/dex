@@ -26,7 +26,8 @@ app.factory('Payment', ['$resource',function($resource){
     );
 }]);
 
-app.controller('RecordPaymentController', ['$scope','$stateParams','messageCenterService','Customer','Payment','PaymentMethodType','Invoice',function($scope,$stateParams,messageCenterService,Customer,Payment,PaymentMethodType,Invoice) {
+app.controller('RecordPaymentController', ['$scope','$stateParams','$location','messageCenterService','Customer','Payment','PaymentMethodType','Invoice',
+                                           function($scope,$stateParams,$location,messageCenterService,Customer,Payment,PaymentMethodType,Invoice) {
 	$scope.paymentMethodTypes = PaymentMethodType.query();
 	$scope.invoiceId = $stateParams.invoiceId;
 	$scope.invoice = Invoice.get({id : $stateParams.invoiceId}, function(data) {
@@ -37,7 +38,16 @@ app.controller('RecordPaymentController', ['$scope','$stateParams','messageCente
 	});
 	
 	$scope.save = function () {
-		Payment.recordPaymentForInvoice($scope.payment);
+		Payment.recordPaymentForInvoice($scope.payment,function(data) {
+			//If success, save the invoice ID.
+			$scope.payment.id = data.id;
+			
+			messageCenterService.add('success', 'The payment has been recorded.' 
+					, { status: messageCenterService.status.next,timeout: 5000,html:true});
+		    $location.path("/invoice/show/"+$scope.payment.invoiceId);
+	    }, function(error) {
+	        messageCenterService.add('warning', 'There was some problem while saving the payment.', { status: messageCenterService.status.unseen,timeout: 5000});
+	   });
 	};
 
 	$scope.cancel = function () {

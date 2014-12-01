@@ -13,6 +13,24 @@ import core.StatusType
 class PaymentService {
 	
 	def invoiceService
+	
+	def getPaymentsForParty(Party p) {
+		def c = Payment.createCriteria()
+		def payments = c.list {
+			eq("partyFrom",p)
+		}
+		return payments
+	}
+	
+	def getPaymentsForInvoice(Invoice invoice) {
+		def c = Payment.createCriteria()
+		def payments = c.list {
+			paymentApplications {
+				eq("invoice",invoice)
+			}
+		}
+		return payments
+	}
 
 	def recordPaymentForInvoice(RecordPaymentCommand cmd) {
 		if (cmd == null) {
@@ -21,11 +39,6 @@ class PaymentService {
 		
 		def paymentInstance = new Payment()
 		paymentInstance.paymentType = PaymentType.findByCode("CUSTOMER_PAYMENT")
-		
-		//Create payment method
-		def paymentMethod = new PaymentMethod()
-		paymentMethod.payment = paymentInstance
-		paymentMethod.paymentMethodType = PaymentMethodType.findByCode(cmd.paymentMethodType)
 		
 		paymentInstance.partyFrom = Party.get(cmd.partyFromId)
 		paymentInstance.partyTo = Organization.findByName("-COMPANY-")
@@ -52,7 +65,17 @@ class PaymentService {
 		paymentInstance.addToStatuses(paymentStatus)
 		paymentInstance.currentStatus = paymentStatus
 		
-		paymentInstance.save(flush:true)
+		if(paymentInstance.save(flush:true)) {
+			cmd.id = paymentInstance.id
+		}
+		
+		//Create payment method
+		def paymentMethod = new PaymentMethod()
+		paymentMethod.payment = paymentInstance
+		paymentMethod.paymentMethodType = PaymentMethodType.findByCode(cmd.paymentMethodType)
+		
+		paymentInstance.paymentMethod = paymentMethod
+		paymentMethod.save(flush:true)
 		
 		//Invoice Status.
 		def unpaidAmount = invoiceService.getUnpaidAmountForInvoice(invoice)

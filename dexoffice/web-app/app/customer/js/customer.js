@@ -1,4 +1,4 @@
-var app = angular.module('customer', ['ngResource','MessageCenterModule','ui.bootstrap']);
+var app = angular.module('customer', ['ngResource','MessageCenterModule','ui.bootstrap','ui.grid']);
 
 app.filter('customerName', function() {
 	return function(customer) {
@@ -54,7 +54,17 @@ app.factory('Customer', ['$resource',function($resource){
         		saveTelecomNumber : {
         			url : baseUrl +  '/saveTelecomNumber', 	
         			method: 'POST'
-        		}
+        		},
+        		invoices : {
+        			url : baseUrl +  '/invoices', 	
+        			method: 'GET',
+        			isArray : true
+        		},
+        		payments : {
+        			url : baseUrl +  '/payments', 	
+        			method: 'GET',
+        			isArray : true
+        		}        		
     		}
     );
 }]);
@@ -156,7 +166,11 @@ app.controller('CustomerQuickCreateEditController', ['$scope','$modalInstance','
 	$scope.save = function () {
 	   $scope.customer.$save({},function(data) {
 		   	messageCenterService.add('success', 'Customer has been added.', { status: messageCenterService.status.unseen,timeout: 5000});
-		   	$modalInstance.close("save.success");
+		   	var result = {};
+		   	result.status = "save.success";
+		   	result.data = data;
+		   	
+		   	$modalInstance.close(result);
 	    }, function(error) {
 	        messageCenterService.add('warning', 'There was some problem while saving the customer.', { status: messageCenterService.status.unseen,timeout: 5000});
 	        $modalInstance.close("save.error");
@@ -190,12 +204,19 @@ app.controller('CustomerCreateController', ['$scope','Customer',function($scope,
 	$scope.customer = new Customer();
 	
 	$scope.save = function () {
-		$scope.customer.$save();
-		console.log('Save : ' + $scope.customer);
+		$scope.customer.$save(function(data) {
+			$scope.customer.id = data.id;
+			
+			messageCenterService.add('success', 'The customer has been created.' 
+					, { status: messageCenterService.status.next,timeout: 5000,html:true});
+		    $location.path("/customer/show/"+$scope.customer.id);
+	    }, function(error) {
+	        messageCenterService.add('warning', 'There was some problem while creating the customer.', { status: messageCenterService.status.unseen,timeout: 5000});
+	   });
 	};
 
 	$scope.cancel = function () {
-		console.log('Cancel : ' + $scope.customer);
+		$scope.customer = new Customer();
 	};
 }]);
 
@@ -464,4 +485,25 @@ app.controller('CustomerListController', ['$scope','$modal','$log','Customer','m
 	
 	//List all customers
 	$scope.listAllCustomers();
+}]);
+
+//
+app.controller('CustomerInvoiceListController', 
+		['$scope','$stateParams','$modal','$http','$log','Invoice','Customer','messageCenterService',
+	 function($scope, $stateParams,$modal, $http,$log, Invoice, Customer,messageCenterService) {
+	 $scope.id = $stateParams.id;
+	 
+	 $scope.customer = Customer.get({id : $scope.id},function(data) {
+		$scope.invoices = Customer.invoices({id:$scope.id});
+	 });
+}]);
+
+app.controller('CustomerPaymentListController', 
+		['$scope','$stateParams','$modal','$http','$log','Invoice','Customer','messageCenterService',
+	 function($scope, $stateParams,$modal, $http,$log, Invoice, Customer,messageCenterService) {
+	 $scope.id = $stateParams.id;
+	 
+	 $scope.customer = Customer.get({id : $scope.id},function(data) {
+		$scope.payments = Customer.payments({id:$scope.id});
+	 });
 }]);

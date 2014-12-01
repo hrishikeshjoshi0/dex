@@ -26,6 +26,8 @@ class CustomerController {
 	
 	def contactMechService
 	def partyService
+	def invoiceService
+	def paymentService
 	
 	def invoiceStatusTypes() {
 		def c = Status.createCriteria()
@@ -184,7 +186,9 @@ class CustomerController {
 			render status: NOT_ACCEPTABLE
 			return
 		}
-		personInstance.save flush:true
+		if(personInstance.save(flush:true)) {
+			cmd.id = personInstance.id
+		}
 		
 		//Create Customer
 		//TODO
@@ -250,7 +254,6 @@ class CustomerController {
 
     @Transactional
     def delete(Person personInstance) {
-
         if (personInstance == null) {
             render status: NOT_FOUND
             return
@@ -261,4 +264,15 @@ class CustomerController {
 		
         render status: NO_CONTENT
     }
+	
+	//Invoices
+	def invoices(Party party) {
+		def invoices = invoiceService.getInvoicesForParty(party)
+		respond invoices, [status: OK]
+	}
+	
+	def payments(Party party) {
+		def payments = paymentService.getPaymentsForParty(party)
+		respond payments, [status: OK]
+	}
 }
