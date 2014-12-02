@@ -86,6 +86,7 @@ grails.hibernate.pass.readonly = false
 grails.hibernate.osiv.readonly = false
 
 grails.databinding.dateFormats = ['dd-MM-yy','MMddyyyy', 'yyyy-MM-dd HH:mm:ss.S', "yyyy-MM-dd'T'hh:mm:ss'Z'"]
+grails.plugin.wkhtmltox.binary = "/usr/bin/wkhtmltopdf"
 
 environments {
     development {

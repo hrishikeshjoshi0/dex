@@ -29,6 +29,13 @@ class CustomerController {
 	def invoiceService
 	def paymentService
 	
+	def pdfRenderingService
+	
+	def customerReport() {
+		def customer = Party.get(params.id)
+		ByteArrayOutputStream bytes = pdfRenderingService.render(template: "/pdf/customer", model: [customer: customer])
+	}
+	
 	def invoiceStatusTypes() {
 		def c = Status.createCriteria()
 		def invoiceStatusTypes = c.list {
@@ -52,7 +59,10 @@ class CustomerController {
 			return
 		}
 		
-		respond p, [status: OK]
+		//ByteArrayOutputStream bytes = pdfRenderingService.render(template: "/pdf/customer", model: [customer: p],file:'cust')
+		
+		renderPdf(template: '/pdf/customer', model: [customer: p], filename: "yourTitle.pdf")
+		//respond p, [status: OK]
 	}
 	
 	@Transactional
