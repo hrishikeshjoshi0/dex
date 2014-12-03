@@ -91,6 +91,7 @@ grails.plugin.wkhtmltox.binary = "/usr/bin/wkhtmltopdf"
 environments {
     development {
         grails.logging.jul.usebridge = true
+		grails.serverURL = "http://localhost:8080/dexoffice/"
     }
     production {
         grails.logging.jul.usebridge = false

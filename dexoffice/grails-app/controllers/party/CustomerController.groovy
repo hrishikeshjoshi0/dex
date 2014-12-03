@@ -58,11 +58,8 @@ class CustomerController {
 			render status: NOT_FOUND
 			return
 		}
-		
-		//ByteArrayOutputStream bytes = pdfRenderingService.render(template: "/pdf/customer", model: [customer: p],file:'cust')
-		
-		renderPdf(template: '/pdf/customer', model: [customer: p], filename: "yourTitle.pdf")
-		//respond p, [status: OK]
+		//renderPdf(template: '/pdf/customer', model: [customer: p], filename: "yourTitle.pdf")
+		respond p, [status: OK]
 	}
 	
 	@Transactional
