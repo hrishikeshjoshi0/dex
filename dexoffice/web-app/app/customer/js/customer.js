@@ -228,10 +228,20 @@ app.controller('CustomerShowController', ['$scope','$stateParams','$modal','mess
 			$scope.addressData = $scope.fetchAddresses($scope.customer);
 			$scope.mobilePhoneData = $scope.fetchMobileNumbers($scope.customer);
 			$scope.emailData = $scope.fetchEmails($scope.customer);
+			$scope.getInvoices();
 		});
 	}
 	
 	$scope.init();
+	
+	//
+	$scope.getInvoices = function() {
+		$scope.invoices = Customer.invoices({id:$scope.customer.id});
+	}
+	
+	$scope.getPayments = function() {
+		$scope.payments = Customer.payments({id:$scope.id});
+	}
 	
 	//Edit methods for Address, Contact Mechs
 	$scope.createOrUpdatePostalAddress = function(customer) {

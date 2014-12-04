@@ -1,13 +1,15 @@
+<a ui-sref="invoice.create({ partyId:customer.id})"
+	ng-show="customer.id" class="btn btn-sm btn-success"> <span
+	class="glyphicon glyphicon-plus-sign"></span> 
+	New invoice
+</a>
+
 <div class="btn-group">
 	<button type="button" class="btn btn-sm btn-default dropdown-toggle"
 		data-toggle="dropdown">
 		<i class="fa fa-cog"></i> Actions <span class="caret"></span>
 	</button>
 	<ul class="dropdown-menu" role="menu">
-		<li>
-			<a ui-sref="invoice.create">
-				Create Invoice
-			</a>
-		</li>
+		<li><a ui-sref="invoice.create"> Create Invoice </a></li>
 	</ul>
 </div>

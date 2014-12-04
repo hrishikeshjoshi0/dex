@@ -1,8 +1,10 @@
 <div class="page-header">
 	<h3>
-		Invoice /
+		<a ui-sref="customers.show({ id: invoice.party.id})">
+			{{invoice.party.displayName}}
+		</a>
+		<span>/</span>
 		{{invoice.invoiceNumber}}
-		
 		<small>
 			{{invoice.currentInvoiceStatus.description}}
 		</small>
