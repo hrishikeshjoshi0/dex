@@ -26,7 +26,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr ng-repeat="invoice in invoices | filter:query" ng-mouseover="hover=true" ng-mouseout="hover=false">
+			<tr pagination-id="invoiceTable" dir-paginate="invoice in invoices | filter:query | itemsPerPage: 10:'invoiceTable'">
 				<td>
 					<a ui-sref="invoice.show({ id: invoice.id})">
 						{{invoice.invoiceNumber}}
@@ -40,4 +40,7 @@
 			</tr>
 		</tbody>
 	</table>
+	<div class="text-center">
+		<dir-pagination-controls pagination-id="invoiceTable"></dir-pagination-controls>
+	</div>
 </div>

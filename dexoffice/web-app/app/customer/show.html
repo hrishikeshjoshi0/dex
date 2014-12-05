@@ -10,7 +10,7 @@
 
 <div class="row">
 	<div class="col-md-4">
-		<div class="panel panel-info" ng-mouseover="hover=true" ng-mouseout="hover=false">
+		<div class="panel panel-success" ng-mouseover="hover=true" ng-mouseout="hover=false">
 			<div class="panel-heading">
 				<span class="glyphicon glyphicon-envelope"></span>
 				Postal Address
@@ -35,7 +35,7 @@
 	</div>
 	
 	<div class="col-md-4">
-		<div class="panel panel-info">
+		<div class="panel panel-success">
 			<div class="panel-heading">
 				<span class="glyphicon glyphicon-phone-alt"></span>
 				Contact Numbers
@@ -76,67 +76,85 @@
 	<div class="col-md-12">
 		<tabset> 
 			<tab select="getInvoices()"> 
-			<tab-heading>
-			Invoices 
-			</tab-heading>
-			<div>
-				<table class="table table-hover">
-					<thead>
-						<tr>
-							<th>Invoice number</th>
-							<th>Invoice date</th>
-							<th>Balance</th>
-							<th>Total</th>
-							<th>Status</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="invoice in invoices | filter:query"
-							ng-mouseover="hover=true" ng-mouseout="hover=false">
-							<td><a ui-sref="invoice.show({ id: invoice.id})">
-									{{invoice.invoiceNumber}} </a></td>
-							<td>{{invoice.invoiceDate | date:"dd-MM-yy"}}</td>
-							<td>{{invoice.unpaidAmount}}</td>
-							<td>{{invoice.invoiceTotal}}</td>
-							<td>{{invoice.currentInvoiceStatus.description}}</td>
-						</tr>
-						<tr ng-show="!invoices || invoices.length == 0">
-							<td colspan="6" class="text-center">No records found. <br />
-								( <a ui-sref="invoice.create({ partyId:customer.id})"> Create
-									new invoice </a> )
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</tab> 
-		<tab select="getPayments()"> 
-		<tab-heading> Payments </tab-heading>
-		<table class="table table-condensed">
-			<thead>
-				<tr>
-					<th>Effective date</th>
-					<th>Payment method</th>
-					<th>Amount</th>
-					<th>Status</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="payment in payments">
-					<td>{{payment.effectiveDate | date}}</td>
-					<td>{{payment.paymentMethod.description}}</td>
-					<td>{{payment.amount}}</td>
-					<td>{{payment.status.description}}</td>
-				</tr>
-			</tbody>
-		</table>
-		</tab> </tabset>
+				<tab-heading>
+					Invoices <span class="badge"> {{invoices.length}} </span> 
+				</tab-heading>
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th>Invoice number</th>
+									<th>Invoice date</th>
+									<th>Balance</th>
+									<th>Total</th>
+									<th>Status</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr pagination-id="invoiceTable"
+								    dir-paginate="invoice in invoices | itemsPerPage: 10:'invoiceTable'">
+									<td><a ui-sref="invoice.show({ id: invoice.id})">
+											{{invoice.invoiceNumber}} </a></td>
+									<td>{{invoice.invoiceDate | date:"dd-MM-yy"}}</td>
+									<td>{{invoice.unpaidAmount}}</td>
+									<td>{{invoice.invoiceTotal}}</td>
+									<td>{{invoice.currentInvoiceStatus.description}}</td>
+								</tr>
+								<tr ng-show="!invoices || invoices.length == 0">
+									<td colspan="6" class="text-center">No records found. <br />
+										( <a ui-sref="invoice.create({ partyId:customer.id})">
+											Create new invoice </a> )
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<div class="text-center">
+							<dir-pagination-controls pagination-id="invoiceTable"></dir-pagination-controls>
+						</div>
+					</div>
+				</div>
+			</tab> 
+			<tab select="getPayments()"> 
+				<tab-heading>
+					Payments
+					<span class="badge">
+						{{payments.length}} 
+					</span> 
+				</tab-heading>
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<table class="table table-condensed">
+							<thead>
+								<tr>
+									<th>Effective date</th>
+									<th>Payment method</th>
+									<th>Amount</th>
+									<th>Status</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr pagination-id="paymentTable" dir-paginate="payment in payments | itemsPerPage: 10:'paymentTable'">
+									<td>{{payment.effectiveDate | date}}</td>
+									<td>{{payment.paymentMethod.description}}</td>
+									<td>{{payment.amount}}</td>
+									<td>{{payment.status.description}}</td>
+								</tr>
+							</tbody>
+						</table>
+						<div class="text-center">
+							<dir-pagination-controls pagination-id="paymentTable"></dir-pagination-controls>
+						</div>
+					</div>
+				</div>	
+			</tab>
+		 </tabset>
 	</div>
 </div>	
 
 <div class="row">
 	<div class="col-md-12">
-		<div class="panel panel-info" ng-mouseover="commentsLink=true" ng-mouseout="commentsLink=false">
+		<div class="panel panel-success" ng-mouseover="commentsLink=true" ng-mouseout="commentsLink=false">
 			<div class="panel-heading">
 				Comments
 				<p class="pull-right" ng-show="commentsLink">

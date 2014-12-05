@@ -16,7 +16,7 @@ class InvoiceController {
 	def invoiceService
 
 	def index(Integer max) {
-		params.max = Math.min(max ?: 10, 100)
+		//params.max = Math.min(max ?: 10, 100)
 		def result = Invoice.list(params)
 		respond result, [status: HttpStatus.OK]
 	}

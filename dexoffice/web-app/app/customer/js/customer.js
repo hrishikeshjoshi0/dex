@@ -229,6 +229,7 @@ app.controller('CustomerShowController', ['$scope','$stateParams','$modal','mess
 			$scope.mobilePhoneData = $scope.fetchMobileNumbers($scope.customer);
 			$scope.emailData = $scope.fetchEmails($scope.customer);
 			$scope.getInvoices();
+			$scope.getPayments();
 		});
 	}
 	
