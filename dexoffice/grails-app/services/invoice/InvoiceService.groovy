@@ -1,5 +1,6 @@
 package invoice
 
+import exceptions.InvoiceCreationException
 import grails.transaction.Transactional
 import party.Party
 import payment.PaymentApplication
@@ -13,6 +14,8 @@ import core.StatusType
 
 @Transactional
 class InvoiceService {
+	
+	def settingService
 	
 	def getInvoicesForParty(Party party) {
 		def c = Invoice.createCriteria()
@@ -167,9 +170,19 @@ class InvoiceService {
 		invoice.invoiceDate = invoiceCommand.invoiceDate
 		invoice.dueDate = invoiceCommand.dueDate
 		invoice.message = invoiceCommand.message
-		invoice.invoiceNumber = invoiceCommand.invoiceNumber
 		
-		invoice.save(flush:true)
+		def invoiceSequenceNumber = settingService.getSettingValueFromCode("INVOICE_SEQUENCE_NUMBER","INVOICE_SETTINGS")
+		
+		def invoiceNumberMask = settingService.getSettingValueFromCode("INVOICE_NUMBER_MASK","INVOICE_SETTINGS")
+		
+		def invoiceNumber = getInvoiceNumber(invoiceNumberMask, invoiceSequenceNumber)
+		
+		invoice.invoiceNumber = invoiceNumber
+		
+		if(invoice.save(flush:true)) {
+			//Update Settings
+			updateInvoiceSettings(invoiceSequenceNumber)
+		}
 		
 		if(!invoice.errors) {
 			invoiceCommand.errors = invoice.errors
@@ -194,6 +207,24 @@ class InvoiceService {
 		
 		invoiceCommand.id = invoice.id
     }
+	
+	def getInvoiceNumber(String invoiceNumberMask, String invoiceSequenceNumber) {
+		if(!invoiceNumberMask) {
+			throw new InvoiceCreationException("Invoice settings are not configured. Please check the same.")
+		}
+		
+		if(!invoiceSequenceNumber) {
+			throw new InvoiceCreationException("Invoice settings are not configured. Please check the same.")
+		}
+		
+		def invoiceNumber = String.format(invoiceNumberMask, invoiceSequenceNumber?.toInteger())
+		invoiceNumber
+	}
+	
+	def updateInvoiceSettings(String invoiceSequenceNumber) {
+		def nextSequenceNumber = invoiceSequenceNumber.toInteger() + 1;
+		settingService.updateSetting("INVOICE_SEQUENCE_NUMBER","INVOICE_SETTINGS",nextSequenceNumber?.toString())
+	}
 	
 	def changeInvoiceStatus(ChangeInvoiceStatusCommand status) {
 		

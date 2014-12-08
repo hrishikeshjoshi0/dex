@@ -59,7 +59,7 @@ class InvoiceMarshaller extends BaseJsonMarshaller {
 			res.party.type = i.party.partyType?.description
 
 			if(i.party instanceof Person) {
-				res.party.displayName = i.party.currentFirstName + " " + i.party.currentLastName
+				res.party.displayName = i.party.currentFirstName + " " + (i.party.currentLastName?i.party.currentLastName:"")
 			} else if(i.party instanceof Party) {
 				res.party.displayName = i.party.description
 			}

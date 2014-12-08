@@ -1,5 +1,12 @@
 // app.js
-var mainApp = angular.module('main', ['ui.router','ui.date','ui.bootstrap','angularUtils.directives.dirPagination','customer','product','invoice','payment','framework','ngResource']);
+var mainApp = angular.module('main', ['ui.router','ui.date','ui.bootstrap','angularUtils.directives.dirPagination','mgcrea.ngStrap.datepicker','customer','product','invoice','settings','payment','framework','ngResource']);
+
+mainApp.config(function($datepickerProvider) {
+  angular.extend($datepickerProvider.defaults, {
+    dateFormat: 'dd/MM/yyyy',
+    startWeek: 1
+  });
+})
 
 mainApp.config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/home');
@@ -154,7 +161,7 @@ mainApp.config(function($stateProvider, $urlRouterProvider) {
 	        templateUrl: 'app/invoice/views/show.html',
 	        controller : 'InvoiceShowController'	        	
 	    })
-	    // INVOICE PAGE AND MULTIPLE NAMED VIEWS =================================
+	    // PAYMENT PAGE AND MULTIPLE NAMED VIEWS ================================
 	    .state('payment', {
 	        url: '/payment',
 	        views: {
@@ -173,25 +180,30 @@ mainApp.config(function($stateProvider, $urlRouterProvider) {
 	        url: '/recordPaymentForInvoice/:invoiceId',
 	        templateUrl: 'app/payment/views/recordPaymentForInvoice.html',
 	        controller : 'RecordPaymentController'	        	
+	    })
+	    //SETTING PAGE AND MULTIPLE NAMED VIEWS ================================
+	    .state('settings', {
+	        url: '/settings',
+	        views: {
+	            '': { templateUrl: 'app/settings/layout/main.html' },
+	            'left-navigation@settings': { templateUrl: 'app/settings/layout/left-navigation.html' },
+	            'right-navigation@settings': { templateUrl: 'app/settings/layout/right-navigation.html' },
+	            'main-content@settings': { 
+	                templateUrl: 'app/settings/layout/main-content.html'
+	            },
+	            'actions@settings.show': { 
+	                templateUrl: 'app/settings/views/actions.html'
+	            }
+	        }
+	    })
+	    .state('settings.list', {
+	        url: '/list',
+	        templateUrl: 'app/settings/views/list.html',
+	        controller : 'SettingsListController'	        	
+	    })
+	    .state('settings.show', {
+	        url: '/show/:id',
+	        templateUrl: 'app/settings/views/show.html',
+	        controller : 'SettingsShowController'	        	
 	    });
-});
-
-//let's define the scotch controller that we call up in the about state
-mainApp.controller('scotchController', function($scope) {
-    $scope.message = 'test';
-    $scope.scotches = [
-        {
-            name: 'Macallan 12',
-            price: 50
-        },
-        {
-            name: 'Chivas Regal Royal Salute',
-            price: 10000
-        },
-        {
-            name: 'Glenfiddich 1937',
-            price: 20000
-        }
-    ];
-    
 });

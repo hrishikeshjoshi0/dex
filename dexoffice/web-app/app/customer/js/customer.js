@@ -1,8 +1,11 @@
-var app = angular.module('customer', ['ngResource','MessageCenterModule','ui.bootstrap','ui.grid']);
+var app = angular.module('customer', ['ngResource','MessageCenterModule','ui.bootstrap']);
 
 app.filter('customerName', function() {
 	return function(customer) {
 		if(customer != null) {
+			if(!customer.currentLastName) {
+				return customer.currentFirstName;
+			}
 			return customer.currentFirstName + " " + customer.currentLastName;
 		} else {
 			return "";
@@ -14,8 +17,6 @@ app.filter('postalAddress', function() {
 	return function(customer) {
 		if(customer != null) {
 			var found = null;
-			
-			console.log(customer.partyContactMechs);
 			
 			if(customer.partyContactMechs != null) {
 				var data = customer.partyContactMechs;
@@ -38,7 +39,7 @@ app.filter('postalAddress', function() {
 });
 
 app.factory('Customer', ['$resource',function($resource){
-	var baseUrl = "/dexoffice/customer/:id";
+	var baseUrl = "/dexoffice/api/customer/:id";
     return $resource(
     		baseUrl,
     		{},
@@ -79,8 +80,6 @@ app.controller('CustomerCreateTelecomNumberController', ['$scope','$modalInstanc
 		$scope.mobile = {};
 	}
 
-	//$scope.contactMechPurposes = [{label:"Default",value:"COMMUNICATION"}]
-	
 	$scope.save = function () {
 		var mobileData = {}
 		
@@ -141,7 +140,6 @@ app.controller('CustomerCreatePostalAddressController', ['$scope','$modalInstanc
 	$scope.save = function () {
 		var postalAddress = $scope.customer.postalAddress
 		postalAddress.partyId = $scope.customer.id
-		console.log("Postal address " + postalAddress.id);
 		Customer.savePostalAddress(postalAddress,function(data) {
 			messageCenterService.add('success', 'Postal address saved.', { status: messageCenterService.status.unseen,timeout: 5000});
 		   	$modalInstance.close("save.success");
@@ -200,16 +198,31 @@ app.controller('CustomerDeleteController', ['$scope','$modalInstance','Customer'
 	};
 }]);
 
-app.controller('CustomerCreateController', ['$scope','Customer',function($scope,Customer) {
+app.controller('CustomerCreateController', ['$scope','messageCenterService','$location','Customer',function($scope,messageCenterService,$location,Customer) {
 	$scope.customer = new Customer();
 	
+	$scope.validate = function() {
+		if($scope.customer.currentFirstName != ''
+				&& $scope.customer.postalAddress && $scope.customer.postalAddress.address1 != '') {
+			return true;
+		}
+		return false;
+	}
+	
 	$scope.save = function () {
+		var valid = $scope.validate();
+		
+		if(!valid) {
+			messageCenterService.add('warning', 'Please enter all required fields.' 
+					, { status: messageCenterService.status.next,timeout: 5000});
+			return;
+		}
+		
 		$scope.customer.$save(function(data) {
 			$scope.customer.id = data.id;
-			
 			messageCenterService.add('success', 'The customer has been created.' 
 					, { status: messageCenterService.status.next,timeout: 5000,html:true});
-		    $location.path("/customer/show/"+$scope.customer.id);
+			$location.path("/customers/show/"+$scope.customer.id);
 	    }, function(error) {
 	        messageCenterService.add('warning', 'There was some problem while creating the customer.', { status: messageCenterService.status.unseen,timeout: 5000});
 	   });
@@ -295,6 +308,7 @@ app.controller('CustomerShowController', ['$scope','$stateParams','$modal','mess
 		   }
 		}, function() {
 			//$log.info('Modal dismissed at: ');
+			$scope.init();
 		});
 	}
 	
@@ -321,6 +335,7 @@ app.controller('CustomerShowController', ['$scope','$stateParams','$modal','mess
 		   }
 		}, function() {
 			//$log.info('Modal dismissed at: ');
+			$scope.init();
 		});
 	}
 	

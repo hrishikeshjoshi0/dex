@@ -85,16 +85,15 @@
 						<div class="col-md-6">
 							<div class="col-md-12 form-group">
 								<label for="invoiceDate" class="control-label">Invoice date</label>
-								<input ui-date ui-date-format="dd-mm-yy" class="form-control input-sm" 
-									id="invoiceDate" ng-model="invoice.invoiceDate">
+								<input id="invoiceDate" ng-model="invoice.invoiceDate" class="form-control" name="invoiceDate" bs-datepicker type="text">
 							</div>
 							
 							<div class="col-md-12 form-group">
 								<label for="invoiceNumber" class="control-label">Invoice number</label> 
-								<input
-									type="text" class="form-control input-sm" ng-required
-									ng-model="invoice.invoiceNumber" id="invoiceNumber"
-									placeholder="Invoice number">
+								<input type="text" readonly="readonly"
+									class="form-control input-sm" 
+									value="-Auto Generated-"
+									id="invoiceNumber">
 							</div>
 							
 							<div class="col-md-12 form-group">

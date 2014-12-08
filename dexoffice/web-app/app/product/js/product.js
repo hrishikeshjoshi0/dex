@@ -66,18 +66,49 @@ app.controller('ProductEditController',
 		
 
 app.controller('ProductCreateController', 
-		['$scope','$modal','$log','Product','ProductTypes','ProductPriceTypes','TaxCategory','messageCenterService',
-	function($scope,$modal,$log,Product,ProductTypes,ProductPriceTypes,TaxCategory,messageCenterService) {
+		['$scope','$modal','$log','$location','Product','ProductTypes','ProductPriceTypes','TaxCategory','messageCenterService',
+	function($scope,$modal,$log,$location,Product,ProductTypes,ProductPriceTypes,TaxCategory,messageCenterService) {
 
 	$scope.product = new Product();
 	
+	$scope.product.introductionDate = new Date();
 	$scope.productTypes = ProductTypes.query();
 	$scope.productPriceTypes = ProductPriceTypes.query();
 	$scope.taxCategories = TaxCategory.query();
+	
+	$scope.isValid = function() {
+		if(!$scope.product.productName || !$scope.product.productType || !$scope.product.introductionDate
+				|| !$scope.product.productPrice.fromDate || !$scope.product.productPrice.amount) {
+			messageCenterService.add('success', 'Please enter all required fields.' 
+					, { status: messageCenterService.status.unseen,timeout: 5000,html:true});
+			return false;
+		}
+		
+		if($scope.product.taxable) {
+			if(!$scope.product.taxCategory) {
+				messageCenterService.add('success', 'The product is marked as taxable, so please add the tax category.' 
+						, { status: messageCenterService.status.unseen,timeout: 5000,html:true});
+				return false;
+			}
+		}
+		
+		return true;
+	}
 			
 	$scope.save = function () {
-		$scope.product.$save();
-		console.log('Save : ' + $scope.product);
+		
+		if(!$scope.isValid()) {
+			return;
+		}
+		
+		$scope.product.$save(function(data) {
+			$scope.product.id = data.id;
+			messageCenterService.add('success', 'Product has been created.' 
+					, { status: messageCenterService.status.next,timeout: 5000,html:true});
+		    $location.path("/products/show/"+data.id);
+	    }, function(error) {
+	        messageCenterService.add('warning', 'There was some problem while saving the product.', { status: messageCenterService.status.unseen,timeout: 5000});
+	   });
 	};
 
 	$scope.cancel = function () {

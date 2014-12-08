@@ -154,16 +154,13 @@ class CustomerController {
 			def result = contactMechService.createPostalAddress(postalAddress)
 			result = partyService.createPartyContactMechAndPurpose(personInstance,postalAddress,"BILLING_LOCATION",new Date(),null)
 			if(!result.isError()) {
-				render status: CREATED
+				render status: BAD_REQUEST
+				return
 			}
 		} else {
 			postalAddress.save(flush:true)
-			println PostalAddress.get(cmd.id)
-			 
-			render status: CREATED
 		}
-		
-		
+		render status: CREATED
 	}
 
     @Transactional
@@ -193,6 +190,7 @@ class CustomerController {
 			render status: NOT_ACCEPTABLE
 			return
 		}
+		
 		if(personInstance.save(flush:true)) {
 			cmd.id = personInstance.id
 		}
@@ -238,6 +236,8 @@ class CustomerController {
 			result = contactMechService.createTelecomNumber(tn,"OTHER_PHONE")
 			result = partyService.createPartyContactMechAndPurpose(personInstance,tn,"COMMUNICATION",new Date(),null)
 		}
+		
+		cmd.id = personInstance.id
 		
 		respond cmd, [status: CREATED]
     }

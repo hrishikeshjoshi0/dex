@@ -4,8 +4,16 @@ class UrlMappings {
 		//API
 		//"/customer/savePostalAddress" (controller:"customer",action:"savePostalAddress",method:"POST")
 		
-		"/customer"(resources:"customer")
-		"/customer/customerReport/:id"(controller:"customer",action:"customerReport")
+		"/api/customer"(resources:"customer")
+		"/api/customer/$id/invoices"(controller:"customer",action:"invoices")
+		"/api/customer/$id/payments"(controller:"customer",action:"payments")
+		/*"/api/customer/customerReport/:id"(controller:"customer",action:"customerReport")
+		"/api/customer/saveEmail"(controller:"customer",action:"saveEmail")
+		"/api/customer/savePostalAddress"(controller:"customer",action:"savePostalAddress")
+		"/api/customer/saveTelecomNumber"(controller:"customer",action:"saveTelecomNumber")*/
+		
+		"/api/setting"(resources:"setting")
+		"/api/settingType"(resources:"settingType")
 		
 		"/api/invoice"(resources:"invoice")
 		"/api/invoice/invoiceStatusTypes"(controller:"invoice",action:"invoiceStatusTypes")
@@ -16,6 +24,7 @@ class UrlMappings {
 		"/api/payment/recordPaymentForInvoice"(controller:"payment",action:"recordPaymentForInvoice")
 		
 		"/api/product"(resources:"product")
+		"/api/productType"(resources:"productType")
 		
 		"/api/productPriceTypes"(resources:"productPriceType")
 		
@@ -23,23 +32,11 @@ class UrlMappings {
 		
 		"/api/taxCategory"(resources:"taxCategory")
 		
-		"/api/$controller/$id?/$action?(.$format)?"{
+		"/api/$controller/$action?/$id?(.$format)?"{
 			constraints {
 				// apply constraints here
 			}
 		}
-		
-		"/$controller/$id?/$action?(.$format)?"{
-			constraints {
-				// apply constraints here
-			}
-		}
-		
-        "/$controller/$action?/$id?(.$format)?"{
-            constraints {
-                // apply constraints here
-            }
-        }
 		
 		"/person"(resources:"person")
 

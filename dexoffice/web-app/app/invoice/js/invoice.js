@@ -32,7 +32,6 @@ app.controller('InvoiceListController',
 	 function($scope, $modal, $http,$log, Invoice, Customer,messageCenterService) {
 			
 	 $scope.invoices = Invoice.query();
-	
 }]);
 
 app.controller('ViewPaymentsController', 
@@ -109,7 +108,7 @@ app.controller('InvoiceCreateController',
 	
 	// Any function returning a promise object can be used to load values asynchronously
 	 $scope.getParty = function(val) {
-		 return $http.get('/dexoffice/customer', {
+		 return $http.get('/dexoffice/api/customer', {
 		      params: {
 		        q: val
 		      }
@@ -122,7 +121,7 @@ app.controller('InvoiceCreateController',
 	 };
 	 
 	 $scope.suggestProduct = function(val) {
-		 return $http.get('/dexoffice/product', {
+		 return $http.get('/dexoffice/api/product', {
 		      params: {
 		        q: val
 		      }
@@ -177,7 +176,7 @@ app.controller('InvoiceCreateController',
 	 
 	 $scope.validateNewItem = function() {
 		 if($scope.newItem.productId && $scope.newItem.productName && $scope.newItem.quantity > 0.0
-				 && $scope.newItem.unitPrice >= 0.0 && $scope.newItem.taxPercentage >= 0.0) {
+				 && $scope.newItem.unitPrice >= 0.0 /*&& $scope.newItem.taxPercentage >= 0.0*/) {
 			 return true;
 		 }
 		 

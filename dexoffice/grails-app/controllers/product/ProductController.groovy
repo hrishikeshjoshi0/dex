@@ -62,14 +62,15 @@ class ProductController {
 		def product = new Product()
 		mapCommandObject(product, cmd)
 		
-		product.validate()
-		
-		if(product.errors) {
-			errors << product.errors  
-			respond errors,[status:HttpStatus.BAD_REQUEST]
-		}
-		
 		if(product.save(flush:true)) {
+			
+			if(product.hasErrors()) {
+				errors << product.errors
+				respond errors,[status:HttpStatus.BAD_REQUEST]
+			}
+			
+			cmd.id = product.id
+			
 			if(cmd?.productPrice) {
 				def productPrice = new ProductPrice()
 				productPrice.product = product

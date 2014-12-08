@@ -36,8 +36,7 @@
 						<div class="col-md-6 form-group">
 							<label for="introductionDate" class="control-label">Introduction date</label>
 							<div class="">
-								<input ui-date ui-date-format="dd-mm-yy" class="form-control" 
-									id="introductionDate" ng-model="product.introductionDate">
+								<input id="introductionDate" class="form-control" ng-model="product.introductionDate" name="introductionDate" bs-datepicker type="text">
 							</div>
 						</div>
 					</div>
@@ -90,16 +89,14 @@
 						<div class="col-md-6 form-group">
 							<label for="fromDate" class="control-label">From date</label>
 							<div class="">
-								<input ui-date ui-date-format="dd-mm-yy" class="form-control" 
-									id="fromDate" ng-model="product.productPrice.fromDate">
+								<input id="fromDate" class="form-control" ng-model="product.productPrice.fromDate" name="fromDate" bs-datepicker type="text">
 							</div>
 						</div>
 						
 						<div class="col-md-6 form-group">
 							<label for="thruDate" class="control-label">Thru date</label>
 							<div class="">
-								<input ui-date ui-date-format="dd-mm-yy" class="form-control" 
-									id="thruDate" ng-model="product.productPrice.thruDate">
+								<input id="thruDate" class="form-control" ng-model="product.productPrice.thruDate" name="thruDate" bs-datepicker type="text">
 							</div>
 						</div>						
 					</div>

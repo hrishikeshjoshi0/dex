@@ -14,10 +14,12 @@
 
 					<div class="row">
 						<div class="col-md-6 form-group">
-							<label for="firstName" class="control-label">First Name</label> <input
+							<label for="firstName" class="control-label required">First Name*</label> 
+							<input
 								type="text" class="form-control" ng-required
 								ng-model="customer.currentFirstName" id="firstName"
 								placeholder="First Name">
+							<span class="help-block">Enter the customer's first name</span>	
 						</div>
 
 						<div class="col-md-6 form-group">
@@ -25,6 +27,7 @@
 								type="text" class="form-control"
 								ng-model="customer.currentLastName" id="lastName"
 								placeholder="Last Name">
+							<span class="help-block">Enter the customer's last name</span>	
 						</div>
 					</div>
 
@@ -33,10 +36,9 @@
 							<label class="control-label">Gender</label>
 							<div class="radio">
 								<label> <input type="radio" ng-model="customer.gender"
-									value="M" id="genderMale" name="gender"> Male
+									value="M" id="genderMale" name="gender"> 
+									Male
 								</label>
-							</div>
-							<div class="radio">
 								<label> <input type="radio" ng-model="customer.gender"
 									value="F" id="genderFemale" name="gender">
 									Female
@@ -46,10 +48,7 @@
 
 						<div class="col-md-6 form-group">
 							<label for="birthDate" class="control-label">Birthdate</label>
-							<div class="">
-								<input ui-date ui-date-format="dd-mm-yy" class="form-control" id="birthDate"
-									ng-model="customer.birthDate">
-							</div>
+							<input id="birthDate" class="form-control" ng-model="customer.birthDate" name="birthDate" bs-datepicker type="text">
 						</div>
 					</div>
 
@@ -60,12 +59,14 @@
 							<label for="mobileNumber" class="control-label">Mobile Number</label> <input
 								type="text" class="form-control" id="mobileNumber"
 								ng-model="customer.mobileNumber" placeholder="Mobile">
+							<span class="help-block">Enter the customer's mobile number</span>	
 						</div>
 
 						<div class="col-md-6 form-group">
 							<label for="email" class="control-label">Email</label> <input
 								type="email" class="form-control" id="email"
 								ng-model="customer.email" placeholder="Email">
+							<span class="help-block">Enter the customer's email address</span>	
 						</div>
 					</div>
 					
@@ -73,15 +74,17 @@
 
 					<div class="row">
 						<div class="col-md-6 form-group">
-							<label for="address1" class="control-label">Address Line 1</label> <input
+							<label for="address1" class="control-label">Address Line 1*</label> <input
 								type="text" class="form-control" id="address1"
 								ng-model="customer.postalAddress.address1" placeholder="Address line 1">
+							<span class="help-block"></span>	
 						</div>
 
 						<div class="col-md-6 form-group">
 							<label for="address2" class="control-label">Address Line 2</label> <input
 								type="text" class="form-control" id="address2"
 								ng-model="customer.postalAddress.address2" placeholder="Address line 2">
+							<span class="help-block"></span>	
 						</div>
 					</div>
 					
@@ -96,6 +99,7 @@
 							<label for="postalCode" class="control-label">Postal Code</label> <input
 								type="text" class="form-control" id="postalCode"
 								ng-model="customer.postalAddress.postalCode" placeholder="Postal code">
+							<span class="help-block"></span>	
 						</div>
 					</div>
 

@@ -1,0 +1,55 @@
+<div class="page-header">
+	<h2>
+		Settings 
+		<small class="pull-right"> 
+			<span ui-view="actions"></span>
+		</small>
+	</h2>
+</div>
+
+<div class="row">
+	<div class="col-lg-8 col-md-8">
+		<form class="form-inline" role="form">
+			<div class="form-group">
+				<label for="settingType">Setting type</label> 
+				<select ng-options="settingType.description for settingType in settingTypes"
+					id="settingType" class="form-control" ng-model="settingType" ng-change="settingTypeChanged(settingType)">
+					<option></option>
+				</select>
+			</div>
+		</form>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-lg-12 col-md-12">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Code</th>
+					<th>Description</th>
+					<th>Value</th>
+					<th>From Date</th>
+					<th>Thru Date</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr pagination-id="setting"
+					dir-paginate="setting in settings | filter:query | itemsPerPage: 10:'setting'">
+					<td>
+						<a ui-sref="settings.show({ id: setting.id})">
+							{{setting.code}} 
+						</a>
+					</td>
+					<td>{{setting.value}}</td>
+					<td>{{setting.description}}</td>
+					<td>{{setting.fromDate | date:"dd-MM-yy"}}</td>
+					<td>{{setting.thruDate | date:"dd-MM-yy"}}</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="text-center">
+			<dir-pagination-controls pagination-id="setting"></dir-pagination-controls>
+		</div>
+	</div>
+</div>

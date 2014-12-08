@@ -19,6 +19,8 @@ import core.EnumerationType
 import core.Geo
 import core.GeoType
 import core.RoleType
+import core.Setting
+import core.SettingType
 import core.Status
 import core.StatusType
 import core.Uom
@@ -490,6 +492,30 @@ class BootStrap {
 		if(!PaymentType.findByCodeAndDescription("CUSTOMER_REFUND","Customer refund")) {
 			def pt = new PaymentType(code:"CUSTOMER_REFUND",description:"Customer refund")
 			pt.save(flush:true)
+		}
+		
+		//Setting Types
+		if(!SettingType.findByCodeAndDescription("INVOICE_SETTINGS","Invoice Settings")) {
+			def st = new SettingType(code:"INVOICE_SETTINGS",description:"Invoice Settings")
+			st.save(flush:true)
+		}
+		
+		if(!Setting.findByCodeAndDescription("INVOICE_SEQUENCE_NUMBER","Invoice Sequence Number")) {
+			def st = new Setting(code:"INVOICE_SEQUENCE_NUMBER",description:"Invoice Sequence Number")
+			st.settingType = SettingType.findByCode("INVOICE_SETTINGS")
+			st.value = "1"
+			st.fromDate = new Date()
+			st.thruDate = null
+			st.save(flush:true)
+		}
+		
+		if(!Setting.findByCodeAndDescription("INVOICE_NUMBER_MASK","Invoice Number Mask")) {
+			def st = new Setting(code:"INVOICE_NUMBER_MASK",description:"Invoice Number Mask")
+			st.settingType = SettingType.findByCode("INVOICE_SETTINGS")
+			st.value = "INV%05d"
+			st.fromDate = new Date()
+			st.thruDate = null
+			st.save(flush:true)
 		}
 		
 		//Marshalling

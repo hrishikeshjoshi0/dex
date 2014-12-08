@@ -1,5 +1,5 @@
 <div class="page-header">
-	<h3>
+	<h2>
 		<a ui-sref="customers.show({ id: invoice.party.id})">
 			{{invoice.party.displayName}}
 		</a>
@@ -12,7 +12,7 @@
 		<small class="pull-right">
 			<span ui-view="actions"></span>		
 		</small>
-	</h3>
+	</h2>
 </div>
 
 <div class="row">
@@ -162,19 +162,27 @@
 		</div>
 	<div class="col-lg-4 col-md-4">
 		<div class="col-md-12">
-			<div class="bg-success center-block">
-				<small>Paid amount:</small>
-				<h3>Rs. {{invoice.paidAmount}}</h3>
-			</div>	
+			<div class="panel panel-success">
+				<div class="panel-heading">
+					Paid amount
+				</div>
+				<div class="panel-body">
+					<h2>Rs. {{invoice.paidAmount}}</h2>
+				</div>
+			</div>
 		</div>
 		
 		<div class="col-md-12">
-			<div class="bg-danger">
-				<small>Outstanding balance:</small>
-				<h2>Rs. {{invoice.unpaidAmount}}</h2>
-			</div>	
+			<div class="panel panel-danger">
+				<div class="panel-heading">
+					Outstanding balance
+				</div>
+				<div class="panel-body">
+					<h2>Rs. {{invoice.unpaidAmount}}</h2>
+				</div>
+			</div>
 		</div>
-				
+		
 		<div class="col-md-12">
 			<div class="form-group">
 				<label for="message" class="control-label">Private message</label>
