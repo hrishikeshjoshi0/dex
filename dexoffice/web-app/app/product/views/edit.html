@@ -36,8 +36,7 @@
 						<div class="col-md-6 form-group">
 							<label for="introductionDate" class="control-label">Introduction date</label>
 							<div class="">
-								<input ui-date ui-date-format="dd-mm-yy" class="form-control" 
-									id="introductionDate" ng-model="product.introductionDate">
+								<input id="introductionDate" class="form-control" ng-model="product.introductionDate" name="introductionDate" bs-datepicker type="text">
 							</div>
 						</div>
 					</div>
@@ -86,7 +85,7 @@
 											
 					<div class="form-group">
 						<div class="">
-							<button type="submit" class="btn btn-success" ng-click="save()">Submit</button>
+							<button type="submit" class="btn btn-success" ng-click="save()">Save</button>
 							<button class="btn btn-default" ng-click="cancel()">Cancel</button>
 						</div>
 					</div>

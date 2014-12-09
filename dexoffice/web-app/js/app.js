@@ -1,5 +1,5 @@
 // app.js
-var mainApp = angular.module('main', ['ui.router','ui.date','ui.bootstrap','angularUtils.directives.dirPagination','mgcrea.ngStrap.datepicker','customer','product','invoice','settings','payment','framework','ngResource']);
+var mainApp = angular.module('main', ['ui.router','ui.date','ui.bootstrap','angularUtils.directives.dirPagination','mgcrea.ngStrap.datepicker','customer','product','invoice','settings','payment','taxCategory','framework','ngResource']);
 
 mainApp.config(function($datepickerProvider) {
   angular.extend($datepickerProvider.defaults, {

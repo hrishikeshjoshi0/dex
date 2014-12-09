@@ -45,8 +45,8 @@ app.controller('ProductListController',
 }]);
 
 app.controller('ProductEditController', 
-		['$scope','$modal','$log','$stateParams','Product','ProductTypes','ProductPriceTypes','TaxCategory','messageCenterService',
-	function($scope,$modal,$log,$stateParams,Product,ProductTypes,ProductPriceTypes,TaxCategory,messageCenterService) {
+		['$scope','$modal','$log','$stateParams','$location','Product','ProductTypes','ProductPriceTypes','TaxCategory','messageCenterService',
+	function($scope,$modal,$log,$stateParams,$location,Product,ProductTypes,ProductPriceTypes,TaxCategory,messageCenterService) {
 	
 	$scope.productTypes = ProductTypes.query();
 	$scope.productPriceTypes = ProductPriceTypes.query();
@@ -56,7 +56,16 @@ app.controller('ProductEditController',
 	$scope.product = Product.get({id:$scope.id});
 	
 	$scope.save = function () {
-		Product.update($scope.product);
+		Product.update($scope.product,function(data) {
+			$scope.product.id = data.id;
+			
+			messageCenterService.add('success', 'The save was successful.' 
+					, { status: messageCenterService.status.next,timeout: 5000,html:true});
+		    $location.path("/products/show/"+data.id);
+			//messageCenterService.add('success', 'Your action has been completed!', { status: messageCenterService.status.permanent });
+	    }, function(error) {
+	        messageCenterService.add('warning', 'There was some problem.', { status: messageCenterService.status.unseen,timeout: 5000});
+	   });
 	};
 
 	$scope.cancel = function () {
