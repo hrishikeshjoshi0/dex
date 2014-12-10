@@ -12,8 +12,8 @@ class UrlMappings {
 		"/api/customer/savePostalAddress"(controller:"customer",action:"savePostalAddress")
 		"/api/customer/saveTelecomNumber"(controller:"customer",action:"saveTelecomNumber")*/
 		
-		"/api/setting"(resources:"setting")
 		"/api/settingType"(resources:"settingType")
+		"/api/setting"(resources:"setting")
 		
 		"/api/invoice"(resources:"invoice")
 		"/api/invoice/invoiceStatusTypes"(controller:"invoice",action:"invoiceStatusTypes")

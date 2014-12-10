@@ -4,7 +4,8 @@ var mainApp = angular.module('main', ['ui.router','ui.date','ui.bootstrap','angu
 mainApp.config(function($datepickerProvider) {
   angular.extend($datepickerProvider.defaults, {
     dateFormat: 'dd/MM/yyyy',
-    startWeek: 1
+    startWeek: 1,
+    autoclose:true
   });
 })
 

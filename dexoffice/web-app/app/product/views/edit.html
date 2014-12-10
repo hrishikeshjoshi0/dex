@@ -5,93 +5,90 @@
 	</h3>
 </div>
 
-<div class="row">
-	<div class="col-lg-12">
-		<div class="well bs-component">
-			<form>
-				<fieldset>
-					<legend>Basic information</legend>
-
-					<div class="row">
-						<div class="col-md-6 form-group">
-							<label for="productName" class="control-label">Product Name</label> 
-							<input
-								type="text" class="form-control" ng-required
-								ng-model="product.productName" id="productName"
-								placeholder="Product Name">
-						</div>
-
-						<div class="col-md-6 form-group">
-							<label for="productType" class="control-label">Product type</label>
-							<select id="productType" class="form-control" 
-									ng-model="product.productType">
-								<option ng-repeat="productType in productTypes" value="{{productType.name}}">
-									{{productType.description}}
-								</option>	
-							</select> 
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-6 form-group">
-							<label for="introductionDate" class="control-label">Introduction date</label>
-							<div class="">
-								<input id="introductionDate" class="form-control" ng-model="product.introductionDate" name="introductionDate" bs-datepicker type="text">
+<div class="well bs-component">
+	<div class="row">
+		<div class="col-lg-8 col-md-8">
+				<form>
+					<fieldset>
+						<legend>Basic information</legend>
+	
+						<div class="row">
+							<div class="col-md-6 form-group">
+								<label for="productName" class="control-label">Product Name*</label> 
+								<input
+									type="text" class="form-control" ng-required
+									ng-model="product.productName" id="productName"
+									placeholder="Product Name">
+							</div>
+	
+							<div class="col-md-6 form-group">
+								<label for="productType" class="control-label">Product type</label>
+								<select id="productType" class="form-control" 
+										ng-model="product.productType">
+									<option ng-repeat="productType in productTypes" value="{{productType.name}}">
+										{{productType.description}}
+									</option>	
+								</select> 
 							</div>
 						</div>
-					</div>
-					
-					<legend>Description</legend>
-
+	
+						<div class="row">
+							<div class="col-md-6 form-group">
+								<label for="introductionDate" class="control-label">Introduction date</label>
+								<div class="">
+									<input id="introductionDate" class="form-control" ng-model="product.introductionDate" name="introductionDate" bs-datepicker type="text">
+								</div>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<div class="">
+								<button type="submit" class="btn btn-success" ng-click="save()" ng-disabled="!isValid()" >Save</button>
+								<button class="btn btn-default" ng-click="cancel()">Cancel</button>
+							</div>
+						</div>
+					</fieldset>
+				</form>
+			</div>
+			<div class="col-lg-4 col-md-4">
+				<fieldset>
 					<div class="row">
 						<div class="col-md-12 form-group">
 							<label for="description" class="control-label">Description</label>
 							<div class="">
 								<textarea class="form-control" rows="3"
 									ng-model="product.description" id="description"></textarea>
-								<span class="help-block">
-									The description would be printed on the invoice.
-								</span>
+								<span class="help-block"> The description would be printed
+									on the invoice. </span>
 							</div>
 						</div>
 					</div>
-
-					<legend>Tax information</legend>
-
+	
+					<h4 class="page-header">Tax information</h4>
+	
 					<div class="row">
-						<div class="checkbox col-md-6">
-	                        <label>
-	                          <input type="checkbox" ng-model="product.taxable"> Is taxable ?
-	                        </label>
-	                    </div>
-	                    
-					</div>
-					
-					<div class="row" ng-show="product.taxable">
-						<div class="col-md-6 form-group">
-							<label for="taxType" class="control-label">Tax Category</label>
-							<div class="">
-								<select id="taxType" class="form-control" 
-									ng-model="product.taxCategory">
-									<option ng-repeat="taxCategory in taxCategories" value="{{taxCategory.name}}">
-										{{taxCategory.description}}
-									</option>	
-								</select>
-								<span class="help-block">
-								</span>
-							</div>
+						<div class="checkbox col-md-12">
+							<label> <input type="checkbox" ng-model="product.taxable">
+								Is taxable ?
+							</label> <span class="help-block"> Check this if the product is
+								taxable. </span>
 						</div>
 					</div>
-											
-					<div class="form-group">
-						<div class="">
-							<button type="submit" class="btn btn-success" ng-click="save()">Save</button>
-							<button class="btn btn-default" ng-click="cancel()">Cancel</button>
+	
+					<div class="row" ng-show="product.taxable">
+						<div class="col-md-12 form-group">
+							<label for="taxType" class="control-label">Tax Category*</label>
+							<div class="">
+								<select id="taxType" class="form-control"
+									ng-model="product.taxCategory"
+									ng-options="taxCategory.name as 
+										taxCategory.description + ' (' + taxCategory.taxPercentage + '%)' for taxCategory in taxCategories">
+								</select> <span class="help-block"> </span>
+							</div>
 						</div>
 					</div>
 				</fieldset>
-			</form>
+			</div>
 		</div>
 	</div>
-</div>
 

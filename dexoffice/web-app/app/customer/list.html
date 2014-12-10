@@ -25,7 +25,7 @@
 				<th>Last Name</th>
 				<th>Mobile</th>
 				<th>Email</th>
-				<th></th>
+				<!-- <th></th> -->
 			</tr>
 		</thead>
 		<tbody>
@@ -38,20 +38,14 @@
 				<td>{{customer.currentLastName}}</td>
 				<td>{{mobilePhone(customer).value}}</td>
 				<td>{{email(customer).value}}</td>
-				<td>
+				<!-- <td>
 					<span>
 						<a href ng-click="edit(customer)">
 						  <span class="glyphicon glyphicon-edit"></span>
 						  Edit
 						</a>
-						<!-- 
-						<span> | </span>
-						<a href  ng-click="confirmDelete(customer)" class="danger">
-						  Delete
-						</a>
-						 -->
 					</span>
-				</td>
+				</td> -->
 			</tr>
 		</tbody>
 	</table>

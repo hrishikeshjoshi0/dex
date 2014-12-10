@@ -20,8 +20,8 @@
 				<th>Invoice number</th>
 				<th>Invoice date</th>
 				<th>Customer</th>
-				<th>Balance</th>
 				<th>Total</th>
+				<th>Balance</th>
 				<th>Status</th>
 			</tr>
 		</thead>
@@ -34,8 +34,8 @@
 				</td>
 				<td>{{invoice.invoiceDate | date:"dd-MM-yy"}}</td>
 				<td>{{invoice.party.displayName}}</td>
-				<td>{{invoice.unpaidAmount}}</td>
-				<td>{{invoice.invoiceTotal}}</td>
+				<td>{{invoice.invoiceGrandTotal}}</td>
+				<td>{{invoice.currentReceivableAmount}}</td>
 				<td>{{invoice.currentInvoiceStatus.description}}</td>
 			</tr>
 		</tbody>

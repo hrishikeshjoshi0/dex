@@ -1,12 +1,14 @@
 package core
 
-import grails.rest.RestfulController
+import org.springframework.http.HttpStatus
 
-class SettingTypeController extends RestfulController<SettingType> {
+class SettingTypeController {
 
     static responseFormats = ['json', 'xml']
+	static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE",show:"GET"]
 	
-    SettingTypeController() {
-        super(SettingType)
-    }
+	def index(Integer max) {
+		def result = SettingType.list()
+		respond result, [status: HttpStatus.OK]
+	}
 }

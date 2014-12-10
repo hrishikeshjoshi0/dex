@@ -26,13 +26,11 @@ class InvoiceMarshaller extends BaseJsonMarshaller {
 			res.currentInvoiceStatus.statusCode = i.currentInvoiceStatus?.status?.statusCode
 			res.currentInvoiceStatus.description = i.currentInvoiceStatus?.status?.description
 			
-			def unpaidAmount = invoiceService.getUnpaidAmountForInvoice(i)
-			def paidAmount = invoiceService.getPaidAmountForInvoice(i)
-			def invoiceTotal = invoiceService.getInvoiceTotalAmount(i)
-			 
-			res.unpaidAmount = unpaidAmount
-			res.paidAmount = paidAmount
-			res.invoiceTotal = invoiceTotal
+			def latestInvoiceCalculation = invoiceService.getLatestInvoiceCalculation(i)
+			
+			res.invoiceTotal = latestInvoiceCalculation?.invoiceGrandTotal
+			res.currentReceivableAmount = latestInvoiceCalculation?.currentReceivableAmount
+			res.currentReceivedAmount = latestInvoiceCalculation?.currentReceivedAmount
 			
 			//Payments
 			def payments = paymentService.getPaymentsForInvoice(i)

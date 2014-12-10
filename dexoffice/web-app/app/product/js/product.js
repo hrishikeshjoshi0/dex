@@ -55,7 +55,30 @@ app.controller('ProductEditController',
 	$scope.id = $stateParams.id;
 	$scope.product = Product.get({id:$scope.id});
 	
+	$scope.isValid = function() {
+		if(!$scope.product.productName || !$scope.product.productType || !$scope.product.introductionDate) {
+			return false;
+		}
+		
+		if($scope.product.taxable) {
+			if(!$scope.product.taxCategory) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
 	$scope.save = function () {
+		
+		var valid = $scope.isValid();
+		
+		if(!valid) {
+			messageCenterService.add('warning', 'Please enter all required fields.' 
+					, { status: messageCenterService.status.next,timeout: 5000});
+			return;
+		}
+		
 		Product.update($scope.product,function(data) {
 			$scope.product.id = data.id;
 			
@@ -85,18 +108,20 @@ app.controller('ProductCreateController',
 	$scope.productPriceTypes = ProductPriceTypes.query();
 	$scope.taxCategories = TaxCategory.query();
 	
+	//
+	$scope.product.productPrice = {};
+	$scope.product.productPrice.fromDate = new Date();
+	$scope.product.productPrice.productPriceType = "LIST_PRICE";
+	
 	$scope.isValid = function() {
 		if(!$scope.product.productName || !$scope.product.productType || !$scope.product.introductionDate
-				|| !$scope.product.productPrice.fromDate || !$scope.product.productPrice.amount) {
-			messageCenterService.add('success', 'Please enter all required fields.' 
-					, { status: messageCenterService.status.unseen,timeout: 5000,html:true});
+				|| !$scope.product.productPrice.fromDate || !$scope.product.productPrice.amount
+				|| $scope.product.productPrice.amount <= 0.0) {
 			return false;
 		}
 		
 		if($scope.product.taxable) {
 			if(!$scope.product.taxCategory) {
-				messageCenterService.add('success', 'The product is marked as taxable, so please add the tax category.' 
-						, { status: messageCenterService.status.unseen,timeout: 5000,html:true});
 				return false;
 			}
 		}
@@ -105,6 +130,13 @@ app.controller('ProductCreateController',
 	}
 			
 	$scope.save = function () {
+		var valid = $scope.isValid();
+		
+		if(!valid) {
+			messageCenterService.add('warning', 'Please enter all required fields.' 
+					, { status: messageCenterService.status.next,timeout: 5000});
+			return;
+		}
 		
 		if(!$scope.isValid()) {
 			return;

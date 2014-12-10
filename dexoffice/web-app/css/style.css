@@ -7,7 +7,7 @@
 }
 
 table thead > tr {
-	background-color: #f5f5dc;
+	background-color: #A9D9ED;
 	border-bottom: none;
 }
 
@@ -78,5 +78,36 @@ table thead > tr {
 }
 
 .sidebar {
-	background-color: #f5f5dc;
+	_background-color: #f5f5dc;
+}
+
+.datepicker.dropdown-menu {
+  width: 250px;
+  height: 250px;
+  button {
+    outline: none;
+    border: 0px;
+  }
+  tbody {
+    height: 180px;
+  }
+  tbody button {
+    padding: 6px;
+  }
+  &.datepicker-mode-1, &.datepicker-mode-2 {
+    tbody button {
+      height: 65px;
+    }
+  }
+}
+
+.timepicker.dropdown-menu {
+  padding: 0 4px;
+  button {
+    outline: none;
+    border: 0px;
+  }
+  tbody button {
+    padding: 6px;
+  }
 }

@@ -161,7 +161,23 @@ app.controller('CustomerQuickCreateEditController', ['$scope','$modalInstance','
 		$scope.customer = new Customer();
 	}
 	
+	$scope.isValid = function() {
+		if($scope.customer.currentFirstName != ''
+				&& $scope.customer.postalAddress && $scope.customer.postalAddress.address1 != '') {
+			return true;
+		}
+		return false;
+	}
+	
 	$scope.save = function () {
+		var valid = $scope.isValid();
+		
+		if(!valid) {
+			messageCenterService.add('warning', 'Please enter all required fields.' 
+					, { status: messageCenterService.status.next,timeout: 5000});
+			return;
+		}
+		
 	   $scope.customer.$save({},function(data) {
 		   	messageCenterService.add('success', 'Customer has been added.', { status: messageCenterService.status.unseen,timeout: 5000});
 		   	var result = {};
@@ -201,7 +217,7 @@ app.controller('CustomerDeleteController', ['$scope','$modalInstance','Customer'
 app.controller('CustomerCreateController', ['$scope','messageCenterService','$location','Customer',function($scope,messageCenterService,$location,Customer) {
 	$scope.customer = new Customer();
 	
-	$scope.validate = function() {
+	$scope.isValid = function() {
 		if($scope.customer.currentFirstName != ''
 				&& $scope.customer.postalAddress && $scope.customer.postalAddress.address1 != '') {
 			return true;
@@ -210,7 +226,7 @@ app.controller('CustomerCreateController', ['$scope','messageCenterService','$lo
 	}
 	
 	$scope.save = function () {
-		var valid = $scope.validate();
+		var valid = $scope.isValid();
 		
 		if(!valid) {
 			messageCenterService.add('warning', 'Please enter all required fields.' 

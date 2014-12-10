@@ -21,6 +21,13 @@ class ProductService {
 		def now = new Date()
 		
 		def res = c. list {
+			
+			le("introductionDate",now)
+			or {
+				isNull("salesTerminationDate")
+				ge("salesTerminationDate",now)
+			}
+			
 			if(q) {
 				or {
 					like("productName","%" + q + "%")
@@ -68,8 +75,10 @@ class ProductService {
 		productPrice.price = cmd.price
 		productPrice.priceType = ProductPriceType.findByDescription(cmd.productPriceType)
 		
+		def currencyUomType = UomType.findByName("CURRENCY")
+		
 		def uom = Uom.createCriteria().get {
-			eq("uomType.description","CURRENCY")
+			eq("uomType",currencyUomType)
 			eq("abbreviation",cmd.currencyUom?cmd.currencyUom:"INR")
 		}
 		

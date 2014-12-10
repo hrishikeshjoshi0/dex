@@ -17,6 +17,19 @@ class InvoiceService {
 	
 	def settingService
 	
+	def getLatestInvoiceCalculation(Invoice invoice) {
+		def c = InvoiceCalculation.createCriteria()
+		def invoiceCalculations = c.list {
+			eq("invoice",invoice)
+			order 'calculationDate', 'desc'
+			maxResults(1)
+		}
+		
+		if(invoiceCalculations) {
+			return invoiceCalculations[0]
+		}
+	}
+	
 	def getInvoicesForParty(Party party) {
 		def c = Invoice.createCriteria()
 		
@@ -204,6 +217,16 @@ class InvoiceService {
 		items?.each {
 			addInvoiceItem(invoice,it)			
 		}
+		
+		
+		//The invoice creation is complete so triggering a calculation.
+		def invoiceCalculation = new InvoiceCalculation()
+		invoiceCalculation.calculationDate = new Date()
+		invoiceCalculation.invoiceGrandTotal = getInvoiceTotalAmount(invoice)
+		invoiceCalculation.currentReceivedAmount = getPaidAmountForInvoice(invoice)
+		invoiceCalculation.currentReceivableAmount = getUnpaidAmountForInvoice(invoice)
+		invoiceCalculation.invoice = invoice
+		invoiceCalculation.save(flush:true)
 		
 		invoiceCommand.id = invoice.id
     }

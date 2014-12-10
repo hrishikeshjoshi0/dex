@@ -32,9 +32,10 @@ app.controller('RecordPaymentController', ['$scope','$stateParams','$location','
 	$scope.invoiceId = $stateParams.invoiceId;
 	$scope.invoice = Invoice.get({id : $stateParams.invoiceId}, function(data) {
 		$scope.payment = {};
-		$scope.payment.partyFromId = $scope.invoice.party.id 
-		$scope.payment.invoiceId = $scope.invoice.id
-		$scope.payment.amount = $scope.invoice.unpaidAmount;		
+		$scope.payment.partyFromId = $scope.invoice.party.id; 
+		$scope.payment.invoiceId = $scope.invoice.id;
+		$scope.payment.effectiveDate = new Date();
+		$scope.payment.amount = $scope.invoice.currentReceivableAmount;		
 	});
 	
 	$scope.save = function () {

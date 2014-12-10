@@ -79,7 +79,7 @@ class ProductController {
 				productPrice.amount = cmd?.productPrice?.amount
 				productPrice.currencyUom = Uom.findByAbbreviationAndUomType("INR", UomType.findByName("CURRENCY"))
 				
-				def productPriceType = "DEFAULT_PRICE"
+				def productPriceType = "LIST_PRICE"
 				if(cmd?.productPrice?.productPriceType) {
 					productPriceType = cmd?.productPrice?.productPriceType
 				}

@@ -16,7 +16,7 @@ class Invoice {
 	String referenceNumber
 	String invoiceNumber
 	
-	static hasMany = [statuses : InvoiceStatus,items:InvoiceItem]
+	static hasMany = [statuses : InvoiceStatus,items:InvoiceItem,invoiceCalculations:InvoiceCalculation]
 
     static constraints = {
 		partyFrom nullable:true

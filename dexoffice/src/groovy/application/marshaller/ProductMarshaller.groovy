@@ -46,6 +46,7 @@ class ProductMarshaller extends BaseJsonMarshaller {
 			res.weight = p.weight
 			
 			res.taxCategory = p.taxCategory?.name
+			res.taxCategoryDescription = p.taxCategory?.description
 			
 			def list = []
 			p.taxCategory?.taxRates?.each {

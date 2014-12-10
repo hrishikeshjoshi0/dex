@@ -2,6 +2,7 @@ package payment
 
 import grails.transaction.Transactional
 import invoice.Invoice
+import invoice.InvoiceCalculation
 import invoice.InvoiceStatus
 import party.Organization
 import party.Party
@@ -73,7 +74,6 @@ class PaymentService {
 		def paymentMethod = new PaymentMethod()
 		paymentMethod.payment = paymentInstance
 		paymentMethod.paymentMethodType = PaymentMethodType.findByCode(cmd.paymentMethodType)
-		
 		paymentInstance.paymentMethod = paymentMethod
 		paymentMethod.save(flush:true)
 		
@@ -105,6 +105,15 @@ class PaymentService {
 			//TODO
 			//If -ve unpaid balance adjust the credit.
 		}
+		
+		//Add an invoice calculation
+		def invoiceCalculation = new InvoiceCalculation()
+		invoiceCalculation.calculationDate = new Date()
+		invoiceCalculation.invoiceGrandTotal = invoiceService.getInvoiceTotalAmount(invoice)
+		invoiceCalculation.currentReceivedAmount = invoiceService.getPaidAmountForInvoice(invoice)
+		invoiceCalculation.currentReceivableAmount = invoiceService.getUnpaidAmountForInvoice(invoice)
+		invoiceCalculation.invoice = invoice
+		invoiceCalculation.save(flush:true)
 		
 		return paymentInstance
 	}

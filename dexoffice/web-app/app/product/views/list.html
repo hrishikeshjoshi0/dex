@@ -20,10 +20,7 @@
 				<th>Product name</th>
 				<th>Introduction date</th>
 				<th>Type</th>
-				<th>Currency</th>
 				<th>Price</th>
-				<th>Price type</th>
-				<th></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -35,17 +32,7 @@
 				</td>
 				<td>{{product.introductionDate | date:"dd-MM-yy"}}</td>
 				<td>{{product.productType}}</td>
-				<td>{{product.defaultPrice.currencyUom.abbreviation}}</td>
 				<td>{{product.defaultPrice.amount}}</td>
-				<td>{{product.defaultPrice.priceType.description}}</td>
-				<td>
-					<span>
-						<a href ng-click="edit(product)">
-						  <span class="glyphicon glyphicon-edit"></span>
-						  Edit
-						</a>
-					</span>
-				</td>
 			</tr>
 		</tbody>
 	</table>

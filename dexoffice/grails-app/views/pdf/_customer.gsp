@@ -12,41 +12,37 @@
 	media="all" />
 </head>
 <body>
-	<h2 class="pagehead">
-		${customer.currentFirstName}
-		${customer.currentLastName}
-	</h2>
-
 	<div class="row">
-		<div class="col-sm-6">
-			${customer.currentFirstName}
-			${customer.currentLastName}
-		</div>
-
-		<div class="col-sm-6">
-			<div class="panel panel-info">
-				<div class="panel-heading">
-					Postal Address 
+		<div class="col-lg-8 col-md-8">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="col-md-12">
+						<div class="panel panel-default">
+							<ul class="list-group">
+								<li class="list-group-item">Invoice# : ${invoice.invoiceNumber}</li>
+								<li class="list-group-item">Invoice date : ${invoice.invoiceDate}</li>
+							</ul>
+						</div>
+					</div>
 				</div>
-				<ul class="list-group">
-					<li class="list-group-item">
-						Postal Address	
-					</li>
-					<li class="list-group-item">
-						Postal Address	
-					</li>
-					<li class="list-group-item">
-						Postal Address	
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
 
-	<div class="row">
-		<div class="col-sm-6">
-			${customer.currentFirstName}
-			${customer.currentLastName}
+				<div class="col-md-6">
+					<div class="col-md-12 form-group">
+						<ul class="list-group">
+							<li class="list-group-item">
+								${invoice.party.displayName}
+							</li>
+							<%--<li class="list-group-item">
+								{{addressData.address1}} <br /> 
+								{{addressData.address2}} <br />
+								{{addressData.city}} <br /> 
+								{{addressData.directions}}
+							</li>
+							--%>
+						</ul>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </body>

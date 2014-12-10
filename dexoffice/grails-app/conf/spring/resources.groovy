@@ -4,6 +4,7 @@ import application.marshaller.InvoiceItemMarshaller
 import application.marshaller.InvoiceMarshaller
 import application.marshaller.PersonMarshaller
 import application.marshaller.ProductMarshaller
+import application.marshaller.TaxCategoryMarshaller;
 
 // Place your Spring DSL code here
 beans = {
@@ -34,7 +35,11 @@ beans = {
 		bean.parent = baseJsonMarshaller
 	}
 	
+	taxCategoryMarshaller(TaxCategoryMarshaller) { bean ->
+		bean.parent = baseJsonMarshaller
+	}
+	
 	customObjectMarshallers( CustomObjectMarshallers ) {
-		marshallers = [ref('personMarshaller'),ref('productMarshaller'),ref('invoiceMarshaller'),ref('invoiceItemMarshaller')]
+		marshallers = [ref('personMarshaller'),ref('productMarshaller'),ref('invoiceMarshaller'),ref('invoiceItemMarshaller'),ref('taxCategoryMarshaller')]
 	}
 }
