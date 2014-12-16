@@ -126,9 +126,11 @@ app.controller('InvoiceCreateController',
 		        q: val
 		      }
 		    }).then(function(response){
-		    	return response.data.map(function(item){
-		    		return item;
-		        });
+		    	if(response.data && response.data.length >= 0) {
+		    		return response.data.map(function(item){
+		    			return item;
+		    		});
+		    	}
 		    });
 	 };
 	 

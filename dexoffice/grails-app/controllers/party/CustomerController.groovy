@@ -33,6 +33,8 @@ class CustomerController {
 	
 	def customerReport() {
 		def customer = Party.get(params.id)
+		def billingAddress = partyService.getBillingAddress(customer)
+		
 		ByteArrayOutputStream bytes = pdfRenderingService.render(template: "/pdf/customer", model: [customer: customer])
 	}
 	
@@ -58,7 +60,10 @@ class CustomerController {
 			render status: NOT_FOUND
 			return
 		}
-		//renderPdf(template: '/pdf/customer', model: [customer: p], filename: "yourTitle.pdf")
+		
+		//def billingAddress = partyService.getBillingAddress(p)
+		//ByteArrayOutputStream bytes = pdfRenderingService.render(template: "/pdf/customer", model: [customer: p,billingAddress:billingAddress])
+		//renderPdf(template: "/pdf/customer", model: [customer: p,billingAddress:billingAddress], filename: "report.pdf")
 		respond p, [status: OK]
 	}
 	

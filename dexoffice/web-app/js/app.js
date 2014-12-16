@@ -1,5 +1,5 @@
 // app.js
-var mainApp = angular.module('main', ['ui.router','ui.date','ui.bootstrap','angularUtils.directives.dirPagination','mgcrea.ngStrap.datepicker','customer','product','invoice','settings','payment','taxCategory','framework','ngResource']);
+var mainApp = angular.module('main', ['ui.router','ui.date','ui.bootstrap','angularUtils.directives.dirPagination','mgcrea.ngStrap.datepicker','customer','product','invoice','settings','payment','taxCategory','report','framework','ngResource']);
 
 mainApp.config(function($datepickerProvider) {
   angular.extend($datepickerProvider.defaults, {
@@ -206,5 +206,21 @@ mainApp.config(function($stateProvider, $urlRouterProvider) {
 	        url: '/show/:id',
 	        templateUrl: 'app/settings/views/show.html',
 	        controller : 'SettingsShowController'	        	
+	    })
+	    .state('reports', {
+	        url: '/reports',
+	        views: {
+	            '': { templateUrl: 'app/reports/layout/main.html' },
+	            'left-navigation@reports': { templateUrl: 'app/reports/layout/left-navigation.html' },
+	            'right-navigation@reports': { templateUrl: 'app/reports/layout/right-navigation.html' },
+	            'main-content@reports': { 
+	                templateUrl: 'app/reports/layout/main-content.html'
+	            }
+	        }
+	    })
+	    .state('reports.taxesReport', {
+	        url: '/taxesReport',
+	        templateUrl: 'app/reports/views/taxReport.html',
+	        controller : 'TaxReportController'	        	
 	    });
 });

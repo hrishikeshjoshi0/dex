@@ -3,6 +3,7 @@ package party
 import grails.transaction.Transactional
 import core.BaseService
 import core.ContactMechPurposeType
+import core.PostalAddress
 import core.RoleType
 
 
@@ -237,6 +238,31 @@ class PartyService extends BaseService {
 		result = this.saveInstance(party, null)
 		
 		result
+	}
+	
+	def getBillingAddress(Party party) {
+		def c = PartyContactMech.createCriteria()
+		
+		def cmpt = ContactMechPurposeType.findByDescription("BILLING_LOCATION")
+		
+		def pcm = c.list {
+			eq("party",party)
+			le("fromDate", new Date())
+			or {
+				isNull("thruDate")
+				ge("thruDate", new Date())
+			}
+			partyContactMechPurpose {
+				eq("contactMechPurposeType",cmpt)
+			}
+		}
+		
+		if(!pcm?.isEmpty()) {
+			def cm = pcm[0].contactMech
+			if(cm instanceof PostalAddress) {
+				return (PostalAddress)cm
+			}
+		}
 	}
 	
 	def createPartyContactMechAndPurpose(def party, def contactMech, String contactMechPurpose, def fromDate, def thruDate) {

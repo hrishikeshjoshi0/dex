@@ -100,6 +100,7 @@ class PaymentService {
 			invoiceStatus.save(flush:true)
 			invoice.currentInvoiceStatus = invoiceStatus
 			invoice.addToStatuses(invoiceStatus)
+			invoice.paidDate = cmd.effectiveDate
 			invoice.save(flush:true)
 			
 			//TODO
@@ -114,6 +115,9 @@ class PaymentService {
 		invoiceCalculation.currentReceivableAmount = invoiceService.getUnpaidAmountForInvoice(invoice)
 		invoiceCalculation.invoice = invoice
 		invoiceCalculation.save(flush:true)
+		
+		invoice.currentInvoiceCalculation = invoice
+		invoice.save(flush:true)
 		
 		return paymentInstance
 	}

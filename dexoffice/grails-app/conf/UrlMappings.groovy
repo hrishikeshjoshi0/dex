@@ -32,6 +32,9 @@ class UrlMappings {
 		
 		"/api/taxCategory"(resources:"taxCategory")
 		
+		"/api/report"(resources:"report")
+		"/api/report/taxesReport"(controller:"report",action:"taxesReport")
+		
 		"/api/$controller/$action?/$id?(.$format)?"{
 			constraints {
 				// apply constraints here

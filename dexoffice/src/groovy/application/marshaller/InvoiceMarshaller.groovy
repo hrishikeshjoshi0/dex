@@ -18,6 +18,7 @@ class InvoiceMarshaller extends BaseJsonMarshaller {
 			res.id = i.id
 			
 			res.invoiceDate = i.invoiceDate
+			res.paidDate = i.paidDate
 			res.invoiceNumber = i.invoiceNumber
 			res.message = i.message
 			
@@ -26,7 +27,7 @@ class InvoiceMarshaller extends BaseJsonMarshaller {
 			res.currentInvoiceStatus.statusCode = i.currentInvoiceStatus?.status?.statusCode
 			res.currentInvoiceStatus.description = i.currentInvoiceStatus?.status?.description
 			
-			def latestInvoiceCalculation = invoiceService.getLatestInvoiceCalculation(i)
+			def latestInvoiceCalculation = i.currentInvoiceCalculation
 			
 			res.invoiceTotal = latestInvoiceCalculation?.invoiceGrandTotal
 			res.currentReceivableAmount = latestInvoiceCalculation?.currentReceivableAmount

@@ -1,7 +1,5 @@
 package invoice
 
-import exceptions.InvoiceCreationException
-import grails.transaction.Transactional
 import party.Party
 import payment.PaymentApplication
 import product.Product
@@ -9,8 +7,12 @@ import tax.TaxRate
 import application.commandobject.ChangeInvoiceStatusCommand
 import application.commandobject.InvoiceCommand
 import application.commandobject.InvoiceItemCommand
+import application.commandobject.TaxReportCommand
+import application.commandobject.TaxReportItem
 import core.Status
 import core.StatusType
+import exceptions.InvoiceCreationException
+import grails.transaction.Transactional
 
 @Transactional
 class InvoiceService {
@@ -126,12 +128,8 @@ class InvoiceService {
 			if(taxRates && taxRates.size() != 0) {
 				taxRate = taxRates.get(0)
 			}
-
-			//Check if taxPercentage is given.
-			if(taxRate && taxRate?.taxPercentage) {
-				def taxPercentage = taxRate?.taxPercentage
-				return taxPercentage
-			}
+			
+			return taxRate
 		}
 	}
 	
@@ -160,12 +158,24 @@ class InvoiceService {
 			taxItem.invoice = invoice
 			taxItem.description = "Tax for " + item.description
 			
-			def taxPercentage = calculateTaxOnProduct(product)
+			def taxRate = calculateTaxOnProduct(product)
+			
+			//Check if taxPercentage is given.
+			def taxPercentage
+			if(taxRate && taxRate?.taxPercentage) {
+				taxPercentage = taxRate?.taxPercentage
+			}
+			
 			if(taxPercentage) {
 				taxItem.amount = taxPercentage * item.amount * 0.01
 			}
 			
-			taxItem.invoiceItemType = InvoiceItemType.findByName("ITM_SERVICE_TAX")
+			def invoiceItemType = ''
+			if(taxRate.taxType?.name == 'SERVICE_TAX') {
+				invoiceItemType = "ITM_SERVICE_TAX"
+			}
+			
+			taxItem.invoiceItemType = InvoiceItemType.findByName(invoiceItemType)
 			taxItem.parent = item
 			
 			taxItem.validate()
@@ -228,6 +238,9 @@ class InvoiceService {
 		invoiceCalculation.invoice = invoice
 		invoiceCalculation.save(flush:true)
 		
+		invoice.currentInvoiceCalculation = invoiceCalculation
+		invoice.save(flush:true)
+		
 		invoiceCommand.id = invoice.id
     }
 	
@@ -247,6 +260,51 @@ class InvoiceService {
 	def updateInvoiceSettings(String invoiceSequenceNumber) {
 		def nextSequenceNumber = invoiceSequenceNumber.toInteger() + 1;
 		settingService.updateSetting("INVOICE_SEQUENCE_NUMBER","INVOICE_SETTINGS",nextSequenceNumber?.toString())
+	}
+	
+	def getTaxesOnInvoice(TaxReportCommand cmd) {
+		def c = InvoiceItem.createCriteria()
+		
+		def now = new Date()
+		
+		def results = c.list {
+			projections {
+				sum("amount")
+				sum("currentInvoiceCalculation.invoiceGrandTotal")
+			}
+			
+			groupProperty("taxCategory.description")
+			
+			createAlias("invoiceItemType","invoiceItemType")
+			createAlias("invoice","invoice")
+			createAlias("parent","parent")
+			createAlias("parent.product","product")
+			createAlias("product.taxCategory","taxCategory")
+			createAlias("invoice.currentInvoiceCalculation","currentInvoiceCalculation")
+			
+			isNotNull("parent")
+			
+			if(cmd.mode == 'CASH_BASIS') {
+				isNull("invoice.paidDate")
+			}
+			
+			if(cmd.fromDate && cmd.thruDate) {
+				between("invoice.invoiceDate",cmd.fromDate,cmd.thruDate)
+			}
+			
+		}
+		
+		results?.each { it ->
+			println it
+			def tax = new TaxReportItem()
+			tax.taxAmount = it[0]
+			tax.totalAmount = it[1]
+			tax.taxType = it[2]
+			
+			cmd.taxes << tax
+		}
+		
+		cmd
 	}
 	
 	def changeInvoiceStatus(ChangeInvoiceStatusCommand status) {

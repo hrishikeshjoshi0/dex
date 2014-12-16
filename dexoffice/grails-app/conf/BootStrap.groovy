@@ -459,6 +459,7 @@ class BootStrap {
 						Organization.findByName("Ministry of Finance"))
 			tr.taxPercentage = 12.36
 			tr.fromDate = Date.parse("yyyy-MM-dd", "2014-01-01")
+			tr.taxType = TaxType.findByName("SERVICE_TAX")
 			tr.save(flush:true)
 		}
 		

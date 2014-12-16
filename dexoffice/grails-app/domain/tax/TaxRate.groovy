@@ -10,6 +10,7 @@ class TaxRate {
 	Date fromDate
 	Date thruDate
 	TaxAuthority taxAuthority
+	TaxType taxType
 	BigDecimal taxPercentage
 	BigDecimal taxShipping
 	
@@ -21,6 +22,7 @@ class TaxRate {
 		taxShipping nullable:true,blank:true
 		fromDate nullable:false,blank:false
 		thruDate nullable:true,blank:true
+		taxType nullable:false,blank:false
 		taxAuthority nullable:false,blank:false
     }
 }

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invoice_czone_preprinted_a5_fanfold" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="ca0b8a5b-efab-4f89-8fc7-38db7ec07aca">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<subDataset name="dataset1" uuid="bf8961b4-4fc1-4962-b838-96c86161c159">
+		<field name="product" class="product.Product"/>
+		<field name="unitPrice" class="java.math.BigDecimal"/>
+		<field name="quantity" class="java.math.BigDecimal"/>
+		<field name="amount" class="java.math.BigDecimal"/>
+	</subDataset>
+	<field name="invoice" class="invoice.Invoice"/>
+	<field name="invoiceId" class="java.lang.Long"/>
+	<field name="customerName" class="java.lang.String"/>
+	<field name="address1" class="java.lang.String"/>
+	<field name="address2" class="java.lang.String"/>
+	<field name="address3" class="java.lang.String"/>
+	<field name="city" class="java.lang.String"/>
+	<field name="state" class="java.lang.String"/>
+	<field name="postalCode" class="java.lang.String"/>
+	<field name="country" class="java.lang.String"/>
+	<field name="invoiceDate" class="java.util.Date"/>
+	<field name="invoiceNumber" class="java.lang.String"/>
+	<field name="phone1" class="java.lang.String"/>
+	<field name="remarks" class="java.lang.String"/>
+	<field name="invoiceItems" class="java.util.Collection"/>
+	<field name="companyName" class="java.lang.String"/>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band/>
+	</title>
+	<pageHeader>
+		<band height="223">
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" mode="Transparent" x="27" y="129" width="266" height="74" backcolor="#FFFFFF" uuid="c1ffd505-e744-4547-b23c-4df2a7ff4040"/>
+				<textElement>
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["BILL TO:\n" + (($F{customerName} != null && $F{customerName}.length() > 0) ? $F{customerName} + "\n" : "") + (($F{address1} != null && $F{address1}.length() > 0) ? $F{address1} + "\n" : "") + (($F{address2} != null && $F{address2}.length() > 0) ? $F{address2} + "\n" : "") + (($F{address3} != null && $F{address3}.length() > 0) ? $F{address3} + "\n" : "") + (($F{city} != null && $F{city}.length() > 0) ? $F{city} + "\n" : "") + (($F{postalCode} != null && $F{postalCode}.length() > 0) ? $F{postalCode} + " " : "") + (($F{state} != null && $F{state}.length() > 0) ? $F{state} + " " : "") + (($F{postalCode} != null && $F{postalCode}.length() > 0 && $F{state} != null && $F{state}.length() > 0) ? "\n" : "") + (($F{country} != null && $F{country}.length() > 0) ? $F{country} : "")]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MM-yyyy" isBlankWhenNull="true">
+				<reportElement key="textField" mode="Transparent" x="481" y="129" width="78" height="13" backcolor="#FFFFFF" uuid="1db2b7e8-d543-4960-a52e-aaeedf1e53f3"/>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{invoice}.getInvoiceDate()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="481" y="143" width="78" height="13" uuid="734b90b8-0905-47e8-9921-2e1f3a4eec81"/>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{invoice}.getInvoiceDate()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-2" x="415" y="143" width="65" height="13" uuid="39192bc2-cb80-4482-be8c-0e40789aabae"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Invoice number]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-3" x="415" y="129" width="65" height="13" uuid="cb153115-122b-433d-b397-1ac4ff3bd7fb"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Invoice Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-22" x="29" y="206" width="16" height="8" uuid="e880b1ea-6f29-4cd6-95e4-25aa3fe47d80"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[TEL:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="46" y="206" width="107" height="8" uuid="46e9a4ed-7b31-481c-b4d9-989cdfc70a21"/>
+				<textElement textAlignment="Left">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{phone1}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-7" x="27" y="214" width="545" height="2" uuid="4b120c9d-8ef6-4b27-9924-bf31235cab8b"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="27" y="73" width="532" height="20" uuid="1eb9df97-9148-46c9-a77d-a792e1ceb578"/>
+				<textElement>
+					<font size="24" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{companyName}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band/>
+	</columnHeader>
+	<detail>
+		<band height="15"/>
+		<band height="20" splitType="Stretch">
+			<componentElement>
+				<reportElement x="27" y="0" width="532" height="20" uuid="95e814ae-f455-4166-b5cd-2cbbf009e244"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="dataset1" uuid="b4c32739-ed0c-42e4-b31c-835888fd30fd">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{invoiceItems})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="20" width="532">
+						<textField>
+							<reportElement x="0" y="0" width="183" height="20" uuid="372899a3-7545-46fe-b1f3-33f6b041796a"/>
+							<textFieldExpression><![CDATA[$F{product}.getDescription()]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="183" y="0" width="100" height="20" uuid="965faec7-6d6f-4005-9d0c-95bc5fb43e50"/>
+							<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="288" y="0" width="100" height="20" uuid="10ad38dd-5783-42e1-bac3-23aac16f8b0c"/>
+							<textFieldExpression><![CDATA[$F{unitPrice}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="388" y="0" width="100" height="20" uuid="57e2eb54-d8f9-4ab7-b2d3-d0c1fb70efac"/>
+							<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="328">
+			<staticText>
+				<reportElement key="staticText-39" x="30" y="53" width="49" height="13" uuid="d2acb986-2c3a-45d6-bed1-4adc32adfe65"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Remarks:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField-11" x="79" y="53" width="302" height="13" uuid="6da82ec9-f15a-4ef3-adb9-0b3dfe1a1497"/>
+				<box leftPadding="3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{remarks} != null && $F{remarks}.length() > 0 ? $F{remarks} : "" )]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

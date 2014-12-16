@@ -53,8 +53,10 @@ grails.project.dependency.resolution = {
         runtime 'mysql:mysql-connector-java:5.1.29'
         // runtime 'org.postgresql:postgresql:9.3-1101-jdbc41'
         test "org.grails:grails-datastore-test-support:1.0-grails-2.4"
-		
 		runtime 'org.springframework:spring-test:3.2.12.RELEASE'
+		
+		compile 'commons-collections:commons-collections:3.2.1'
+		compile 'commons-beanutils:commons-beanutils:1.9.2'
     }
 
     plugins {
@@ -70,8 +72,8 @@ grails.project.dependency.resolution = {
         runtime ":hibernate4:4.3.5.5" // or ":hibernate:3.6.10.17"
         runtime ":database-migration:1.4.0"
         runtime ":jquery:1.11.1"
-		
-		compile ":rendering:1.0.0"
+
+		compile ":jasper:1.10.0"
 
 		// Uncomment these to enable additional asset-pipeline capabilities
         //compile ":sass-asset-pipeline:1.9.0"

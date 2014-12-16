@@ -27,7 +27,7 @@ class ProductService {
 				isNull("salesTerminationDate")
 				ge("salesTerminationDate",now)
 			}
-			
+						
 			if(q) {
 				or {
 					like("productName","%" + q + "%")

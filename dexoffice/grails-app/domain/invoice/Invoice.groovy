@@ -15,6 +15,7 @@ class Invoice {
 	String message
 	String referenceNumber
 	String invoiceNumber
+	InvoiceCalculation currentInvoiceCalculation
 	
 	static hasMany = [statuses : InvoiceStatus,items:InvoiceItem,invoiceCalculations:InvoiceCalculation]
 
@@ -29,5 +30,6 @@ class Invoice {
 		message nullable:true
 		referenceNumber nullable:true
 		invoiceNumber nullable:true
+		currentInvoiceCalculation nullable:true
     }
 }
