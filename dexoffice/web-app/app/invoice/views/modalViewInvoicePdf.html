@@ -1,0 +1,10 @@
+<div class="modal-header">
+	<h2>
+		Invoice number : {{invoice.invoiceNumber}}
+	</h2>
+</div>
+<div class="modal-body">
+	<object style="width:800px;height:600px;" height="100%" width="100%" type="application/pdf" data="/dexoffice/api/invoice/getInvoicePdf/{{invoice.id}}.pdf">
+		<p>It appears you don't have a PDF plugin for this browser. No biggie... you can <a href="/dexoffice/api/invoice/getInvoicePdf/1.pdf">click here to download the PDF file.</a></p>
+	</object>
+</div>

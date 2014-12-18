@@ -29,7 +29,7 @@ class InvoiceController {
 		def reportDef = new JasperReportDef(name:'invoice_A4.jasper',fileFormat:JasperExportFormat.PDF_FORMAT,reportData:[data]) 
 		def bytes = jasperService.generateReport(reportDef).toByteArray()
 		
-		response.setHeader("Content-disposition", "attachment; filename=" + 'fileName' + ".pdf")
+		response.setHeader("Content-disposition", "inline; filename=" + 'fileName' + ".pdf")
 		response.contentType = "application/pdf"
 		response.outputStream << bytes
 	}

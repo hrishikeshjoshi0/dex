@@ -276,7 +276,7 @@ app.controller('InvoiceCreateController',
 	}
 }]);
 
-app.controller('InvoiceShowController', ['$scope','$stateParams','$modal','messageCenterService','Invoice',function($scope,$stateParams,$modal,messageCenterService,Invoice) {
+app.controller('InvoiceShowController', ['$scope','$stateParams','$modal','$http','$sce','messageCenterService','Invoice',function($scope,$stateParams,$modal,$http,$sce,messageCenterService,Invoice) {
 	$scope.id = $stateParams.id;
 	$scope.invoice = {};
 	$scope.invoice.items = [];
@@ -286,6 +286,29 @@ app.controller('InvoiceShowController', ['$scope','$stateParams','$modal','messa
 		$scope.invoice = Invoice.get({id : $scope.id},function(data) {
 			$scope.addressData = $scope.fetchAddresses($scope.invoice.party);
 			$scope.calculateInvoiceTotalTaxAmount();
+		});
+	}
+	
+	$scope.pdf = function() {
+		
+		var modalInstance = $modal.open({
+			templateUrl : 'app/invoice/views/modalViewInvoicePdf.html',
+			controller : 'InvoiceShowController',
+			size : 'lg',
+			resolve : {
+				customer : function () {
+			      return $scope.invoice;
+			    }
+			}
+		});
+
+		modalInstance.result.then(function(data) {
+			var c = data.data;
+			
+			if(c.status == 'save.success') {
+			}
+			
+		}, function() {
 		});
 	}
 	

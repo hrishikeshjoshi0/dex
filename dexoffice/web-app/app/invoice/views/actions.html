@@ -2,6 +2,11 @@
 	class="fa fa-credit-card"></i> View payments
 </a>
 
+<a class="btn btn-sm btn-default" ng-click="pdf()">
+ <span class="glyphicon glyphicon-print"></span> 
+  Print
+</a>
+
 <a class="btn btn-sm btn-default" ng-show="invoice.currentReceivableAmount > 0"
 	ui-sref="payment.recordPaymentForInvoice({invoiceId : invoice.id})">
 	<i class="fa fa-credit-card"></i> Record payment
